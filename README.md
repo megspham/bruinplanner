@@ -1,9 +1,9 @@
-# React-Django app
-Simple setup for a React-Django web app. See tutorial here: https://alphacoder.xyz/dead-simple-react-django-setup.
+# Bruin Planner
+Using React-Django based off of Nicholas Kajoh set up. See tutorial here: https://alphacoder.xyz/dead-simple-react-django-setup.
 
 ## Setup
 - Download/clone repo.
-- Create and activate a virtual environment.
+- Create and activate a virtual environment https://virtualenvwrapper.readthedocs.io/en/latest/. 
 - Install Django and other dependencies with `pip install -r requirements.txt`.
 - Run Django app using `python manage.py runserver`.
 - Install React dependencies with `npm install`. 
