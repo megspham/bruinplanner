@@ -11,4 +11,4 @@ Using React-Django based off of Nicholas Kajoh set up. See tutorial here: https:
 - Build React app using `npm run build`.
 
 ## Deploy
-Read my tutorial on deploying this app to Heroku here: https://alphacoder.xyz/deploy-react-django-app-on-heroku.
+https://alphacoder.xyz/deploy-react-django-app-on-heroku.
