@@ -1,0 +1,30 @@
+.BackgroundBlock {
+    border-radius: 22.224px;
+    display: flex;
+    justify-content: center;
+    width: 257.82px;
+    height: 222.24px;
+    background: #005587;
+    position: relative;
+}
+
+.DisplayBlock {
+    position: absolute;
+    bottom: 10px;
+    border-radius: 0px 0px 22.224px 22.224px;
+    display: inline-block;
+    width: 242px;
+    height: 170px;
+    background: white;
+}
+
+.CalendarTitle {
+    font-family: Montserrat;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 27px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+    vertical-align: middle;
+}
