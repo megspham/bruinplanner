@@ -1,13 +1,12 @@
-
 .BackgroundBlock {
-  border-radius: 22.224px;
+  border-radius: 1.5vw;
   display: flex;
   display: inline-block;
 
   justify-content: center;
-  width: 257.82px;
-  height: 222.24px;
- 
+  width: 16vw;
+  height: 13.5vw;
+
   position: relative;
   margin: 12px;
 
@@ -23,11 +22,11 @@
   bottom: 3.26%;
 
   background: #ffffff;
-  border-radius: 0px 0px 22.224px 22.224px;
+  border-radius: 0px 0px 1.5vw 1.5vw;
 }
 
 .CalendarTitle {
-text-align: center;
+  text-align: center;
   position: absolute;
   width: 242px;
   left: calc(50% - 242px / 2 + 0.09px);
@@ -37,7 +36,7 @@ text-align: center;
   font-family: "Montserrat";
   font-style: normal;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 1.25vw;
   line-height: 27px;
   /* identical to box height */
 
