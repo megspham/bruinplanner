@@ -1,15 +1,13 @@
 import json
 import requests
-
-# Note: BEARER expires roughly every half hour
-# Update BEARER by logging into https://developer.api.ucla.edu/api/261#/Classes/ extracting headers from curl command for some request
-BEARER = '5xKa9AiPh9diZkqJTh3cxBJxTRA6'
-HEADERS = {'accept': 'application/json', 'authorization': 'Bearer ' + BEARER}
+from macros import *
 
 def makeAPIRequest(URL):
     s = requests.Session()
     s.headers.update(HEADERS)
     r = s.get(URL)
+    #print(URL)
+    #print(r)
     try:
         r_j = json.loads(r.text)
     except:

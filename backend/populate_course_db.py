@@ -2,6 +2,7 @@ from url_utils import *
 from macros import *
 
 # human readable number to course API number
+# e.g "0152A M" -> "M152A"
 def encodeNumber(number):
     if number[0] == "M":
         number = encodeNumber(number[1:]) + " M"
@@ -12,34 +13,35 @@ def encodeNumber(number):
     return number
 
 # course API number to human readable number
+# e.g "M152A" -> "0152A M"
 def decodeNumber(number):
     number = number.strip("0")
     if number[-1] == "M":
         number = "M" + number.split(" ")[0]
     return number
 
-def getCourseLatestStartTerm(category, number):
-    start_term_info = makeAPIRequest(getCourseLatestStartTermURL(category, number))
+def getCourseLatestStartTerm(department, number):
+    start_term_info = makeAPIRequest(getCourseLatestStartTermURL(department, number))
     start_term = start_term_info['courses'][0]['courseCatalogNumberCollection'][-1]['courseStartTermCode']
     return start_term
 
-def courseNameToCategoryNumber(course_name):
-    category = " ".join(course_name.split(" ")[:-1])
+def courseNameToDepartmentNumber(course_name):
+    department = " ".join(course_name.split(" ")[:-1])
     number = course_name.split(" ")[-1]
     number = encodeNumber(number)
-    return category, number
+    return department, number
 
-def parseCourse(category, number, start_term=None):
+def parseCourse(department, number, start_term=None, type=None):
     if VERBOSE:
-        print("Getting course info for", category, number)
+        print("Getting course info for", department, number)
 
     #number = encodeNumber(number)
 
     if not start_term:
-        start_term = getCourseLatestStartTerm(category, number)
+        start_term = getCourseLatestStartTerm(department, number)
         pass
-    class_detail_info = makeAPIRequest(getCourseDetailURL(category, number, start_term))
-    class_requisites_info = makeAPIRequest(getCourseRequisitesURL(category, number, start_term))
+    class_detail_info = makeAPIRequest(getCourseDetailURL(department, number, start_term))
+    class_requisites_info = makeAPIRequest(getCourseRequisitesURL(department, number, start_term))
 
     # get units
     units = sum([float(activity['courseUnitCollection'][0]['courseUnit']) for activity in class_detail_info["courseDetail"]["courseActivityCollection"]])
@@ -53,8 +55,8 @@ def parseCourse(category, number, start_term=None):
     # get historical offerings
     # TODO
     
-    name = category + " " + decodeNumber(number)
-    courseInfo = (name, category, number, start_term, units, class_requisites)
+    name = department + " " + decodeNumber(number)
+    courseInfo = (type, name, department, number, start_term, units, class_requisites)
     
     if VERBOSE:
         print(courseInfo)
@@ -64,38 +66,41 @@ def parseCourses(courses):
     courseInfos = []
     for course in courses:
         if len(course) == 2:
-            category, number = course
+            department, number = course
             start_term = None
         elif len(course) == 3:
-            category, number, start_term = course
+            department, number, start_term = course
+        elif len(course) == 4:
+            department, number, start_term, type = course
         else:
             raise Exception("Incorrectly formatted course {}".format(course))
         
-        courseInfo = parseCourse(category, number, start_term=start_term)
+        courseInfo = parseCourse(department, number, start_term=start_term, type=type)
         courseInfos.append(courseInfo)
     return courseInfos
 
-def parseCoursesByName(course_names):
+def parseCoursesByName(course_names_types):
     courses = []
-    for course_name in course_names:
-        category, number = courseNameToCategoryNumber(course_name)
-        courses.append((category, number))
+    for course_name, course_type in course_names_types:
+        department, number = courseNameToDepartmentNumber(course_name)
+        courses.append((department, number, None, course_type))
     return parseCourses(courses)
 
-def parseGEs():
+def parseGEs(categories):
     ge_course_infos = {}
-    for ge_category in GE_CATEGORIES:
+    for ge_category in categories:
         category, subcategory = ge_category.split("-")[1:]
         response = makeAPIRequest(getGEClassesURL(category, subcategory))
         ge_course_collection = response["geFoundationCategoryCourses"][0]["courseCollection"]
         
-        course_infos = []
+        ge_courses = []
         for course in ge_course_collection:
-            category, number, start_term = course["subjectAreaCode"], course["courseCatalogNumber"], course["courseStartTermCode"]
-            course_infos.append(parseCourse(category, number, start_term))
-        ge_course_infos[ge_category] = course_infos
+            department, number, start_term = course["subjectAreaCode"], course["courseCatalogNumber"], course["courseStartTermCode"]
+            ge_courses.append((department, number, start_term, ge_category))
+        ge_course_infos[ge_category] = parseCourses(ge_courses)
     
     return ge_course_infos
 
-parseGEs()
-parseCoursesByName(REQUIRED_CS_COURSES)
+if __name__ == "__main__":
+    parseGEs(GE_CATEGORIES)
+    parseCoursesByName(REQUIRED_CS_COURSES)
