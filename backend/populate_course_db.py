@@ -1,67 +1,5 @@
-import requests
-import json
-
-# Note: BEARER expires roughly every half hour
-# Update BEARER by logging into https://developer.api.ucla.edu/api/261#/Classes/ extracting headers from curl command for some request
-BEARER = '5xKa9AiPh9diZkqJTh3cxBJxTRA6'
-HEADERS = {'accept': 'application/json', 'authorization': 'Bearer ' + BEARER}
-
-VERBOSE = True
-
-# Manually parsed from https://catalog.registrar.ucla.edu/major/2021/ComputerScienceBS
-REQUIRED_CS_COURSES = [
-    "COM SCI 1",
-    "COM SCI 31",
-    "COM SCI 32",
-    "COM SCI 33",
-    "COM SCI M51A",
-    "COM SCI 111",
-    "COM SCI 118",
-    "COM SCI 131",
-    "COM SCI 151B",
-    "COM SCI M152A",
-    "COM SCI 180",
-    "COM SCI 181",
-    "STATS 100A",
-    "MATH 31A",
-    "MATH 31B",
-    "MATH 32A",
-    "MATH 32B",
-    "MATH 33A",
-    "MATH 33B",
-    "MATH 61",
-    "PHYSICS 1A",
-    "PHYSICS 1B",
-    "PHYSICS 1C",
-    "PHYSICS 4AL",
-    "PHYSICS 4BL"
-]
-
-def makeAPIRequest(URL):
-    s = requests.Session()
-    s.headers.update(HEADERS)
-    r = s.get(URL)
-    try:
-        r_j = json.loads(r.text)
-    except:
-        r_j = None
-    return r_j
-
-def getGEClassesURL(category, subcategory):
-    URL =  "https://api.ucla.edu/sis/gefoundations/{}/{}/gefoundationcategorycourses/v1?PageSize=10".format(category, subcategory)
-    return URL
-
-def getCourseDetailURL(category, number, start_term):
-    URL =  "https://api.ucla.edu/sis/courses/{}/{}/{}/coursedetail/v1".format(category, number, start_term)
-    return URL
-
-def getCourseLatestStartTermURL(category, number):
-    URL = "https://api.ucla.edu/sis/courses/v1?subjectAreaCode={}&courseCatalogNumber={}".format(category, number)
-    return URL
-
-def getCourseRequisitesURL(category, number, start_term):
-    URL =  "https://api.ucla.edu/sis/courses/{}/{}/{}/courserequisites/v1".format(category, number, start_term)
-    return URL
+from url_utils import *
+from macros import *
 
 # human readable number to course API number
 def encodeNumber(number):
@@ -145,15 +83,8 @@ def parseCoursesByName(course_names):
     return parseCourses(courses)
 
 def parseGEs():
-    ge_categories = [
-        "GE-AH-LC",
-        "GE-AH-VP",
-        "GE-SC-HA",
-        "GE-SC-SA",
-        "GE-SI-LS"
-    ]
     ge_course_infos = {}
-    for ge_category in ge_categories:
+    for ge_category in GE_CATEGORIES:
         category, subcategory = ge_category.split("-")[1:]
         response = makeAPIRequest(getGEClassesURL(category, subcategory))
         ge_course_collection = response["geFoundationCategoryCourses"][0]["courseCollection"]
