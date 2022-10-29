@@ -1,5 +1,10 @@
 VERBOSE = True
 
+# Note: BEARER expires roughly every half hour
+# Update BEARER by logging into https://developer.api.ucla.edu/api/261#/Classes/ extracting headers from curl command for some request
+BEARER = 's8SGkUa2JtMf6QCk8ytWdTzT6FiP'
+HEADERS = {'accept': 'application/json', 'authorization': 'Bearer ' + BEARER}
+
 # Manually parsed from https://catalog.registrar.ucla.edu/major/2021/ComputerScienceBS
 REQUIRED_CS_COURSES = [
     ("COM SCI 1", "lower-cs"),
@@ -36,8 +41,3 @@ GE_CATEGORIES = [
     "GE-SC-SA",
     "GE-SI-LS"
 ]
-
-# Note: BEARER expires roughly every half hour
-# Update BEARER by logging into https://developer.api.ucla.edu/api/261#/Classes/ extracting headers from curl command for some request
-BEARER = 'JzcQ4zGtCdrZM91944FET4KAwffK'
-HEADERS = {'accept': 'application/json', 'authorization': 'Bearer ' + BEARER}

@@ -21,7 +21,7 @@ def decodeNumber(number):
     return number
 
 def getCourseLatestStartTerm(department, number):
-    start_term_info = makeAPIRequest(getCourseLatestStartTermURL(department, number))
+    start_term_info = makeAPIRequest(getCourseURL(department, number))
     start_term = start_term_info['courses'][0]['courseCatalogNumberCollection'][-1]['courseStartTermCode']
     return start_term
 

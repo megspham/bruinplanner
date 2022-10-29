@@ -22,10 +22,10 @@ def getCourseDetailURL(category, number, start_term):
     URL =  "https://api.ucla.edu/sis/courses/{}/{}/{}/coursedetail/v1".format(category, number, start_term)
     return URL
 
-def getCourseLatestStartTermURL(category, number):
-    URL = "https://api.ucla.edu/sis/courses/v1?subjectAreaCode={}&courseCatalogNumber={}".format(category, number)
-    return URL
-
 def getCourseRequisitesURL(category, number, start_term):
     URL =  "https://api.ucla.edu/sis/courses/{}/{}/{}/courserequisites/v1".format(category, number, start_term)
+    return URL
+
+def getCourseURL(category, number):
+    URL = "https://api.ucla.edu/sis/courses/v1?subjectAreaCode={}&courseCatalogNumber={}".format(category, number)
     return URL
