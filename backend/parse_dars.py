@@ -120,9 +120,6 @@ def parse_dars_bs4(dars_file, start_quarter, start_year, name):
 
 					# check if there is another description line (which may have information about the course it is alternate for - more useful name)
 					if len(description_lines) > 1:
-						
-						if course == 'MATH170E':
-							print(description_lines)
 
 						#loop through all the description lines
 						for desc_line in description_lines[0:]:
