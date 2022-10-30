@@ -10,8 +10,8 @@ requirement_categories_mapping = {
 									"ENTRY-LEVEL WRITING/ESL": "ENTRY_WRITING",
 									"AMERICAN HISTORY & INSTITUTIONS": "AMER_HIST",	
 									"WRITING I": "WRITING_1",
-									"FOUNDATIONS OF THE ARTS AND HUMANITIES": "GE_AH",
-									"FOUNDATIONS OF SOCIETY AND CULTURE" : "GE_SC",
+									"FOUNDATIONS OF THE ARTS & HUMANITIES": "GE_AH",
+									"FOUNDATIONS OF SOCIETY & CULTURE" : "GE_SC",
 									"FOUNDATIONS OF SCIENTIFIC INQUIRY" : "GE_SI",
 									'LOWER DIVISION COMPUTER SCIENCE' : "CS_LOWER_DIV",
 									'LOWER DIVISION MATHEMATICS' : "MATH_LOWER_DIV",
@@ -34,7 +34,7 @@ def parse_dars_bs4(dars_file, start_quarter, start_year, name):
 	data = []
 
 	for index, req in enumerate(requirements):
-		
+
 		old_req = None
 		for cat, abbr in requirement_categories_mapping.items():
 			if cat in req.text:
@@ -45,8 +45,6 @@ def parse_dars_bs4(dars_file, start_quarter, start_year, name):
 			continue
 		else:
 			req = old_req
-
-		print(req)
 
 		table_to_req_map = {}
 
@@ -63,7 +61,7 @@ def parse_dars_bs4(dars_file, start_quarter, start_year, name):
 
 					table_to_req_map[req + '_' + ge_abbrev] = ge.find_next_sibling('table', class_='completedCourses')
 
-					print(ge.text, ':', req + '_' + ge_abbrev)
+					# print(ge.text, ':', req + '_' + ge_abbrev)
 		else:
 
 			tables = req_dividers[index].find_all('table', class_='completedCourses')
