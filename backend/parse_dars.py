@@ -23,6 +23,33 @@ requirement_categories_mapping = {
 								}
 
 def parse_dars_bs4(dars_file, start_quarter, start_year, name):
+	"""
+	Parses a DARS report and populates the backend database with the following columns:
+		- Course Name
+		- Requirement
+		- Course Description
+		- Quarter
+		- Year
+		- Units
+		- course_description
+
+	Parameters
+	----------
+	dars_file : str
+		The path to the DARS report file
+	start_quarter : str
+		The start quarter of the DARS report
+	start_year : int
+		The start year of the DARS report
+	name : str
+		The name of the file to write to
+
+	Returns
+	-------
+	df : pandas dataframe
+		A pandas dataframe
+	"""
+	
 	quarter_to_number = {'WI': 1, 'SP': 2, 'SU': 3, 'FA': 4}
 
 	with open(dars_file, 'r', encoding="ISO-8859-1") as f:
