@@ -2,7 +2,7 @@ VERBOSE = True
 
 # Note: BEARER expires roughly every half hour
 # Update BEARER by logging into https://developer.api.ucla.edu/api/261#/Classes/ extracting headers from curl command for some request
-BEARER = 's8SGkUa2JtMf6QCk8ytWdTzT6FiP'
+BEARER = 'f2iCx0EPSkdWA3YsrjlRNlqiKNeh'
 HEADERS = {'accept': 'application/json', 'authorization': 'Bearer ' + BEARER}
 
 # Manually parsed from https://catalog.registrar.ucla.edu/major/2021/ComputerScienceBS
