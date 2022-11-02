@@ -108,7 +108,7 @@ def recursivelyAddPrereqs():
         classesAdded = newClassesAdded
     return allClassesAdded
 
-if __name__ == "__main__":
+def populateDatabase():
     req_cs_course_infos = query_courses.parseCoursesByName(macros.REQUIRED_CS_COURSES)
     addClasses(req_cs_course_infos)
 
@@ -118,3 +118,6 @@ if __name__ == "__main__":
     """
 
     print(recursivelyAddPrereqs())
+
+if __name__ == "__main__":
+    populateDatabase()

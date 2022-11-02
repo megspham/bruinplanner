@@ -1,47 +1,6 @@
 from url_utils import *
 from macros import *
-
-
-def encodeNumber(number):
-    """
-    Converts course API number to course human readable number (e.g "0152A M" -> "M152A")
-
-    Parameters
-    ----------
-    number : str
-        human readable number
-
-    Returns
-    -------
-    number : str
-        course API number
-    """
-    if number[0] == "M":
-        number = encodeNumber(number[1:]) + " M"
-    
-    numDigits = sum(c.isdigit() for c in number)
-    if numDigits <= 4:
-        number = '0' * (4 - numDigits) + number
-    return number
-
-def decodeNumber(number):
-    """
-    Converts course human readable number to course API number (e.g "M152A" -> "0152A M")
-
-    Parameters
-    ----------
-    number : str
-        course API number
-
-    Returns
-    -------
-    number : str
-        human readable number
-    """
-    number = number.strip("0")
-    if number[-1] == "M":
-        number = "M" + number.split(" ")[0]
-    return number
+import course_utils
 
 def getCourseLatestStartTerm(department, number):
     """
@@ -62,27 +21,6 @@ def getCourseLatestStartTerm(department, number):
     start_term_info = makeAPIRequest(getCourseURL(department, number))
     start_term = start_term_info['courses'][0]['courseCatalogNumberCollection'][-1]['courseStartTermCode']
     return start_term
-
-def courseNameToDepartmentNumber(course_name):
-    """
-    Converts a course name into department and number.
-
-    Parameters
-    ----------
-    course_name: str
-        name of course in question
-
-    Returns
-    -------
-    department: str
-        department for course
-    number: str
-        number for course
-    """
-    department = " ".join(course_name.split(" ")[:-1])
-    number = course_name.split(" ")[-1]
-    number = encodeNumber(number)
-    return department, number
 
 def parseCourse(department, number, start_term=None, type_=None):
     """
@@ -108,11 +46,12 @@ def parseCourse(department, number, start_term=None, type_=None):
     if VERBOSE:
         print("Getting course info for", department, number)
 
-    #number = encodeNumber(number)
-
+    # get start term
     if not start_term:
         start_term = getCourseLatestStartTerm(department, number)
         pass
+    
+    # get information about the class
     class_detail_info = makeAPIRequest(getCourseDetailURL(department, number, start_term))
     class_requisites_info = makeAPIRequest(getCourseRequisitesURL(department, number, start_term))
 
@@ -125,11 +64,13 @@ def parseCourse(department, number, start_term=None, type_=None):
     else:
         class_requisites = None
 
-    # get historical offerings
-    # TODO
+    # get historical offerings- TODO
     historical_offerings = None
     
-    name = department + " " + decodeNumber(number)
+    # create name
+    name = department + " " + course_utils.decodeNumber(number)
+    
+    # construct and return courseInfo
     courseInfo = (type_, name, department, number, start_term, units, class_requisites, historical_offerings)
     
     if VERBOSE:
@@ -153,15 +94,10 @@ def parseCourses(courses):
     """
     courseInfos = []
     for course in courses:
-        if len(course) == 2:
-            department, number = course
-            start_term = None
-        elif len(course) == 3:
-            department, number, start_term = course
-        elif len(course) == 4:
-            department, number, start_term, type_ = course
-        else:
-            raise Exception("Incorrectly formatted course {}".format(course))
+        department = course[0]
+        number = course[1]
+        start_term = course[2] if len(course)>=3 else None
+        type_ = course[3] if len(course)>=4 else None
         
         courseInfo = parseCourse(department, number, start_term=start_term, type_=type_)
         courseInfos.append(courseInfo)
@@ -184,7 +120,7 @@ def parseCoursesByName(course_names_types):
     """
     courses = []
     for course_name, course_type in course_names_types:
-        department, number = courseNameToDepartmentNumber(course_name)
+        department, number = course_utils.courseNameToDepartmentNumber(course_name)
         courses.append((department, number, None, course_type))
     return parseCourses(courses)
 
@@ -215,7 +151,3 @@ def parseGEs(categories):
         ge_course_infos += parseCourses(ge_courses)
     
     return ge_course_infos
-
-if __name__ == "__main__":
-    #parseGEs(GE_CATEGORIES)
-    parseCoursesByName(REQUIRED_CS_COURSES)
