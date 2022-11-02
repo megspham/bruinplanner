@@ -1,37 +1,30 @@
 import re
 import bs4
-from bs4 import BeautifulSoup
-import argparse
 import pandas as pd
+import populate_database
+import argparse
 
 # list of requirement categories
 
 requirement_categories_mapping = {
-									"ENTRY-LEVEL WRITING/ESL": "ENTRY_WRITING",
-									"AMERICAN HISTORY & INSTITUTIONS": "AMER_HIST",	
-									"WRITING I": "WRITING_1",
-									"FOUNDATIONS OF THE ARTS": "GE_AH",
-									"FOUNDATIONS OF SOCIETY" : "GE_SC",
-									"FOUNDATIONS OF SCIENTIFIC INQUIRY" : "GE_SI",
-									'LOWER DIVISION COMPUTER SCIENCE' : "CS_LOWER_DIV",
-									'LOWER DIVISION MATHEMATICS' : "MATH_LOWER_DIV",
-									'LOWER DIVISION PHYSICS' : "PHYSICS_LOWER_DIV",
-									'COMPUTER SCIENCE REQUIRED': "CS_REQUIRED",
-									'TECHNICAL BREADTH AREA': "CS_TECHNICAL_BREADTH",
-									'SCIENCE-TECHNOLOGY ELECTIVES': "CS_ST_ELECTIVES",
-									"ENGINEERING ETHICS": "ENGR_ETHICS",
-								}
+	'ENTRY-LEVEL WRITING/ESL': 'ENTRY_WRITING',
+	'AMERICAN HISTORY & INSTITUTIONS': 'AMER_HIST',	
+	'WRITING I': 'WRITING_1',
+	'FOUNDATIONS OF THE ARTS': 'GE_AH',
+	'FOUNDATIONS OF SOCIETY' : 'GE_SC',
+	'FOUNDATIONS OF SCIENTIFIC INQUIRY' : 'GE_SI',
+	'LOWER DIVISION COMPUTER SCIENCE' : 'CS_LOWER_DIV',
+	'LOWER DIVISION MATHEMATICS' : 'MATH_LOWER_DIV',
+	'LOWER DIVISION PHYSICS' : 'PHYSICS_LOWER_DIV',
+	'COMPUTER SCIENCE REQUIRED': 'CS_REQUIRED',
+	'TECHNICAL BREADTH AREA': 'CS_TECHNICAL_BREADTH',
+	'SCIENCE-TECHNOLOGY ELECTIVES': 'CS_ST_ELECTIVES',
+	'ENGINEERING ETHICS': 'ENGR_ETHICS',
+	}
 
-def parse_dars_bs4(dars_file, start_quarter, start_year, name):
+def parse_dars(dars_file, start_quarter, start_year):
 	"""
-	Parses a DARS report and populates the backend database with the following columns:
-		- Course Name
-		- Requirement
-		- Course Description
-		- Quarter
-		- Year
-		- Units
-		- course_description
+	Parses a DARS report, returning the corresponding courses list.
 
 	Parameters
 	----------
@@ -41,19 +34,24 @@ def parse_dars_bs4(dars_file, start_quarter, start_year, name):
 		The start quarter of the DARS report
 	start_year : int
 		The start year of the DARS report
-	name : str
-		The name of the file to write to
 
 	Returns
 	-------
-	df : pandas dataframe
-		A pandas dataframe
+	courses : List[Tuple]
+		List of tuples, where each tuple contains information about a previously taken course:
+		
+			- Course Name
+			- Requirement
+			- Course Description
+			- Quarter
+			- Year
+			- Units
 	"""
 	
 	quarter_to_number = {'WI': 1, 'SP': 2, 'SU': 3, 'FA': 4}
 
 	with open(dars_file, 'r', encoding="ISO-8859-1") as f:
-		soup = BeautifulSoup(f, 'html.parser')    
+		soup = bs4.BeautifulSoup(f, 'html.parser')    
 
 	requirements = soup.find_all('div', class_='reqTitle')
 	req_dividers = soup.find_all('div', class_='auditSubrequirements')
@@ -180,19 +178,21 @@ def parse_dars_bs4(dars_file, start_quarter, start_year, name):
 					except:
 						continue
 
-					data.append([course, requirement, course_description, quarter, year, units, term_num])
+					data.append([requirement, course, course_description, quarter, year, units, term_num])
 			
-	courses = pd.DataFrame(data, columns = ['Course', 'Requirement', 'Description', 'Quarter', 'Year', 'Units', 'Term_Num'])
+	courses = pd.DataFrame(data, columns = ['Requirement', 'Course', 'Description', 'Quarter', 'Year', 'Units', 'Term_Num'])
 
 	courses = courses[courses['Units'] > 0.0]
 	courses = courses[courses['Year'] >= start_year]
 	courses = courses[courses['Term_Num'] >= quarter_to_number[start_quarter]]
-	# print(courses)
 
 	courses = courses.sort_values(by=['Term_Num']).drop_duplicates(subset = ['Course'], keep='first').drop(columns=['Term_Num']).reset_index(drop=True)
-	
-	# courses.to_csv(name, index=False, sep = '\t')
-	print(courses) 
+
+	# convert dataframe to list of tuples for easier population of database
+	courses = list(courses.itertuples(index=False, name=None)) 
+
+	return courses
+
 
 
 def main():
@@ -200,15 +200,13 @@ def main():
 	parser.add_argument('--file', help='DARS report file')
 	parser.add_argument('--start_quarter', help='Start term', type = str, default = 'FA')
 	parser.add_argument('--start_year', help='Start year', type=int)
-	parser.add_argument('--name', help='Name of file to write to', type = str)
 	
 	args = parser.parse_args()
 	file = args.file
 	start_quarter = args.start_quarter
 	start_year = args.start_year
-	name = args.name
 
-	parse_dars_bs4(file, start_quarter, start_year, name)
+	parse_dars(file, start_quarter, start_year)
 
 	
 
