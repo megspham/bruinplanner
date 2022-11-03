@@ -1,11 +1,8 @@
 import re
 import bs4
 import pandas as pd
-import populate_database
-import argparse
 
 # list of requirement categories
-
 requirement_categories_mapping = {
 	'ENTRY-LEVEL WRITING/ESL': 'ENTRY_WRITING',
 	'AMERICAN HISTORY & INSTITUTIONS': 'AMER_HIST',	
@@ -40,8 +37,9 @@ def parse_dars(dars_file, start_quarter, start_year):
 	courses : List[Tuple]
 		List of tuples, where each tuple contains information about a previously taken course:
 		
-			- Course Name
 			- Requirement
+			- Course Name
+			- Course Department
 			- Course Description
 			- Quarter
 			- Year
@@ -132,11 +130,11 @@ def parse_dars(dars_file, start_quarter, start_year):
 					# second attribute is the course
 					course = attributes[1].text.strip()
 
+					# all the words except the last one are the course department
+					department = " ".join(course.split()[:-1])
+
 					# strip all the whitespace
 					course = re.sub(r'\s+', '', course)
-
-					# fourth attribute is the grade
-					grade = attributes[3].text.strip()
 
 					# sixth attribute is the description
 					description_lines = attributes[5].find('table').findAll('td', {'class': 'descLine'})
@@ -155,6 +153,8 @@ def parse_dars(dars_file, start_quarter, start_year):
 
 								# strip all the whitespace
 								course = re.sub(r'\s+', '', alt_course)
+
+								department = " ".join(alt_course.split()[:-1])
 								break
 
 					try:
@@ -178,9 +178,9 @@ def parse_dars(dars_file, start_quarter, start_year):
 					except:
 						continue
 
-					data.append([requirement, course, course_description, quarter, year, units, term_num])
+					data.append([requirement, course, department, course_description, quarter, year, units, term_num])
 			
-	courses = pd.DataFrame(data, columns = ['Requirement', 'Course', 'Description', 'Quarter', 'Year', 'Units', 'Term_Num'])
+	courses = pd.DataFrame(data, columns = ['Requirement', 'Course', 'Department', 'Description', 'Quarter', 'Year', 'Units', 'Term_Num'])
 
 	courses = courses[courses['Units'] > 0.0]
 	courses = courses[courses['Year'] >= start_year]
@@ -192,23 +192,3 @@ def parse_dars(dars_file, start_quarter, start_year):
 	courses = list(courses.itertuples(index=False, name=None)) 
 
 	return courses
-
-
-
-def main():
-	parser = argparse.ArgumentParser(description='Parse DARS report')
-	parser.add_argument('--file', help='DARS report file')
-	parser.add_argument('--start_quarter', help='Start term', type = str, default = 'FA')
-	parser.add_argument('--start_year', help='Start year', type=int)
-	
-	args = parser.parse_args()
-	file = args.file
-	start_quarter = args.start_quarter
-	start_year = args.start_year
-
-	parse_dars(file, start_quarter, start_year)
-
-	
-
-if __name__ == "__main__":
-	main()
