@@ -1,7 +1,7 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+// import { View, StyleSheet } from "react-native";
 import "./LandingPage.css";
-import BackgroundSvg from "/home/belle/bruinplanner/src/components/images/LandingPageBackground.svg";
+import BackgroundSvg from "../images/LandingPageBackground.svg";
 
 const LandingPage = () => {
   return (
