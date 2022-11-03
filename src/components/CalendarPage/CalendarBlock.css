@@ -1,0 +1,45 @@
+.BackgroundBlock {
+  border-radius: 1.5vw;
+  display: flex;
+  display: inline-block;
+
+  justify-content: center;
+  width: 16vw;
+  height: 13.5vw;
+
+  position: relative;
+  margin: 12px;
+
+}
+
+
+.DisplayBlock {
+  text-align: center;
+  position: absolute;
+  left: 3.1%;
+  right: 3.03%;
+  top: 20.25%;
+  bottom: 3.26%;
+
+  background: #ffffff;
+  border-radius: 0px 0px 1.5vw 1.5vw;
+}
+
+.CalendarTitle {
+  text-align: center;
+  position: absolute;
+  width: 242px;
+  left: calc(50% - 242px / 2 + 0.09px);
+  top: 5.4%;
+  bottom: 82.45%;
+
+  font-family: "Montserrat";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.25vw;
+  line-height: 27px;
+  /* identical to box height */
+
+  color: #ffffff;
+  vertical-align: middle;
+}
