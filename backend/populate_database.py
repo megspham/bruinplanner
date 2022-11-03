@@ -2,11 +2,12 @@ from re import M
 import query_courses
 import macros
 import mysql.connector
+import cons
 
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
-  password="pass123",
+  password=cons.password,
   database="bruinplanner"
 )
 
@@ -118,3 +119,34 @@ if __name__ == "__main__":
     """
 
     print(recursivelyAddPrereqs())
+
+def convert_dars_to_json(dars_courses):
+    """
+    Converts a list of dars courses to a json object
+    """
+
+    # TODO: define the json format
+
+    return dars_courses
+
+def populateDBFromDars(dars_courses, user_name, email):
+    """
+    Attempts to add info about previously taken courses into the given user's table.
+
+    Parameters
+    ----------
+    course_info: Tuple
+        List of tuples, each containing (course name, requirement, course description, quarter, year, units)
+
+    Returns
+    -------
+    success: List[bool]
+        Whether all course infos could be successfully added
+    """   
+ 
+    # convert dars_courses a json object and then to a string
+    json_dars_string = str(convert_dars_to_json(dars_courses))
+
+    # try to add user to user table, updating the value of the calendar if the user already exists
+    mycursor.execute("INSERT IGNORE INTO users (name, email, calendar) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (user_name, email, json_dars_string))
+    mydb.commit()
