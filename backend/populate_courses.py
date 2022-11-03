@@ -5,7 +5,6 @@ import requests
 import macros
 import db_utils
 
-
 def makeAPIRequest(URL):
     """
     Makes an API request to UCLA course API, sending URL.
