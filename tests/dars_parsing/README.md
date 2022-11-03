@@ -17,7 +17,7 @@
     For this test, our input is the following:
 
 ```python
-dars_file = "test_data/valid_dars_file.txt"
+dars_file = "test_data/test1.html"
 start_year = 19
 start_quarter = "FA"
 ```
@@ -56,30 +56,42 @@ start_quarter = "FA"
 ## Test 2: Negative Test
 
 ### Objective 
-        This test ensures that the DARS parsing function is able to handle invalid files (I.E. a random HTML file).
-        Specifically, this test covers the case when the HTML file is not formatted as expected.
-    
-        The test is considered successful if the following condition is met:
-    
-        1. The DARS parsing code catches the exception and provides informative message output.
+    This test ensures that the DARS parsing function is able to handle invalid files (I.E. a random HTML file).
+    Specifically, this test covers the case when the HTML file is not formatted as expected.
+
+    The test is considered successful if the following condition is met:
+
+    1. The DARS parsing code catches the exception and provides informative message output.
 
 ### Input
-    The input for this test is a random HTML file, attached in the test_data directory as well as a starting year and quarter.
+    The input for this test is an HTML file that is not in the correct DARS format, attached in the test_data directory as well as a starting year and quarter.
 
-    TODO
+```python
+dars_file = "test_data/test2.html"
+start_year = 19
+start_quarter = "FA"
+```
 
 ```HTML
-
+<!DOCTYPE html>
+<html><body>
+<h1>First Heading</h1>
+<p>First paragraph.</p>
+<h1>Second Heading</h1>
+<p>Second paragraph.</p>
+</body></html>
 ```
 ### Expected Output
-TODO
+
+    Here we expect an exception to be raised from the code at line 58 in the function parse_dars.py, printing that the passed file is an "Invalid DARS report"
+
 ### Actual Output
 ![](./imgs/test2_out.png)
 ## Test 3: Empty DARS Test
 
 ### Objective
     This test ensures that the DARS parsing function is able to handle DARS files with no courses in the sections of interest.
-    Specifically, this test covers the case when a new student attempts to upload their DARS without having taken a course.
+    Specifically, this test covers the case when a new student attempts to upload their DARS whilst having no courses that satisfy any major requirements.
 
     The test is considered successful if the following condition is met:
 
@@ -87,8 +99,20 @@ TODO
     2. The output is empty.
 
 ### Input
-TODO
-### Expected Output
-TODO
-### Actual Output
-![](./imgs/test3_out.png)
+    The input for this test is a minimal valid DARS file (with no courses), attached in the test_data directory, as well as a starting year and quarter.
+    For this test, our input is the following:
+
+```python
+dars_file = "test_data/test3.html"
+start_year = 19
+start_quarter = "FA"
+```
+
+    The relevant portion of the DARS file is shown below (note that the section underneath the electives tab is empty, and the html file
+    ends here):
+
+```HTML
+<span class="subreqTitle srTitle_substatusNO">COM SCI SCI-TECH ELECTIVES</span>
+	</body>
+	</html>
+```
