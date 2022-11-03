@@ -54,6 +54,9 @@ def parse_dars(dars_file, start_quarter, start_year):
 	requirements = soup.find_all('div', class_='reqTitle')
 	req_dividers = soup.find_all('div', class_='auditSubrequirements')
 
+	if len(requirements) == 0 or len(req_dividers) == 0:
+		raise Exception('Invalid DARS report')
+
 	data = []
 
 	for index, req in enumerate(requirements):
