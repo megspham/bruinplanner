@@ -7,7 +7,7 @@ Using React-Django based off of Nicholas Kajoh set up. See tutorial here: https:
 - Install Django and other dependencies with `pip install -r requirements.txt`.
 - Run Django app using `python manage.py runserver`.
 
-- Install yarn with 'npm install -g yarn'/
+- Install yarn with `npm install -g yarn`.
 - Install React dependencies with `yarn install`. 
 - Run React app with `yarn start`.
 
