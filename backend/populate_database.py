@@ -3,6 +3,7 @@ import query_courses
 import macros
 import mysql.connector
 import cons
+from json_format import validate_json
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -123,6 +124,25 @@ if __name__ == "__main__":
 def convert_dars_to_json(dars_courses):
     """
     Converts a list of dars courses to a json object
+
+    Parameters
+    ----------
+    dars_courses: List[Tuple]
+            List of tuples, each containing:
+            
+            - Requirement
+			- Course Name
+			- Course Department
+			- Course Description
+			- Quarter
+			- Year
+			- Units
+    
+    Returns
+    -------
+    json: Dict
+        Dictionary containing the json object
+        
     """
 
     # TODO: define the json format
@@ -136,17 +156,39 @@ def populateDBFromDars(dars_courses, user_name, email):
     Parameters
     ----------
     course_info: Tuple
-        List of tuples, each containing (course name, requirement, course description, quarter, year, units)
+        List of tuples, each containing:
+            
+            - Requirement
+			- Course Name
+			- Course Department
+			- Course Description
+			- Quarter
+			- Year
+			- Units
 
     Returns
     -------
-    success: List[bool]
-        Whether all course infos could be successfully added
+    success: bool
+        Whether the users table could be successfully updated with the given courses
     """   
  
-    # convert dars_courses a json object and then to a string
-    json_dars_string = str(convert_dars_to_json(dars_courses))
+    try:
+        print("Attempting to convert DARs courses to JSON and then add to database")
+        # convert dars_courses a json object and then to a string
+        json_dars_string = str(convert_dars_to_json(dars_courses))
 
-    # try to add user to user table, updating the value of the calendar if the user already exists
-    mycursor.execute("INSERT IGNORE INTO users (name, email, calendar) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (user_name, email, json_dars_string))
+        # validate the json string against the json schema
+        valid_json_string = validate_json(json_dars_string)
+
+        if not valid_json_string:
+            print("Invalid JSON string")
+            return False
+        # try to add user to user table, updating the value of the calendar if the user already exists
+        mycursor.execute("INSERT IGNORE INTO users (name, email, calendar) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (user_name, email, json_dars_string))
+    except Exception as e: #Occurs when class with same name already exists
+        traceback.print_exc()
+        return False
+    
     mydb.commit()
+    
+    return True
