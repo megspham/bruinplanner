@@ -25,7 +25,7 @@ SECRET_KEY = '463hzk*onkb4h&+j@mof$wc(20t$$l17w#(v8-6ipzq7m=$a=j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['react-django.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['bruin-planner.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -71,7 +71,7 @@ TEMPLATES = [
   },
 ]
 
-WSGI_APPLICATION = 'reactdjango.wsgi.application'
+WSGI_APPLICATION = 'bruinplanner.wsgi.application'
 
 
 # Database
