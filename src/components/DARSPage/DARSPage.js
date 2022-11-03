@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const DARSPage = () => {
   return (
-    <div className="App">
+    <div className="overflow-container">
         <img src={BackgroundSvg} alt="Your SVG" class="center"/>
         <div class="dars-button-container">
             <Link to="/calendar">

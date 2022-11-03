@@ -16,3 +16,8 @@
   cursor: pointer;
   text-align: center;
 }
+
+.overflow-container {
+  height: 100vh;
+  overflow: hidden;
+}
