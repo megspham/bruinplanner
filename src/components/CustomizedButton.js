@@ -2,7 +2,7 @@ import React from "react";
 import "./CustomizedButton.css"; 
 
 
-export function CustomizedButton(text, funct) {
+export function CustomizedButton({ text }) {
     const style = {
         width: '524px',
         height: '88px',
@@ -14,11 +14,12 @@ export function CustomizedButton(text, funct) {
         fontStyle: 'normal',
         fontWeight: '500',
         fontSize: '30.6431px',
-        lineHeight: '37px'
+        lineHeight: '37px',
+        
     }
     return (
         <div className="myButton">
-            <button type="button" style={style} onClick={funct}>
+            <button type="button" style={style}>
                 {text}
             </button>
         </div>

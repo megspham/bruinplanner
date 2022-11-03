@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import './App.css';
 import CalendarList from './components/CalendarPage/CalendarList.js';
-import Background from './components/LandingPage/LandingPage.js';
+import LandingPage from './components/LandingPage/LandingPage.js';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 class App extends Component {
   render() {
     return (
-      <div className="BruinPlanner">
-        <Background />        
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path = "/" element={<LandingPage />}/>
+          <Route path = "/calendar" element={<CalendarList />}/>
+          {/* add in your DARS oage */}
+          {/* <Route path = "/" component={DARS PAGE}/> */}
+        </Routes>
+      </BrowserRouter>
     );
   }
 }
