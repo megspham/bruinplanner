@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import CalendarList from './components/CalendarPage/CalendarList.js';
 import LandingPage from './components/LandingPage/LandingPage.js';
+import DARSPage from './components/DARSPage/DARSPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 class App extends Component {
@@ -11,8 +12,7 @@ class App extends Component {
         <Routes>
           <Route path = "/" element={<LandingPage />}/>
           <Route path = "/calendar" element={<CalendarList />}/>
-          {/* add in your DARS oage */}
-          {/* <Route path = "/" component={DARS PAGE}/> */}
+          <Route path = "/dars" element={<DARSPage />}/>
         </Routes>
       </BrowserRouter>
     );
