@@ -116,3 +116,11 @@ start_quarter = "FA"
 	</body>
 	</html>
 ```
+
+### Expected Output
+```python
+[]
+```
+
+### Actual Output
+![](./imgs/test3_out.png)
