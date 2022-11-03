@@ -1,12 +1,14 @@
 import React from "react";
+import { View, StyleSheet } from "react-native";
+import "./LandingPage.css";
 import BackgroundSvg from "/home/belle/bruinplanner/src/components/images/LandingPageBackground.svg";
 
-const Background = () => {
+const LandingPage = () => {
   return (
     <div className="App">
-      <img src={BackgroundSvg} alt="Your SVG" />
+      <img src={BackgroundSvg} alt="Your SVG" class="center"/>
     </div>
   );
 };
 
-export default Background;
+export default LandingPage;
