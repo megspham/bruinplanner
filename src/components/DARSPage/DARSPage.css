@@ -6,7 +6,7 @@
   width: 75%;
 }
 
-.button-container {
+.dars-button-container {
   display: flex;
   justify-content: space-evenly;
   position: relative;

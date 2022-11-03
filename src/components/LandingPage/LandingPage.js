@@ -8,7 +8,7 @@ const LandingPage = () => {
   return (
     <div className="landing">
       <img src={BackgroundSvg} alt="Your SVG" class="center"/>
-      <Link to="/calendar">
+      <Link to="/dars">
       <div class="button-container">
         <CustomizedButton class="button" text="ENTER HERE"></CustomizedButton>
       </div>

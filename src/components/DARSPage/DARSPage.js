@@ -1,15 +1,17 @@
 import React from "react";
-// import { View, StyleSheet } from "react-native";
 import "./DARSPage.css";
 import BackgroundSvg from "../images/DARSPageBackground.svg";
 import { CustomizedButton } from "../CustomizedButton";
+import { Link } from "react-router-dom";
 
 const DARSPage = () => {
   return (
     <div className="App">
         <img src={BackgroundSvg} alt="Your SVG" class="center"/>
-        <div class="button-container">
-            <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
+        <div class="dars-button-container">
+            <Link to="/calendar">
+                <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
+            </Link>
             <CustomizedButton class="button" text="Import DARS"></CustomizedButton>
         </div>
     </div>
