@@ -21,12 +21,12 @@ def generateCalendar(courses):
     
     Returns
     -------
-    json: Dict
-        Dictionary containing the json object
+    json: JSON
+        JSON object containing the calendar
         
     """
 
-    # TODO: define the json format
+    # TODO: convert the courses list of tuples into a json object (for Part C)
 
     return courses
 
