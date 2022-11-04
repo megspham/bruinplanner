@@ -4,7 +4,7 @@ import "./CustomizedButton.css";
 
 export function CustomizedButton({ text, onClick }) {
     const style = {
-        width: '524px',
+        width: '38vw',
         height: '88px',
         background: '#FFFFFF',
         color: '#757575',
