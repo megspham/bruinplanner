@@ -12,6 +12,6 @@ mycursor = mydb.cursor()
 
 def execute(*args):
     mycursor.execute(*args)
-    mydb.commit()
     myresult = mycursor.fetchall()
+    mydb.commit()
     return myresult
