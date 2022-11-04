@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import CalendarList from './components/CalendarPage/CalendarList.js';
-import LandingPage from './components/LandingPage/LandingPage.js';
 import DARSPage from './components/DARSPage/DARSPage';
+import LandingPage from './components/LandingPage/LandingPage.js';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 class App extends Component {
