@@ -75,6 +75,17 @@ schema = '''{
                                                             "type": "string"
                                                         }
                                                     }
+                                                },
+                                                "historical_offerings":
+                                                {
+                                                    "type": "array",
+                                                    "items":
+                                                    {
+                                                        "historical_offering_term":
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    }
                                                 }
                                             },
                                             "required": ["course_name", "course_units", "course_requirement"]
