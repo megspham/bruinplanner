@@ -1,14 +1,14 @@
-import db_utils
+import db_utils as db
 from json_format import validate_json
 import traceback
 
-def convert_dars_to_json(dars_courses):
+def generateCalendar(courses):
     """
-    Converts a list of dars courses to a json object
+    Converts a list of tuples of courses to a calendar format
 
     Parameters
     ----------
-    dars_courses: List[Tuple]
+    courses: List[Tuple]
             List of tuples, each containing:
             
             - Requirement
@@ -28,9 +28,9 @@ def convert_dars_to_json(dars_courses):
 
     # TODO: define the json format
 
-    return dars_courses
+    return courses
 
-def populateDBFromDars(dars_courses, user_name, email):
+def updateUserCalendar(courses, name, email):
     """
     Attempts to add info about previously taken courses into the given user's table.
 
@@ -54,19 +54,20 @@ def populateDBFromDars(dars_courses, user_name, email):
     """   
  
     try:
-        print("Attempting to convert DARs courses to JSON and then add to database")
-        # convert dars_courses a json object and then to a string
-        json_dars_string = str(convert_dars_to_json(dars_courses))
+        print("Attempting to convert courses list into a calendar format and then add to database")
+        
+        # convert dars_courses into a json object and then to a string
+        calendar = str(generateCalendar(courses))
 
         # validate the json string against the json schema
-        valid_json_string = validate_json(json_dars_string)
+        valid_calendar_string = validate_json(calendar)
 
-        if not valid_json_string:
-            print("Invalid JSON string")
+        if not valid_calendar_string:
+            print("Invalid Calendar string")
             return False
         # try to add user to user table, updating the value of the calendar if the user already exists
-        db_utils.execute("INSERT IGNORE INTO users (name, email, calendar) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (user_name, email, json_dars_string))
-    except Exception as e: #Occurs when class with same name already exists
+        db.execute("INSERT IGNORE INTO users (name, email, calendar) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (name, email, valid_calendar_string))
+    except Exception as e:
         traceback.print_exc()
         return False
     
