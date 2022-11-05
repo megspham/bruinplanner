@@ -1,3 +1,9 @@
+/**
+ * @file Encapsulates all of the components and files for the website. Defines the 
+ * urls and routings between pages.
+ * @author Megan Pham, Andy Goh, Belle Lerdworatawee
+ */
+
 import React, { Component } from 'react';
 import './App.css';
 import CalendarList from './components/CalendarPage/CalendarList.js';

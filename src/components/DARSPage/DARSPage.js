@@ -1,3 +1,10 @@
+/**
+ * @file Defines the page that new users are taken to upon login. It has a welcome
+ * message for the user, and options (via buttons) to start with a blank template 
+ * or import DARs.
+ * @author Andy Goh
+ */
+
 import React from "react";
 import "./DARSPage.css";
 import BackgroundSvg from "../images/DARSPageBackground.svg";
