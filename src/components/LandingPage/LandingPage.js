@@ -1,8 +1,11 @@
+/**
+ * @file Defines the landing page, which is fitted with a "Sign in with Google"
+ * button.
+ * @author Belle Lerdworatawee
+ */
 import React from "react";
 import "./LandingPage.css";
 import BackgroundSvg from "../images/LandingPageBackground.svg";
-import { CustomizedButton } from "../CustomizedButton";
-import { Link } from "react-router-dom";
 import Login from "../Login";
 
 const LandingPage = () => {

@@ -1,3 +1,7 @@
+/**
+ * @file Aggregates multiple CalendarBlocks to form the full calendar.
+ * @author Megan Pham
+ */
 import React, { Component } from "react";
 import CalendarBlock from "./CalendarBlock";
 

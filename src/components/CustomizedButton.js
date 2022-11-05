@@ -1,7 +1,18 @@
+/**
+ * @file File for the CustomizedButton component, which is the button used throughout
+ * the Bruin Planner website
+ * @author Megan Pham
+ */
+
 import React from "react"; 
 import "./CustomizedButton.css"; 
 
-
+/**
+ * Create a CustomizedButton
+ * @param {string} text What to write on the button
+ * @param {function} onClick Defines what function to call when the button is clicked
+ * @returns CustomizedButton HTML div object
+ */
 export function CustomizedButton({ text, onClick }) {
     const style = {
         width: '38vw',
