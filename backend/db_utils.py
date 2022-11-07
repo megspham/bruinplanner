@@ -11,6 +11,9 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 def execute(*args):
+    """
+    Function that executes a certain query in the database and fetches result.
+    """
     mycursor.execute(*args)
     myresult = mycursor.fetchall()
     mydb.commit()
