@@ -11,6 +11,8 @@ Using React-Django based off of Nicholas Kajoh set up. See tutorial here: https:
 - Install React dependencies with `yarn install`. 
 - Run React app with `yarn start`.
 
+- To demote your npm, use https://stackoverflow.com/questions/47008159/how-to-downgrade-node-version
+
 ## Deploy
 https://alphacoder.xyz/deploy-react-django-app-on-heroku.
 
