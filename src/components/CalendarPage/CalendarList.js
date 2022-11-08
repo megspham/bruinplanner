@@ -8,8 +8,7 @@ class CalendarList extends Component {
       <div>
         <div className="CalendarRow">
           <CalendarBlock color="#005587"
-            calendarDate={"Fall " + new Date(new Date().setFullYear(this.currYear)).getFullYear()
-            }>
+            calendarDate={"Fall " + new Date(new Date().setFullYear(this.currYear)).getFullYear()}>
           </CalendarBlock>
           <CalendarBlock color="#005587"
             calendarDate={"Winter " + new Date(new Date().setFullYear(this.currYear + 1)).getFullYear()}
