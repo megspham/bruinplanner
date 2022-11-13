@@ -106,50 +106,65 @@ schema = '''{
 
 # minimal example of how the JSON format would be used
 example = '''{
-	"calendar": {
-		"quarters": [{
-				"quarter": {
-					"year": 2020,
-					"quarter_name": "WI",
-					"courses": [{
-						"course": {
-							"course_name": "CS 32",
-							"course_department": "CS",
-							"course_description": "Data Structures and Algorithms",
-							"course_units": 4.0,
-							"course_requirement": "CS",
-							"course_pre_requisites": [
-                                {
-								    "pre_requisite_name": "CS 31"
-							    }
-                            ]
-						}
-					}]
-				}
-			},
-			{
-				"quarter2": {
-					"year": 2020,
-					"quarter_name": "SP",
-					"courses": [{
-						"course": {
-							"course_name": "CS 33",
-							"course_department": "CS",
-							"course_description": "Intro to Computer Architecture",
-							"course_units": 4.0,
-							"course_requirement": "CS",
-							"course_pre_requisites": [
-                                {
-								    "pre_requisite_name": "CS 31"
-							    }
-                            ]
-						}
-					}]
-				}
-			}
-		]
-	}
-}'''
+                "calendar": 
+                {
+                    "quarters": 
+                    [
+                        {
+                            "quarter": 
+                            {
+                                "year": 2020,
+                                "quarter_name": "WI",
+                                "courses": 
+                                [
+                                    {
+                                        "course": 
+                                        {
+                                            "course_name": "CS 32",
+                                            "course_department": "CS",
+                                            "course_description": "Data Structures and Algorithms",
+                                            "course_units": 4.0,
+                                            "course_requirement": "CS",
+                                            "course_pre_requisites": 
+                                            [
+                                                {
+                                                    "pre_requisite_name": "CS 31"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "quarter2": 
+                            {
+                                "year": 2020,
+                                "quarter_name": "SP",
+                                "courses": 
+                                [
+                                    {
+                                        "course": 
+                                        {
+                                            "course_name": "CS 33",
+                                            "course_department": "CS",
+                                            "course_description": "Intro to Computer Architecture",
+                                            "course_units": 4.0,
+                                            "course_requirement": "CS",
+                                            "course_pre_requisites": 
+                                            [
+                                                {
+                                                    "pre_requisite_name": "CS 31"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }'''    
 
 def validate_json(json_string):
     """
