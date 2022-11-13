@@ -21,7 +21,7 @@ requirement_categories_mapping = {
 
 def parse_dars(dars_file, start_quarter, start_year):
 	"""
-	Parses a DARS report, returning the corresponding courses list.
+	Parses a DARS report, returning the corresponding courses.
 
 	Parameters
 	----------
@@ -34,9 +34,8 @@ def parse_dars(dars_file, start_quarter, start_year):
 
 	Returns
 	-------
-	courses : List[Tuple]
-		List of tuples, where each tuple contains information about a previously taken course:
-		
+	courses : pandas.DataFrame
+		pandas.DataFrame, where each row contains information about the quarters of that year and the corresponding courses:		
 			- Requirement
 			- Course Name
 			- Course Department
@@ -191,7 +190,7 @@ def parse_dars(dars_file, start_quarter, start_year):
 
 	courses = courses.sort_values(by=['Term_Num']).drop_duplicates(subset = ['Course'], keep='first').drop(columns=['Term_Num']).reset_index(drop=True)
 
-	# convert dataframe to list of tuples for easier population of database
-	courses = list(courses.itertuples(index=False, name=None)) 
+	# group courses by year
+	courses = courses.groupby(['Year']).agg({'Quarter': lambda x: list(x), 'Course': lambda x: list(x), 'Requirement': lambda x: list(x), 'Department': lambda x: list(x), 'Description': lambda x: list(x), 'Units': lambda x: list(x)}).reset_index()
 
 	return courses
