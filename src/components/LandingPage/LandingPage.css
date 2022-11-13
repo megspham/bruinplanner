@@ -1,0 +1,25 @@
+.center {
+    display: block;
+    margin-top: 1vw;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    position: relative;
+  }
+
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, -195%);
+  -ms-transform: translate(-50%, -50%);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.overflow-container {
+  height: 100vh;
+  overflow: hidden;
+}

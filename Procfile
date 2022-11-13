@@ -1,2 +1,2 @@
 release: python manage.py migrate
-web: gunicorn reactdjango.wsgi --log-file -
+web: gunicorn bruinplanner.wsgi --log-file -

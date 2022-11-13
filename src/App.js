@@ -1,21 +1,26 @@
+/**
+ * @file Encapsulates all of the components and files for the website. Defines the 
+ * urls and routings between pages.
+ * @author Megan Pham, Andy Goh, Belle Lerdworatawee
+ */
+
 import React, { Component } from 'react';
-import reactLogo from './logo-react.svg';
-import djangoLogo from './logo-django.svg';
 import './App.css';
+import CalendarList from './components/CalendarPage/CalendarList.js';
+import DARSPage from './components/DARSPage/DARSPage';
+import LandingPage from './components/LandingPage/LandingPage.js';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={reactLogo} className="App-logo" alt="React logo" />
-          <img src={djangoLogo} className="App-logo" alt="Django logo" />
-          <h1 className="App-title">Welcome to the React-Django app</h1>
-        </header>
-        <p className="App-intro">
-          I'm a blank canvas waiting for a coder's touch!
-        </p>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path = "/" element={<LandingPage />}/>
+          <Route path = "/calendar" element={<CalendarList />}/>
+          <Route path = "/dars" element={<DARSPage />}/>
+        </Routes>
+      </BrowserRouter>
     );
   }
 }
