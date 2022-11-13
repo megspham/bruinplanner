@@ -67,7 +67,7 @@ class CalendarList extends Component {
           <CalendarBlock color="#005587"
             calendarDate={"Summer " + new Date(new Date().setFullYear(this.currYear + 4)).getFullYear()}
           ></CalendarBlock>
-        </div>
+        </div>       
       </div>
     );
   }

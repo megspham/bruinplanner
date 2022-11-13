@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import './App.css';
-import CalendarList from './components/CalendarPage/CalendarList.js';
+import Calendar from './components/CalendarPage/Calendar.js';
 import DARSPage from './components/DARSPage/DARSPage';
 import LandingPage from './components/LandingPage/LandingPage.js';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
@@ -17,7 +17,7 @@ class App extends Component {
       <BrowserRouter>
         <Routes>
           <Route path = "/" element={<LandingPage />}/>
-          <Route path = "/calendar" element={<CalendarList />}/>
+          <Route path = "/calendar" element={<Calendar />}/>
           <Route path = "/dars" element={<DARSPage />}/>
         </Routes>
       </BrowserRouter>
