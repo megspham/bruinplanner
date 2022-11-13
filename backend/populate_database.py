@@ -1,23 +1,22 @@
 import db_utils as db
 from json_format import validate_json
 import traceback
-
+ 
 def generateCalendar(courses):
     """
     Converts a list of tuples of courses to a calendar format
 
     Parameters
     ----------
-    courses: List[Tuple]
-            List of tuples, each containing:
-            
-            - Requirement
-			- Course Name
-			- Course Department
-			- Course Description
-			- Quarter
-			- Year
-			- Units
+    courses: pandas.DataFrame
+        Dataframe with the following columns and types:
+            - Year: int
+            - Quarter: list
+            - Course: list
+            - Requirement: list
+            - Department: list
+            - Description: list
+            - Units: list
     
     Returns
     -------
@@ -26,9 +25,68 @@ def generateCalendar(courses):
         
     """
 
-    # TODO: convert the courses list of tuples into a json object (for Part C)
+    # TODO: add optional parameters such as historical courses, etc.
 
-    return courses
+    calendar_dict = {}
+
+    calendar_dict["calendar"] = {}
+    calendar_dict["calendar"]["quarters"] = []
+
+    
+
+    for year in courses["Year"].unique():
+
+        # get the value of Quarter column for the current year
+        quarters = courses.loc[courses["Year"] == year, "Quarter"].values[0]
+
+        for quarter in list(set(quarters)):
+
+            # get number of times the quarter appears in the Quarter column list for the current year 
+            quarter_count = quarters.count(quarter)
+
+            # calendar_dict["calendar"]["quarters"].append({quarter + str(year): {}})
+            
+            quarter_dict = {}
+
+            quarter_dict["year"] = year
+            quarter_dict["quarter"] = quarter
+            quarter_dict["courses"] = []
+
+            # get the value of Course column for the current year and quarter
+            courses_list = courses[(courses["Year"] == year)]["Course"].values[0][:quarter_count]
+            # print(courses_list)
+
+            # get the value of Requirement column for the current year and quarter
+            requirements_list = courses[(courses["Year"] == year)]["Requirement"].values[0][:quarter_count]
+            # print(requirements_list)
+
+            # get the value of Department column for the current year and quarter
+            departments_list = courses[(courses["Year"] == year)]["Department"].values[0][:quarter_count]
+            # print(departments_list)
+
+            # get the value of Description column for the current year and quarter
+            descriptions_list = courses[(courses["Year"] == year)]["Description"].values[0][:quarter_count]
+            # print(descriptions_list)
+
+            # get the value of Units column for the current year and quarter
+            units_list = courses[(courses["Year"] == year)]["Units"].values[0][:quarter_count]
+            # print(units_list)
+
+            for i in range(len(courses_list)):
+                # calendar_dict["calendar"]["quarters"][-1][quarter + str(year)]["courses"].append({"course" + str(i + 1): {}})
+                
+                course_dict = {}
+                course_dict["name"] = courses_list[i]
+                course_dict["requirement"] = requirements_list[i]
+                course_dict["department"] = departments_list[i]
+                course_dict["description"] = descriptions_list[i]
+                course_dict["units"] = units_list[i]
+
+                quarter_dict["courses"].append({"course" + str(i + 1): course_dict})
+
+            calendar_dict["calendar"]["quarters"].append({quarter + str(year): quarter_dict})
+    
+    return calendar_dict
 
 def updateUserCalendar(courses, name, email):
     """
@@ -36,16 +94,15 @@ def updateUserCalendar(courses, name, email):
 
     Parameters
     ----------
-    course_info: Tuple
-        List of tuples, each containing:
-            
-            - Requirement
-			- Course Name
-			- Course Department
-			- Course Description
-			- Quarter
-			- Year
-			- Units
+    course_info: pandas.DataFrame
+        Dataframe with the following columns and types:
+            - Year: int
+            - Quarter: list
+            - Course: list
+            - Requirement: list
+            - Department: list
+            - Description: list
+            - Units: list
 
     Returns
     -------
