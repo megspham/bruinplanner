@@ -1,7 +1,7 @@
 import db_utils as db
 from json_format import validate_json
 import traceback
- 
+
 def generateCalendar(courses):
     """
     Converts a list of tuples of courses to a calendar format
@@ -82,9 +82,9 @@ def generateCalendar(courses):
                 course_dict["description"] = descriptions_list[i]
                 course_dict["units"] = units_list[i]
 
-                quarter_dict["courses"].append({"course" + str(i + 1): course_dict})
+                quarter_dict["courses"].append({"course": course_dict})
 
-            calendar_dict["calendar"]["quarters"].append({quarter + str(year): quarter_dict})
+            calendar_dict["calendar"]["quarters"].append({"quarter": quarter_dict})
     
     return calendar_dict
 
