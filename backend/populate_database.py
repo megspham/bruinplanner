@@ -1,7 +1,6 @@
-# import db_utils as db
+import db_utils as db
 from json_format import validate_json
 import traceback
-import parse_dars
 
 def generateCalendar(courses):
     """
@@ -72,8 +71,6 @@ def generateCalendar(courses):
             units_list = courses[(courses["Year"] == year)]["Units"].values[0][first_index:last_index+1]
             # print(units_list)
 
-            # print(courses_list)
-
             for i in range(len(courses_list)):
                 # calendar_dict["calendar"]["quarters"][-1][quarter + str(year)]["courses"].append({"course" + str(i + 1): {}})
                 
@@ -89,15 +86,6 @@ def generateCalendar(courses):
             calendar_dict["calendar"]["quarters"].append({"quarter": quarter_dict})
     
     return calendar_dict
-
-if __name__ == "__main__":
-    courses = parse_dars.parse_dars("../../test_dars/Taykhoom_Courses.html", "FA", 19)
-    # courses.to_csv("courses.csv")
-    
-    c = generateCalendar(courses)
-    # replace all ' with " in the json string
-    calendar = str(c).replace("'", '"')
-    print(calendar)
 
 def updateUserCalendar(courses, name, email):
     """
