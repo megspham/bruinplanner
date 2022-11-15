@@ -30,7 +30,7 @@ schema = '''{
                                 {
                                     "type": "int"
                                 },
-                                "quarter_name":
+                                "name":
                                 {
                                     "type": "string",
                                     "enum": ["WI", "SP", "SU", "FA"]
@@ -45,27 +45,27 @@ schema = '''{
                                             "type": "object",
                                             "properties":
                                             {
-                                                "course_name":
+                                                "name":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_department":
+                                                "department":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_description":
+                                                "description":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_units":
+                                                "units":
                                                 {
                                                     "type": "float"
                                                 },
-                                                "course_requirement":
+                                                "requirement":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_pre_requisites":
+                                                "pre_requisites":
                                                 {
                                                     "type": "array",
                                                     "items":
@@ -88,7 +88,7 @@ schema = '''{
                                                     }
                                                 }
                                             },
-                                            "required": ["course_name", "course_units", "course_requirement"]
+                                            "required": ["name", "units", "requirement"]
                                         }
                                     },
                                     "required": ["course"]
