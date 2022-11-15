@@ -1,6 +1,7 @@
-import db_utils as db
+# import db_utils as db
 from json_format import validate_json
 import traceback
+import parse_dars
 
 def generateCalendar(courses):
     """
@@ -32,17 +33,16 @@ def generateCalendar(courses):
     calendar_dict["calendar"] = {}
     calendar_dict["calendar"]["quarters"] = []
 
-    
-
     for year in courses["Year"].unique():
 
         # get the value of Quarter column for the current year
         quarters = courses.loc[courses["Year"] == year, "Quarter"].values[0]
 
         for quarter in list(set(quarters)):
+            # get the index of the first and last occurence of the current quarter in the quarters list
+            first_index = quarters.index(quarter)
+            last_index = len(quarters) - quarters[::-1].index(quarter) - 1
 
-            # get number of times the quarter appears in the Quarter column list for the current year 
-            quarter_count = quarters.count(quarter)
 
             # calendar_dict["calendar"]["quarters"].append({quarter + str(year): {}})
             
@@ -53,24 +53,26 @@ def generateCalendar(courses):
             quarter_dict["courses"] = []
 
             # get the value of Course column for the current year and quarter
-            courses_list = courses[(courses["Year"] == year)]["Course"].values[0][:quarter_count]
+            courses_list = courses[(courses["Year"] == year)]["Course"].values[0][first_index:last_index+1]
             # print(courses_list)
 
             # get the value of Requirement column for the current year and quarter
-            requirements_list = courses[(courses["Year"] == year)]["Requirement"].values[0][:quarter_count]
+            requirements_list = courses[(courses["Year"] == year)]["Requirement"].values[0][first_index:last_index+1]
             # print(requirements_list)
 
             # get the value of Department column for the current year and quarter
-            departments_list = courses[(courses["Year"] == year)]["Department"].values[0][:quarter_count]
+            departments_list = courses[(courses["Year"] == year)]["Department"].values[0][first_index:last_index+1]
             # print(departments_list)
 
             # get the value of Description column for the current year and quarter
-            descriptions_list = courses[(courses["Year"] == year)]["Description"].values[0][:quarter_count]
+            descriptions_list = courses[(courses["Year"] == year)]["Description"].values[0][first_index:last_index+1]
             # print(descriptions_list)
 
             # get the value of Units column for the current year and quarter
-            units_list = courses[(courses["Year"] == year)]["Units"].values[0][:quarter_count]
+            units_list = courses[(courses["Year"] == year)]["Units"].values[0][first_index:last_index+1]
             # print(units_list)
+
+            # print(courses_list)
 
             for i in range(len(courses_list)):
                 # calendar_dict["calendar"]["quarters"][-1][quarter + str(year)]["courses"].append({"course" + str(i + 1): {}})
@@ -87,6 +89,15 @@ def generateCalendar(courses):
             calendar_dict["calendar"]["quarters"].append({"quarter": quarter_dict})
     
     return calendar_dict
+
+if __name__ == "__main__":
+    courses = parse_dars.parse_dars("../../test_dars/Taykhoom_Courses.html", "FA", 19)
+    # courses.to_csv("courses.csv")
+    
+    c = generateCalendar(courses)
+    # replace all ' with " in the json string
+    calendar = str(c).replace("'", '"')
+    print(calendar)
 
 def updateUserCalendar(courses, name, email):
     """
