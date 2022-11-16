@@ -42,3 +42,5 @@ GE_CATEGORIES = [
     "GE-SC-SA",
     "GE-SI-LS"
 ]
+
+PAST_TERMS = ["22F", "22S", "22W", "21F", "21S", "21W", "20F", "20S", "20W", "19F"]
