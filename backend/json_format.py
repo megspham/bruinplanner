@@ -114,18 +114,18 @@ example = '''{
                             "quarter": 
                             {
                                 "year": 2020,
-                                "quarter_name": "WI",
+                                "name": "WI",
                                 "courses": 
                                 [
                                     {
                                         "course": 
                                         {
-                                            "course_name": "CS 32",
-                                            "course_department": "CS",
-                                            "course_description": "Data Structures and Algorithms",
-                                            "course_units": 4.0,
-                                            "course_requirement": "CS",
-                                            "course_pre_requisites": 
+                                            "name": "CS 32",
+                                            "department": "CS",
+                                            "description": "Data Structures and Algorithms",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
                                             [
                                                 {
                                                     "pre_requisite_name": "CS 31"
@@ -137,21 +137,21 @@ example = '''{
                             }
                         },
                         {
-                            "quarter2": 
+                            "quarter": 
                             {
                                 "year": 2020,
-                                "quarter_name": "SP",
+                                "name": "SP",
                                 "courses": 
                                 [
                                     {
                                         "course": 
                                         {
-                                            "course_name": "CS 33",
-                                            "course_department": "CS",
-                                            "course_description": "Intro to Computer Architecture",
-                                            "course_units": 4.0,
-                                            "course_requirement": "CS",
-                                            "course_pre_requisites": 
+                                            "name": "CS 33",
+                                            "department": "CS",
+                                            "description": "Intro to Computer Architecture",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
                                             [
                                                 {
                                                     "pre_requisite_name": "CS 31"
