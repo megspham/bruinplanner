@@ -5,7 +5,7 @@
 
   justify-content: center;
   width: 16vw;
-  height: 13.5vw;
+  height: 12vw;
 
   position: relative;
   margin: 12px;
@@ -42,4 +42,22 @@
 
   color: #ffffff;
   vertical-align: middle;
+}
+
+.CalendarList {
+    display: flex;
+    display: inline-block;
+    overflow: hidden;
+    flex-grow: 4;
+
+    position: relative;
+  
+    /* justify-content: center;
+    width: 21%;
+    height: 100%;
+  
+    position: relative;
+    margin: 12px;
+
+    background-color: '#FFFFFF'; */
 }
