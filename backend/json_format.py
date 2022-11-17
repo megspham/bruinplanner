@@ -113,6 +113,38 @@ example = '''{
                         {
                             "quarter": 
                             {
+                                "year": 2019,
+                                "name": "FA",
+                                "courses": 
+                                [
+                                    {
+                                        "course": 
+                                        {
+                                            "name": "CS 31",
+                                            "department": "CS",
+                                            "description": "Introduction to C++",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "SP 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "WI 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2018"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "quarter": 
+                            {
                                 "year": 2020,
                                 "name": "WI",
                                 "courses": 
@@ -129,6 +161,18 @@ example = '''{
                                             [
                                                 {
                                                     "pre_requisite_name": "CS 31"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "WI 2018"
                                                 }
                                             ]
                                         }
@@ -155,6 +199,18 @@ example = '''{
                                             [
                                                 {
                                                     "pre_requisite_name": "CS 31"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "WI 2020"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2018"
                                                 }
                                             ]
                                         }
