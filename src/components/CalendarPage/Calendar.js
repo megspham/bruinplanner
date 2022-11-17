@@ -32,7 +32,7 @@ export default function Calendar() {
           <CalendarList classMappings={classMappings}/>        
           <div className="Sidebar">
             <div className="ClassList">
-                {Array(20)
+                {Array(50)
                 .fill(null)
                 .map((_, index) => (
                 <Draggable key={index+1} id={index+1}>

@@ -21,22 +21,25 @@ function CalendarBlock({ color, calendarDate, blockId, blockState }) {
       <SidebarButton text={"CS "+(index)} />                    
     </Draggable>
   );
+  const empty_draggable = (
+    <SidebarButton text={"Drop Here"} />
+  );
 
   return (
     <div className="BackgroundBlock" style={{backgroundColor: color}}>
       <div className="CalendarTitle">{calendarDate}</div>
       <div className="DisplayBlock">
         <Droppable id={blockId+" 1"}>
-          {blockState[0] ? draggable(blockState[0]) : 'DROP HERE'}
+          {blockState[0] ? draggable(blockState[0]) : empty_draggable}
         </Droppable>
         <Droppable id={blockId+" 2"}>
-          {blockState[1] ? draggable(blockState[1]) : 'DROP HERE'}
+          {blockState[1] ? draggable(blockState[1]) : empty_draggable}
         </Droppable>
         <Droppable id={blockId+" 3"}>
-          {blockState[2] ? draggable(blockState[2]) : 'DROP HERE'}
+          {blockState[2] ? draggable(blockState[2]) : empty_draggable}
         </Droppable>
         <Droppable id={blockId+" 4"}>
-          {blockState[3] ? draggable(blockState[3]) : 'DROP HERE'}
+          {blockState[3] ? draggable(blockState[3]) : empty_draggable}
         </Droppable>
        </div>
      </div>
