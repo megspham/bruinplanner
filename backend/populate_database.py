@@ -87,7 +87,7 @@ def generateCalendar(courses):
     
     return calendar_dict
 
-def updateUserCalendar(courses, name, email):
+def updateUserCalendar(courses, id):
     """
     Attempts to add info about previously taken courses into the given user's table.
 
@@ -122,7 +122,7 @@ def updateUserCalendar(courses, name, email):
             print("Invalid Calendar string")
             return False
         # try to add user to user table, updating the value of the calendar if the user already exists
-        db.execute("INSERT IGNORE INTO users (name, email, calendar) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (name, email, valid_calendar_string))
+        db.execute("INSERT IGNORE INTO users (id, calendar) VALUES (%s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (id, valid_calendar_string))
     except Exception as e:
         traceback.print_exc()
         return False

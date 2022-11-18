@@ -113,22 +113,28 @@ example = '''{
                         {
                             "quarter": 
                             {
-                                "year": 2020,
-                                "quarter_name": "WI",
+                                "year": 2019,
+                                "name": "FA",
                                 "courses": 
                                 [
                                     {
                                         "course": 
                                         {
-                                            "course_name": "CS 32",
-                                            "course_department": "CS",
-                                            "course_description": "Data Structures and Algorithms",
-                                            "course_units": 4.0,
-                                            "course_requirement": "CS",
-                                            "course_pre_requisites": 
+                                            "name": "CS 31",
+                                            "department": "CS",
+                                            "description": "Introduction to C++",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "historical_offerings":
                                             [
                                                 {
-                                                    "pre_requisite_name": "CS 31"
+                                                    "historical_offering_term": "SP 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "WI 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2018"
                                                 }
                                             ]
                                         }
@@ -137,24 +143,74 @@ example = '''{
                             }
                         },
                         {
-                            "quarter2": 
+                            "quarter": 
                             {
                                 "year": 2020,
-                                "quarter_name": "SP",
+                                "name": "WI",
                                 "courses": 
                                 [
                                     {
                                         "course": 
                                         {
-                                            "course_name": "CS 33",
-                                            "course_department": "CS",
-                                            "course_description": "Intro to Computer Architecture",
-                                            "course_units": 4.0,
-                                            "course_requirement": "CS",
-                                            "course_pre_requisites": 
+                                            "name": "CS 32",
+                                            "department": "CS",
+                                            "description": "Data Structures and Algorithms",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
                                             [
                                                 {
                                                     "pre_requisite_name": "CS 31"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "WI 2018"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "quarter": 
+                            {
+                                "year": 2020,
+                                "name": "SP",
+                                "courses": 
+                                [
+                                    {
+                                        "course": 
+                                        {
+                                            "name": "CS 33",
+                                            "department": "CS",
+                                            "description": "Intro to Computer Architecture",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
+                                            [
+                                                {
+                                                    "pre_requisite_name": "CS 31"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "WI 2020"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2018"
                                                 }
                                             ]
                                         }
