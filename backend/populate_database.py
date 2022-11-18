@@ -113,7 +113,7 @@ def updateUserCalendar(courses, id):
         print("Attempting to convert courses list into a calendar format and then add to database")
         
         # convert dars_courses into a json object and then to a string
-        calendar = str(generateCalendar(courses))
+        calendar = str(generateCalendar(courses)).replace("'", '"')
 
         # validate the json string against the json schema
         valid_calendar_string = validate_json(calendar)
