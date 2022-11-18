@@ -47,7 +47,7 @@ def updateCalendar(id, calendar):
     """
     try:
         
-        calendar = str(calendar)
+        calendar = str(calendar).replace("'", '"')
 
         # first check if the calendar is valid json format (syntactically)
         if not json_format.validate_json(calendar):
