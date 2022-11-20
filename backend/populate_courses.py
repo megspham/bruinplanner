@@ -462,8 +462,8 @@ def populateCourses():
     req_cs_course_infos = parseCoursesByName(macros.REQUIRED_CS_COURSES)
     addClasses(req_cs_course_infos)
 
-    #ge_infos = parseGEs(macros.GE_CATEGORIES)
-    #addClasses(ge_infos)
+    ge_infos = parseGEs(macros.GE_CATEGORIES)
+    addClasses(ge_infos)
     
     recursivelyAddPrereqs()
 
