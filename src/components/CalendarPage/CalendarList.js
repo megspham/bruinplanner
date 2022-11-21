@@ -7,16 +7,21 @@ import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 
 
-const CalendarList = () => {
+function CalendarList() {
   const location = useLocation();
   const data = location.state;
 
   const parse_json = () => {
     let parsedInput = data;
 
-    let start_year = parsedInput.calendar.quarters[0].quarter.year;
-    if (parsedInput.calendar.quarters[0].quarter.name !== "FA") {
-      start_year = start_year - 1;
+    // TODO: get the start year from the user (add a form on the DARs page?)
+    let start_year = new Date().getFullYear();
+
+    if (parsedInput !== null) {
+      start_year = parsedInput.calendar.quarters[0].quarter.year;
+      if (parsedInput.calendar.quarters[0].quarter.name !== "FA") {
+        start_year = start_year - 1;
+      }
     }
     let default_calendar = [];
     let default_courses =["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
@@ -45,44 +50,45 @@ const CalendarList = () => {
       let default_year = [fall, winter, spring, summer];
       default_calendar.push(default_year);
     }
-    console.log(default_calendar);
+    
+    if (parsedInput !== null) {
+      const quarter_name_dict = {
+        "FA": "Fall",
+        "WI": "Winter",
+        "SP": "Spring",
+        "SU": "Summer"
+      };
+      const quarter_id_dict = {
+        "FA": 0,
+        "WI": 1,
+        "SP": 2,
+        "SU": 3
+      }
 
-    const quarter_name_dict = {
-      "FA" : "Fall",
-      "WI" : "Winter",
-      "SP" : "Spring",
-      "SU" : "Summer"
-    };
-    const quarter_id_dict = {
-      "FA" : 0,
-      "WI" : 1,
-      "SP" : 2,
-      "SU" : 3
+      let json_quarters = parsedInput.calendar.quarters;
+      for (let i = 0; i < json_quarters.length; i++) {
+        const q = json_quarters[i];
+        const year = q.quarter.year;
+        const quarter_name = quarter_name_dict[q.quarter.quarter];
+        const quarter_id = quarter_id_dict[q.quarter.quarter];
+        let courses = ["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
+        for (let j = 0; j < q.quarter.courses.length; j++) {
+          courses[j] = q.quarter.courses[j].course.name;
+        }
+        const quarter = {
+          'name': quarter_name,
+          'year': year,
+          'courses': courses
+        }
+        let row_num = year - start_year - 2;
+        if (quarter_name === "Fall") {
+          row_num += 1;
+        }
+        console.log(quarter, row_num, quarter_id);
+        default_calendar[row_num][quarter_id] = quarter;
+      }
+      console.log(default_calendar);
     }
-
-    let json_quarters = parsedInput.calendar.quarters;
-    for (let i = 0; i < json_quarters.length; i++) {
-      const q = json_quarters[i];
-      const year = q.quarter.year;
-      const quarter_name = quarter_name_dict[q.quarter.quarter];
-      const quarter_id = quarter_id_dict[q.quarter.quarter];
-      let courses = ["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
-      for (let j = 0; j < q.quarter.courses.length; j++) {
-        courses[j] = q.quarter.courses[j].course.name;
-      }
-      const quarter = {
-        'name' : quarter_name,
-        'year' : year,
-        'courses' : courses
-      }
-      let row_num = year - start_year - 2;
-      if (quarter_name === "Fall") {
-        row_num += 1;
-      }
-      console.log(quarter, row_num, quarter_id);
-      default_calendar[row_num][quarter_id] = quarter;
-    }
-    console.log(default_calendar);
     return default_calendar;
   }
 

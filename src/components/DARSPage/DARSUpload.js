@@ -1,15 +1,17 @@
 /**
- * @file Defines the page that new users are taken to upon login. It has a welcome
- * message for the user, and options (via buttons) to start with a blank template 
- * or import DARs.
+ * @file Instructions for uploading a DARS file for import. 
+ * Communicates with the backend to parse the uploaded DARS file, and 
+ * sends the result to the Calendar for display.
  * @author Andy Goh
  */
 
 import React from "react";
-import "./DARSUpload.css";
 import BackgroundSvg from "../images/DARSPageBackground.svg";
 import { useLocation } from "react-router-dom";
 import UploadFileForm from "./UploadFileForm";
+
+// TODO: Make styling better for DARS upload page
+import "./DARSUpload.css";
 
 const DARSUpload = () => {
     const location = useLocation();
