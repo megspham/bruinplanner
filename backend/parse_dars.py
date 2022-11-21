@@ -26,7 +26,7 @@ def parse_dars(dars_file, start_quarter, start_year):
 	Parameters
 	----------
 	dars_file : str
-		The path to the DARS report file
+		The DARS report file as a string
 	start_quarter : str
 		The start quarter of the DARS report
 	start_year : int
@@ -61,8 +61,11 @@ def parse_dars(dars_file, start_quarter, start_year):
 
 	quarter_to_number = {'WI': 0.1, 'SP': 0.2, 'SU': 0.3, 'FA': 0.4}
 
-	with open(dars_file, 'r', encoding="ISO-8859-1") as f:
-		soup = bs4.BeautifulSoup(f, 'html.parser')    
+	# turn the dars file into a BeautifulSoup object
+	soup = bs4.BeautifulSoup(dars_file.encode("ISO-8859-1"), 'html.parser')
+
+	# with open(dars_file, 'r', encoding="ISO-8859-1") as f:
+	# 	soup = bs4.BeautifulSoup(f, 'html.parser')    
 
 	requirements = soup.find_all('div', class_='reqTitle')
 	req_dividers = soup.find_all('div', class_='auditSubrequirements')
