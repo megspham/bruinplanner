@@ -86,6 +86,17 @@ schema = '''{
                                                             "type": "string"
                                                         }
                                                     }
+                                                },
+                                                "unsatisfied_pre_requisites":
+                                                {
+                                                    "type": "array",
+                                                    "items":
+                                                    {
+                                                        "name":
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    }
                                                 }
                                             },
                                             "required": ["name", "units", "requirement"]
