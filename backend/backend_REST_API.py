@@ -2,6 +2,8 @@ import db_utils as db
 import re
 import json
 import json_format
+import parse_dars
+import populate_database
 
 # POST /api/addUser
 def addUser(id):
@@ -25,7 +27,61 @@ def addUser(id):
         return False
 
 # POST /api/importDARS
-# POST /api/saveCalendar
+def importDARS(id, start_quarter, start_year, dars_file):
+    """
+    Import a DARS file to the user's calendar
+
+    Parameters
+    ----------
+    id: str
+        User id
+    start_year: int
+        Year that the user started at UCLA
+    start_quarter: str
+        Quarter that the user started at UCLA
+    dars_file: str
+        Path to the DARS file to be imported
+    
+    Returns
+    -------
+    success: bool
+        Whether the DARS file was successfully imported
+    """
+
+    try:
+        # first parse the DARS file
+        dars = parse_dars.parse_dars(dars_file, start_quarter, start_year)
+        
+        print(dars)
+
+        # then populate the database with the parsed DARS file
+        return populate_database.updateUserCalendar(dars, id)
+
+    except:
+        return False
+
+# POST /api/getCalendar
+def getCalendar(id):
+    """
+    Get the calendar of the user with the given id
+
+    Parameters
+    ----------
+    id: str
+        User id
+    
+    Returns
+    -------
+    calendar: json
+        Calendar of the user
+    """
+    try:
+        return db.execute("SELECT calendar FROM users WHERE id=%s;", (id,))[0][0]
+    except:
+        print("User does not exist in database")
+        return None
+
+# POST /api/updateCalendar
 def updateCalendar(id, calendar):
     """
     Update calendar of user
@@ -140,15 +196,6 @@ def checkCalendar(calendar):
 
     return msgs
 
-
-####### testing the updateCalendar api and checkCalendar api #######
-
-# print(addUser("000"))
-# print(updateCalendar("000", json_format.example))
-# print(checkCalendar(json_format.example))
-
-###################################################################
-
 # POST /api/getClasses
 def getClasses(type_list=None, department_list=None, min_units=None, max_units=None, classes_taken=None):
     """
@@ -221,10 +268,25 @@ def getClasses(type_list=None, department_list=None, min_units=None, max_units=N
     return all_courses
 
 
-####### testing the addUser api and getClasses api #######
+################################## testing the addUser api and getClasses api ##################################
 
 # print(addUser("000"))
 # getClasses(classes_taken=[("MATH", "0031A"), ("MATH", "0031B")])
 # print(getClasses(type_list=["lower-cs", "lower-math"], classes_taken=[("MATH", "0031A"), ("MATH", "0031B")]))
 
-##########################################################
+################################################################################################################
+
+################################## testing the getCalendar and importDars api ##################################
+
+# print(importDARS('000', 'Fall', 2019, '../tests/backend/dars_parsing/test_data/test1.html'))
+# print(getCalendar('000'))
+
+################################################################################################################
+
+############################# testing the updateCalendar api and checkCalendar api #############################
+
+# print(addUser("000"))
+# print(updateCalendar("000", json_format.example))
+# print(checkCalendar(json_format.example))
+
+################################################################################################################
