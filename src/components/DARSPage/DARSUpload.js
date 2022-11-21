@@ -12,7 +12,7 @@ import { CustomizedButton } from "../CustomizedButton";
 import { Link } from "react-router-dom";
 import Logout from "../Logout";
 import { useLocation } from "react-router-dom";
-import { UploadFileForm } from "./UploadFileForm";
+import UploadFileForm from "./UploadFileForm";
 
 const DARSUpload = () => {
     const location = useLocation();
@@ -27,7 +27,7 @@ const DARSUpload = () => {
             </ol>
             <div class="page-content">
                 <div class="dars-button-container">
-                    <UploadFileForm id={id}></UploadFileForm>
+                    <UploadFileForm googleId={id}></UploadFileForm>
                 </div>
             </div>
         </div>
