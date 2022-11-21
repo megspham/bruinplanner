@@ -1,5 +1,11 @@
+/**
+ * @file Gets the DARS html file, starting quarter, and starting year
+ * from users who wish to import in their DARS file into the calendar.
+ * @author Andy Goh
+ */
+
 import React from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function UploadFileForm({ googleId }) {
   const navigate = useNavigate();

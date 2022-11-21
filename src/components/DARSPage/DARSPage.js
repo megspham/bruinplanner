@@ -10,9 +10,7 @@ import "./DARSPage.css";
 import BackgroundSvg from "../images/DARSPageBackground.svg";
 import { CustomizedButton } from "../CustomizedButton";
 import { Link } from "react-router-dom";
-import Logout from "../Logout";
 import { useLocation } from "react-router-dom";
-import { UploadFileForm } from "./UploadFileForm";
 
 const DARSPage = () => {
   const location = useLocation();

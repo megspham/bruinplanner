@@ -4,7 +4,7 @@
  * button.
  * @author Sivanesh Shanmugam, Andy Goh
  */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import { refreshTokenSetup } from './utils/refreshToken';

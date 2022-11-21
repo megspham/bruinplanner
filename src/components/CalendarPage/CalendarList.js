@@ -2,22 +2,20 @@
  * @file Aggregates multiple CalendarBlocks to form the full calendar.
  * @author Megan Pham, Andy Goh
  */
-import React, { Component, startTransition } from "react";
+import React from "react";
 import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 
 
 const CalendarList = () => {
-  const currYear = new Date().getFullYear();
   const location = useLocation();
   const data = location.state;
-  console.log(data)
 
   const parse_json = () => {
     let parsedInput = data;
 
     let start_year = parsedInput.calendar.quarters[0].quarter.year;
-    if (parsedInput.calendar.quarters[0].quarter.name != "FA") {
+    if (parsedInput.calendar.quarters[0].quarter.name !== "FA") {
       start_year = start_year - 1;
     }
     let default_calendar = [];
@@ -78,7 +76,7 @@ const CalendarList = () => {
         'courses' : courses
       }
       let row_num = year - start_year - 2;
-      if (quarter_name == "Fall") {
+      if (quarter_name === "Fall") {
         row_num += 1;
       }
       console.log(quarter, row_num, quarter_id);

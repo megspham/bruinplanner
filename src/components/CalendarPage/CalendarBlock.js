@@ -5,7 +5,6 @@
 
 import React, {useState} from "react";
 import "./CalendarBlock.css";
-import {DndContext} from '@dnd-kit/core';
 import Draggable from '../Draggable';
 import {Droppable} from '../Droppable';
 
@@ -42,10 +41,6 @@ function CalendarBlock({ color, calendarDate, courses }) {
        </div>
      </div>
   );
-
-  function handleDragEnd({over}) {
-    setIsDropped(over ? over.id : null);
-  }
 }
 
 export default CalendarBlock;
