@@ -12,6 +12,7 @@ import { CustomizedButton } from "../CustomizedButton";
 import { Link } from "react-router-dom";
 import Logout from "../Logout";
 import { useLocation } from "react-router-dom";
+import { UploadFileForm } from "./UploadFileForm";
 
 const DARSPage = () => {
   const location = useLocation();
@@ -26,7 +27,9 @@ const DARSPage = () => {
           <Link to="/calendar">
             <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
           </Link>
-          <CustomizedButton class="button" text="Import DARS"></CustomizedButton>
+          <Link to="/dars/upload">
+            <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
+          </Link>
         </div>
       </div>
     </div>
