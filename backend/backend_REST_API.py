@@ -51,8 +51,6 @@ def importDARS(id, start_quarter, start_year, dars_file):
     try:
         # first parse the DARS file
         dars = parse_dars.parse_dars(dars_file, start_quarter, start_year)
-        
-        print(dars)
 
         # then populate the database with the parsed DARS file
         return populate_database.updateUserCalendar(dars, id)
@@ -73,7 +71,7 @@ def getCalendar(id):
     Returns
     -------
     calendar: json
-        Calendar of the user
+        Calendar of the user or None if the user does not exist
     """
     try:
         return db.execute("SELECT calendar FROM users WHERE id=%s;", (id,))[0][0]
@@ -95,11 +93,8 @@ def updateCalendar(id, calendar):
     
     Returns
     -------
-    success: bool
-        Whether the calendar was successfully updated
-    msgs: List[str]
-        List of error messages if these exist and the specific courses that caused them
-        If there is an exception or invalid format, success will be False and msgs will contain the error message
+    calendar: json
+        Calendar with error messages if these exist and the specific courses that caused them or None if the calendar is invalid or an error occurred
     """
     try:
         
@@ -107,17 +102,21 @@ def updateCalendar(id, calendar):
 
         # first check if the calendar is valid json format (syntactically)
         if not json_format.validate_json(calendar):
-            return (False, ["Invalid JSON format"])
+            return None
 
         # then check if the calendar is valid in terms of prerequisties (semantically) (most likely there will be a few prereqs that are not met, so still update the calendar)
-        msgs = checkCalendar(calendar)
+        calendar_with_possible_errors = str(checkCalendar(calendar)).replace("'", '"')
+
+        # check if the calendar is valid json format (syntactically)
+        if not json_format.validate_json(calendar_with_possible_errors):
+            return None
 
         # theoretically the user should already exist in the database so this is a bit redundant
         db.execute("INSERT INTO users (id, calendar) VALUES (%s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (id, calendar, calendar))
 
-        return (True, msgs)
+        return calendar_with_possible_errors
     except Exception as e:
-        return [False, [e]]
+        return None
 
 # POST /api/checkCalendar
 def checkCalendar(calendar):
@@ -131,17 +130,9 @@ def checkCalendar(calendar):
     
     Returns
     -------
-    msgs: List[str]
-        List of error messages if these exist and the specific courses that caused them
+    calendar: dict
+        Calendar with error messages if these exist and the specific courses that caused them
     """
-
-    # Sample message about a course that doesn't have its prerequisites met
-    # quarter,  year, course,           prereqs
-    # "WI,      2021, CS 111, ['CS 32', 'CS 33', 'CS 35L']"
-
-    msgs = []
-
-    addMsg = lambda course, quarter, year, prereqs: msgs.append("{} , {} , {} , {}".format(quarter, year, course, str(prereqs)))
 
     # add epsilon to each quarter to help sort
     quarter2Num = {'WI': 0.1, 'SP': 0.2, 'SU': 0.3, 'FA': 0.4}
@@ -190,11 +181,11 @@ def checkCalendar(calendar):
                     if prev_course['name'] in prereqs:
                         prereqs.remove(prev_course['name'])
             
-            # if there are still prereqs left, the calendar has some invalid data
-            if len(prereqs) > 0:
-                addMsg(curr_course['name'], curr_quarter['name'], curr_quarter['year'], prereqs)          
+            # if there are still prereqs left not met, add an error message to the course listing the prereqs that are not met
+            if len(prereqs) > 0:       
+                curr_course['unsatisfied_pre_requisites'] = [{'name': prereq_course} for prereq_course in prereqs]
 
-    return msgs
+    return calendar
 
 # POST /api/getClasses
 def getClasses(type_list=None, department_list=None, min_units=None, max_units=None, classes_taken=None):
@@ -287,6 +278,6 @@ def getClasses(type_list=None, department_list=None, min_units=None, max_units=N
 
 # print(addUser("000"))
 # print(updateCalendar("000", json_format.example))
-# print(checkCalendar(json_format.example))
+# print(json_format.validate_json(str(checkCalendar(json_format.example)).replace("'", '"')))
 
 ################################################################################################################

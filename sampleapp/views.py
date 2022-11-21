@@ -50,8 +50,24 @@ def getCalendar_view(request):
     calendar = backend_REST_API.getCalendar(id)
 
     if calendar is None:
-        response = JsonResponse('')
+        response = JsonResponse({})
     else:
         response = JsonResponse(json.loads(calendar))
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
+
+@csrf_exempt
+def updateCalendar_view(request):
+    request_body = json.loads(request.body)
+    id = request_body["id"]
+    calendar = request_body["calendar"]
+
+    calendar = backend_REST_API.updateCalendar(id, calendar)
+
+    if calendar is None:
+        response = JsonResponse({})
+    else:
+        response = JsonResponse(json.loads(calendar))
+
     response["Access-Control-Allow-Origin"] = "*"
     return response
