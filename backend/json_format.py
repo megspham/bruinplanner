@@ -214,6 +214,40 @@ example = '''{
                                                 }
                                             ]
                                         }
+                                    },
+                                    {
+                                        "course": 
+                                        {
+                                            "name": "CS 111",
+                                            "department": "CS",
+                                            "description": "Operating Systems Principles",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
+                                            [
+                                                {
+                                                    "pre_requisite_name": "CS 32"
+                                                },
+                                                {
+                                                    "pre_requisite_name": "CS 33"
+                                                },
+                                                {
+                                                    "pre_requisite_name": "CS 35L"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "WI 2020"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2018"
+                                                }
+                                            ]
+                                        }
                                     }
                                 ]
                             }
