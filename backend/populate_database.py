@@ -74,11 +74,11 @@ def generateCalendar(courses):
                 # calendar_dict["calendar"]["quarters"][-1][quarter + str(year)]["courses"].append({"course" + str(i + 1): {}})
                 
                 course_dict = {}
-                course_dict["name"] = courses_list[i]
-                course_dict["requirement"] = requirements_list[i]
-                course_dict["department"] = departments_list[i]
-                course_dict["description"] = descriptions_list[i]
-                course_dict["units"] = units_list[i]
+                course_dict["name"] = str(courses_list[i]).replace("\"", "")
+                course_dict["requirement"] = str(requirements_list[i]).replace("\"", "")
+                course_dict["department"] = str(departments_list[i]).replace("\"", "")
+                course_dict["description"] = str(descriptions_list[i]).replace("\"", "")
+                course_dict["units"] = str(units_list[i]).replace("\"", "")
 
                 quarter_dict["courses"].append({"course": course_dict})
 
