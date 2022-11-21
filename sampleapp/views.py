@@ -20,4 +20,6 @@ def getClasses_view(request):
     
     classes = backend_REST_API.getClasses(type_list=type_list, department_list=department_list, min_units=min_units, max_units=max_units, classes_taken=classes_taken)
     print(classes)
-    return JsonResponse({"classes": classes})
+    response = JsonResponse({"classes": classes})
+    response["Access-Control-Allow-Origin"] = "*"
+    return response

@@ -111,6 +111,28 @@ def getCourseURL(category, number):
     URL = "https://api.ucla.edu/sis/courses/v1?subjectAreaCode={}&courseCatalogNumber={}".format(category, number)
     return URL
 
+def getHistoricalOfferingsURL(offeredTermCode, category, number):
+    """
+    Generates URL to query classes API to determine whether a course with given category and number
+        was offered in a certain term.
+
+    Parameters
+    ----------
+    offeredTermCode: str
+        term code for which to query
+    category:
+        class category
+    number:
+        class number
+
+    Returns
+    -------
+    url: str
+        Generated URL
+    """
+    URL = "https://api.ucla.edu/sis/classes/{}/v1?subjectAreaCode={}&courseCatalogNumber={}".format(offeredTermCode, category, number)
+    return URL
+
 def encodeNumber(number):
     """
     Converts course API number to course human readable number (e.g "0152A M" -> "M152A")
@@ -312,8 +334,17 @@ def parseGEs(categories):
     ge_course_infos = []
     for ge_category in categories:
         category, subcategory = ge_category.split("-")[1:]
+        ge_course_collection = []
         response = makeAPIRequest(getGEClassesURL(category, subcategory))
-        ge_course_collection = response["geFoundationCategoryCourses"][0]["courseCollection"]
+        while True:
+            ge_course_collection += response["geFoundationCategoryCourses"][0]["courseCollection"]
+            nextPage = False
+            for link in response["links"]:
+                if link["rel"] == "nextPage":
+                    response = makeAPIRequest(link["href"])
+                    nextPage = True
+            if not nextPage:    
+                break
         
         ge_courses = []
         for course in ge_course_collection:
@@ -417,14 +448,26 @@ def recursivelyAddPrereqs():
         classesAdded = newClassesAdded
     return allClassesAdded
 
+def addHistoricalOfferings():
+    classes = getEntries()
+    for class_ in classes:
+        historical_offerings = []
+        for term in macros.PAST_TERMS:
+            r = makeAPIRequest(getHistoricalOfferingsURL(term, class_[2], class_[3]))
+            if r is not None:
+                historical_offerings.append(term)
+        db_utils.execute("UPDATE courses SET historical_offerings=%s WHERE department=%s AND number=%s", (",".join(historical_offerings), class_[2], class_[3]))
+
 def populateCourses():
     req_cs_course_infos = parseCoursesByName(macros.REQUIRED_CS_COURSES)
     addClasses(req_cs_course_infos)
 
-    #ge_infos = parseGEs(macros.GE_CATEGORIES)
-    #addClasses(ge_infos)
+    ge_infos = parseGEs(macros.GE_CATEGORIES)
+    addClasses(ge_infos)
     
     recursivelyAddPrereqs()
+
+    addHistoricalOfferings()
 
 if __name__ == "__main__":
     populateCourses()
