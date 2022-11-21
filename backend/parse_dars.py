@@ -62,7 +62,7 @@ def parse_dars(dars_file, start_quarter, start_year):
 	quarter_to_number = {'WI': 0.1, 'SP': 0.2, 'SU': 0.3, 'FA': 0.4}
 
 	# turn the dars file into a BeautifulSoup object
-	soup = bs4.BeautifulSoup(dars_file.encode("ISO-8859-1"), 'html.parser')
+	soup = bs4.BeautifulSoup(dars_file, 'html.parser')
 
 	# with open(dars_file, 'r', encoding="ISO-8859-1") as f:
 	# 	soup = bs4.BeautifulSoup(f, 'html.parser')    
