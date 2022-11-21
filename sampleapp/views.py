@@ -38,7 +38,7 @@ def importDars_view(request):
     # also return the calendar
     calendar = backend_REST_API.getCalendar(id)
 
-    response = JsonResponse(calendar)
+    response = JsonResponse(json.loads(calendar))
     response["Access-Control-Allow-Origin"] = "*"
     return response
 
@@ -52,6 +52,6 @@ def getCalendar_view(request):
     if calendar is None:
         response = JsonResponse('')
     else:
-        response = JsonResponse(str(calendar))
+        response = JsonResponse(json.loads(calendar))
     response["Access-Control-Allow-Origin"] = "*"
     return response
