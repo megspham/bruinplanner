@@ -23,3 +23,18 @@ def getClasses_view(request):
     response = JsonResponse({"classes": classes})
     response["Access-Control-Allow-Origin"] = "*"
     return response
+
+# id, start_quarter, start_year, dars_file
+@csrf_exempt
+def importDars_view(request):
+    request_body = json.loads(request.body)
+    id = request_body["id"]
+    start = request_body["start_quarter"]
+    year = int(request_body["start_year"])
+    file = request_body["dars_file"]
+
+    success = backend_REST_API.importDARS(id, start, year, file)
+
+    response = JsonResponse({"success": str(success)})
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
