@@ -27,7 +27,7 @@ const DARSPage = () => {
           <Link to="/calendar">
             <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
           </Link>
-          <Link to="/dars/upload">
+          <Link to="/dars/upload" state={{ id: location.state.googleId }}>
             <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
           </Link>
         </div>

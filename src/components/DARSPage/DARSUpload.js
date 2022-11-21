@@ -16,6 +16,7 @@ import { UploadFileForm } from "./UploadFileForm";
 
 const DARSUpload = () => {
     const location = useLocation();
+    const id = location.state.id;
     return (
         <div className="dars-upload-container">
             <img src={BackgroundSvg} alt="Your SVG" class="dars-bg" />
@@ -26,7 +27,7 @@ const DARSUpload = () => {
             </ol>
             <div class="page-content">
                 <div class="dars-button-container">
-                    <UploadFileForm></UploadFileForm>
+                    <UploadFileForm id={id}></UploadFileForm>
                 </div>
             </div>
         </div>
