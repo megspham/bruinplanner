@@ -1,6 +1,5 @@
 import db_utils as db
 from json_format import validate_json
-import traceback
 
 def generateCalendar(courses):
     """
@@ -122,9 +121,9 @@ def updateUserCalendar(courses, id):
             print("Invalid Calendar string")
             return False
         # try to add user to user table, updating the value of the calendar if the user already exists
-        db.execute("INSERT IGNORE INTO users (id, calendar) VALUES (%s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (id, valid_calendar_string))
+        db.execute("INSERT IGNORE INTO users (id, calendar) VALUES (%s, %s) ON DUPLICATE KEY UPDATE calendar=%s;", (id, calendar, calendar))
     except Exception as e:
-        traceback.print_exc()
+        print("Error: " + str(e))
         return False
     
     return True

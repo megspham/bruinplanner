@@ -44,8 +44,22 @@ def parse_dars(dars_file, start_quarter, start_year):
 			- Year
 			- Units
 	"""
+
+	# check if the start quarter is valid
+	if start_quarter not in ['Winter', 'Spring', 'Summer', 'Fall']:
+		raise ValueError('Invalid start quarter')
 	
-	quarter_to_number = {'WI': 1, 'SP': 2, 'SU': 3, 'FA': 4}
+	# check if the start year is valid
+	if start_year < 0:
+		raise ValueError('Invalid start year')
+
+	# convert the start year to a 2-digit string then to an int
+	start_year = int(str(start_year)[-2:])
+
+	# conert the start quarter to a 2-digit string
+	start_quarter = start_quarter[0:2].upper()
+
+	quarter_to_number = {'WI': 0.1, 'SP': 0.2, 'SU': 0.3, 'FA': 0.4}
 
 	with open(dars_file, 'r', encoding="ISO-8859-1") as f:
 		soup = bs4.BeautifulSoup(f, 'html.parser')    
@@ -166,7 +180,7 @@ def parse_dars(dars_file, start_quarter, start_year):
 						quarter, year = term[:2], int(term[2:])
 
 						# get numeric representation of quarter
-						term_num = quarter_to_number[quarter] + (year - start_year) * 4
+						term_num = quarter_to_number[quarter] + year
 
 						if quarter != 'FA' and quarter != 'WI' and quarter != 'SP' and quarter != 'SU':
 							continue
@@ -185,6 +199,7 @@ def parse_dars(dars_file, start_quarter, start_year):
 	courses = pd.DataFrame(data, columns = ['Requirement', 'Course', 'Department', 'Description', 'Quarter', 'Year', 'Units', 'Term_Num'])
 
 	courses = courses[courses['Units'] > 0.0]
+	print(start_year)
 	courses = courses[courses['Year'] >= start_year]
 	courses = courses[courses['Term_Num'] >= quarter_to_number[start_quarter]]
 
