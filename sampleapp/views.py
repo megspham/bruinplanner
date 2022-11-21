@@ -41,3 +41,14 @@ def importDars_view(request):
     response = JsonResponse(calendar)
     response["Access-Control-Allow-Origin"] = "*"
     return response
+
+@csrf_exempt
+def getCalendar_view(request):
+    request_body = json.loads(request.body)
+    id = request_body["id"]
+
+    calendar = backend_REST_API.getCalendar(id)
+
+    response = JsonResponse(calendar)
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
