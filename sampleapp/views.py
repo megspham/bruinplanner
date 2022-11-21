@@ -49,6 +49,9 @@ def getCalendar_view(request):
 
     calendar = backend_REST_API.getCalendar(id)
 
-    response = JsonResponse(calendar)
+    if calendar is None:
+        response = JsonResponse('')
+    else:
+        response = JsonResponse(str(calendar))
     response["Access-Control-Allow-Origin"] = "*"
     return response
