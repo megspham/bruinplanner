@@ -10,6 +10,17 @@ import backend_REST_API
 
 # Create your views here.
 @csrf_exempt
+def addUser_view(request):
+    request_body = json.loads(request.body)
+    id = request_body["id"]
+
+    success = backend_REST_API.addUser(id)
+    response = JsonResponse({"success": success})
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
+@csrf_exempt
 def getClasses_view(request):
     request_body = json.loads(request.body)
     type_list = request_body["type_list"]
