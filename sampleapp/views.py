@@ -35,6 +35,9 @@ def importDars_view(request):
 
     success = backend_REST_API.importDARS(id, start, year, file)
 
-    response = JsonResponse({"success": str(success)})
+    # also return the calendar
+    calendar = backend_REST_API.getCalendar(id)
+
+    response = JsonResponse(calendar)
     response["Access-Control-Allow-Origin"] = "*"
     return response
