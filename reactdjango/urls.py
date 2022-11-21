@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
 
-from sampleapp.views import getClasses_view, importDars_view, getCalendar_view
+from sampleapp.views import getClasses_view, importDars_view, getCalendar_view, updateCalendar_view
 
 urlpatterns = [
   path('admin/', admin.site.urls),
@@ -25,5 +25,6 @@ urlpatterns = [
   path('api/getClasses', getClasses_view),
   path('api/importDars', importDars_view),
   path('api/getCalendar', getCalendar_view),
+  path('api/updateCalendar', updateCalendar_view),
   re_path('.*', TemplateView.as_view(template_name='index.html')),
 ]
