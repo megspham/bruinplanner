@@ -19,9 +19,9 @@ function CalendarList() {
 
     if (parsedInput !== null) {
       start_year = parsedInput.calendar.quarters[0].quarter.year;
-      if (parsedInput.calendar.quarters[0].quarter.name !== "FA") {
-        start_year = start_year - 1;
-      }
+      // if (parsedInput.calendar.quarters[0].quarter.name !== "FA") {
+      //   start_year = start_year - 1;
+      // }
     }
     let default_calendar = [];
     let default_courses =["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
@@ -80,14 +80,15 @@ function CalendarList() {
           'year': year,
           'courses': courses
         }
-        let row_num = year - start_year - 2;
+        let row_num = year - start_year - 1;
         if (quarter_name === "Fall") {
           row_num += 1;
         }
-        console.log(quarter, row_num, quarter_id);
+        if (row_num < 0) {
+          continue;
+        }
         default_calendar[row_num][quarter_id] = quarter;
       }
-      console.log(default_calendar);
     }
     return default_calendar;
   }
