@@ -169,7 +169,7 @@ def decodeNumber(number):
     number : str
         human readable number
     """
-    number = number.strip("0")
+    number = number.lstrip("0")
     if number[-1] == "M":
         number = "M" + number.split(" ")[0]
     return number
