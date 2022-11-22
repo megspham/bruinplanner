@@ -11,7 +11,7 @@ export default function Calendar() {
       <div className="BruinPlanner">
         <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
           <CalendarList/>        
-          <Sidebar />
+          {/* <Sidebar /> */}
         </DndContext>
       </div>
   );
