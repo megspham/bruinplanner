@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 
 const DARSPage = () => {
   const location = useLocation();
+
   return (
     <div className="dars-page-container">
       <img src={BackgroundSvg} alt="Your SVG" class="dars-bg" />
@@ -22,7 +23,7 @@ const DARSPage = () => {
           Welcome, {location.state.name}!
         </h1>
         <div class="dars-button-container">
-          <Link to="/calendar">
+          <Link to="/calendar" state={{ data: null, id: location.state.googleId }} >
             <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
           </Link>
           <Link to="/dars/upload" state={{ id: location.state.googleId }}>

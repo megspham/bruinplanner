@@ -38,7 +38,7 @@ function UploadFileForm({ googleId }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
       }).then(res => res.json())
-        .then(json => navigate('/calendar', { state : json }))
+        .then(json => navigate('/calendar', { data : json , id : state.id }))
         .catch(err => console.log(err));
     }
     event.preventDefault();

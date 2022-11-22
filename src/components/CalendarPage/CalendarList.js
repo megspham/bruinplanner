@@ -6,51 +6,49 @@ import React from "react";
 import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 
-
 function CalendarList() {
   const location = useLocation();
-  const data = location.state;
+  const data = location.state.data;
+  const id = location.state.id;
 
   const parse_json = () => {
     let parsedInput = data;
+    console.log(data)
 
     // TODO: get the start year from the user (add a form on the DARs page?)
     let start_year = new Date().getFullYear();
 
     if (parsedInput !== null) {
       start_year = parsedInput.calendar.quarters[0].quarter.year;
-      // if (parsedInput.calendar.quarters[0].quarter.name !== "FA") {
-      //   start_year = start_year - 1;
-      // }
     }
     let default_calendar = [];
-    let default_courses =["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
+    let default_courses = ["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
     for (let row_idx = 0; row_idx < 4; row_idx++) {
       let fall = {
-        'name' : "Fall",
-        'year' : start_year + row_idx,
-        'courses' : default_courses
+        'name': "Fall",
+        'year': start_year + row_idx,
+        'courses': default_courses
       }
       let winter = {
-        'name' : "Winter",
-        'year' : start_year + 1 + row_idx,
-        'courses' : default_courses
+        'name': "Winter",
+        'year': start_year + 1 + row_idx,
+        'courses': default_courses
       }
       let spring = {
-        'name' : "Spring",
-        'year' : start_year + 1 + row_idx,
-        'courses' : default_courses
+        'name': "Spring",
+        'year': start_year + 1 + row_idx,
+        'courses': default_courses
       }
       let summer = {
-        'name' : "Summer",
-        'year' : start_year + 1 + row_idx,
-        'courses' : default_courses
+        'name': "Summer",
+        'year': start_year + 1 + row_idx,
+        'courses': default_courses
       }
 
       let default_year = [fall, winter, spring, summer];
       default_calendar.push(default_year);
     }
-    
+
     if (parsedInput !== null) {
       const quarter_name_dict = {
         "FA": "Fall",
@@ -89,6 +87,32 @@ function CalendarList() {
         }
         default_calendar[row_num][quarter_id] = quarter;
       }
+      // 0 1 1 1
+      // 1 2 2 2
+    } else {
+      let dc_json = require('./default_calendar.json');
+      let year_offset = [
+        0, 1, 1, 1,
+        1, 2, 2, 2,
+        2, 3, 3, 3,
+        3, 4, 4, 4
+      ]
+      for (let i = 0; i < dc_json.calendar.quarters.length; i++) {
+        dc_json.calendar.quarters[i].quarter.year = start_year + year_offset[i]
+      }
+      console.log(dc_json)
+      const requestBody = {
+        "id": id,
+        "calendar": dc_json
+      }
+      fetch("http://127.0.0.1:8000/api/updateCalendar", {
+        crossDomain: true,
+        mode: 'cors',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      }).then(res => console.log(res))
+        .catch(err => console.log(err));
     }
     return default_calendar;
   }
@@ -107,8 +131,8 @@ function CalendarList() {
     let rows = []
     for (const quarter of row) {
       rows.push(<CalendarBlock color={color_dict[row_idx]}
-        calendarDate = {quarter.name + " " + quarter.year}
-        courses = {quarter.courses}>
+        calendarDate={quarter.name + " " + quarter.year}
+        courses={quarter.courses}>
       </CalendarBlock>)
     }
     return <div className="CalendarRow">{rows}</div>;
