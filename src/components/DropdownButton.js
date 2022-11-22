@@ -1,23 +1,19 @@
+/**
+ * @file Dropdown button for degree requirements that are variable, such as 
+ * electives and GEs
+ * @author Andy Goh
+ */
 import React, { useState } from 'react';
 import Select from 'react-select';
-
 import './DropdownButton.css';
 
-const example = 
-`
-{
-    "classes": [
-        ["req-cs", "COM SCI 118", "COM SCI", "0118", "14F", 4, "COM SCI0111", null],
-        ["req-cs", "COM SCI 131", "COM SCI", "0131", "14F", 4, "COM SCI0033,COM SCI0035L", null],
-        ["req-cs", "COM SCI 151B", "COM SCI", "0151B", "97W", 4, "COM SCI0051A", null],
-        ["req-cs", "COM SCI M152A", "COM SCI", "0152A M", "18W", 2, "COM SCI0051A M", null],
-        ["req-cs", "COM SCI 18", "COM SCI", "0180", "16F", 4, "COM SCI0032,MATH   0061", null],
-        ["req-cs", "COM SCI 181", "COM SCI", "0181", "14F", 4, "COM SCI0180", null]
-    ]
-}
-`
-
-export function DropdownButton({text, options}) {
+/**
+ * 
+ * @param {str} text Display text for button
+ * @param {Array[str]} type_list Requirement(s) that the returned classes should satisfy
+ * @returns Dropdown button
+ */
+export function DropdownButton({ text, type_list }) {
     const [selectedOption, setSelectedOption] = useState(null);
 
     const style = {
@@ -28,18 +24,32 @@ export function DropdownButton({text, options}) {
         boxShadow: '0px 0px 13.1034px #8BB8E8',
         border: 'none',
         fontFamily: 'Montserrat',
-        fontStyle: 'normal',        
+        fontStyle: 'normal',
     }
 
-    const example_json = JSON.parse(example);
-
-    const create_options = (json) => {
-        let classes = json.classes;
-        let options = [];
-        for (const c of classes) {
-            var dict = {value: c[1], label : c[1]};
-            options.push(dict);
+    const create_options = (type_list) => {
+        let options = []
+        const requestBody = {
+            "type_list": type_list,
+            "department_list": ['COM SCI'],
+            "min_units": 0,
+            "max_units": 99,
+            "classes_taken": null
         }
+        fetch("http://127.0.0.1:8000/api/getClasses", {
+            crossDomain: true,
+            mode: 'cors',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        }).then(res => res.json())
+            .then(json => {
+                let classes = json.classes;
+                for (const c of classes) {
+                    var dict = { value: c[1], label: c[1] };
+                    options.push(dict);
+                }
+            }).catch(err => console.log(err))
         return options
     }
 
@@ -49,7 +59,7 @@ export function DropdownButton({text, options}) {
             <Select
                 defaultValue={selectedOption}
                 onChange={setSelectedOption}
-                options={create_options(example_json)}
+                options={create_options(type_list)}
                 placeholder="Choose a class..."
                 isSearchable
                 className='dropdown'
