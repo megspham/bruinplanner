@@ -3,7 +3,7 @@ import "./Sidebar.css";
 import {DndContext} from '@dnd-kit/core';
 import Draggable from '../Draggable';
 import {Droppable} from '../Droppable';
-import {CustomizedButton} from "../CustomizedButton"
+import {SidebarButton} from "../SidebarButton"
 
 function Sidebar() {
   const [isDropped, setIsDropped] = useState(null); 
@@ -15,17 +15,14 @@ function Sidebar() {
 
   return (
     <div className="Sidebar">
-      <div className="BackgroundBlock">
-          {/*!isDropped ? draggable : null*/}
-            <div className="ClassList">
-                {Array(20)
-                .fill(null)
-                .map((_, index) => (
-                <Draggable key={index+1} id={index+1}>
-                    <CustomizedButton text={"CS "+(index+1)} />                    
-                </Draggable>
-                ))}
-            </div>
+        <div className="ClassList">
+            {Array(50)
+            .fill(null)
+            .map((_, index) => (
+            <Draggable key={index+1} id={index+1}>
+                <SidebarButton text={"CS "+(index+1)} />                    
+            </Draggable>
+            ))}
        </div>
      </div>
   );

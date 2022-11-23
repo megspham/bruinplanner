@@ -6,10 +6,11 @@ import React from "react";
 import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 
-function CalendarList() {
+function CalendarList({classMappings}) {
   const location = useLocation();
   const data = location.state.data;
   const id = location.state.id;
+  const calendarState = classMappings;
 
   const parse_json = () => {
     let parsedInput = data;
@@ -127,8 +128,15 @@ function CalendarList() {
       2: "#FFE9AD",
       3: "#005587"
     };
-
+    let block_ids = Object.keys(calendarState).slice(0 + 4 * row_idx, 4 + 4 * row_idx);
     let rows = []
+    for (let i = 0; i < 4; i++) {
+      rows.push(<CalendarBlock color={color_dict[row_idx]}
+        blockId={block_ids[i]}
+        calendarDate={row[i].name + " " + row[i].year}
+        courses={row[i].courses}>
+      </CalendarBlock>)
+    }
     for (const quarter of row) {
       rows.push(<CalendarBlock color={color_dict[row_idx]}
         calendarDate={quarter.name + " " + quarter.year}
