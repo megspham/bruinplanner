@@ -156,7 +156,7 @@ function CalendarList({ classMappings }) {
             Please sign in again
           </h1>
           <div class="dars-button-container">
-            <Login></Login>
+            <Login destination="/dars/upload"></Login>
           </div>
         </div>
       }

@@ -22,8 +22,9 @@ const clientId =
  * 
  * @returns Google login button
  */
-function Login() {
+function Login({destination}) {
     const navigate = useNavigate();
+    const dest_url = destination ? destination : null;
 
     /**
      * Behavior upon successful Google sign-in. The token is refreshed, and the user is
@@ -34,25 +35,29 @@ function Login() {
     const onSuccess = (res) => {
         console.log('Login Success: currentUser:', res.profileObj);
 
-        const requestBody = {
-            "id": res.profileObj.googleId
+        if (dest_url) {
+            navigate("/dars/upload", { state: { id: res.profileObj.googleId } })
+        } else {
+            const requestBody = {
+                "id": res.profileObj.googleId
+            }
+            refreshTokenSetup(res);
+            fetch("http://127.0.0.1:8000/api/getCalendar", {
+                crossDomain: true,
+                mode: 'cors',
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            }).then(res => res.json())
+                .then(data => {
+                    if (Object.keys(data).length === 0) {
+                        navigate("/dars", { state: res.profileObj });
+                    } else {
+                        navigate("/calendar", { state: { data: data, id: res.profileObj.googleId } });
+                    }
+                })
+                .catch(err => console.log(err));
         }
-        refreshTokenSetup(res);
-        fetch("http://127.0.0.1:8000/api/getCalendar", {
-            crossDomain: true,
-            mode: 'cors',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody)
-        }).then(res => res.json())
-            .then(data => {
-                if (Object.keys(data).length === 0) {
-                    navigate("/dars", { state: res.profileObj });
-                } else {
-                    navigate("/calendar", { state: { data: data , id: res.profileObj.googleId } });
-                }
-            })
-            .catch(err => console.log(err));
     };
 
     const onFailure = (res) => {
