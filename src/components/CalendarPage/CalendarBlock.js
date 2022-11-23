@@ -5,7 +5,6 @@
 
 import React, {useState} from "react";
 import "./CalendarBlock.css";
-import {DndContext} from '@dnd-kit/core';
 import Draggable from '../Draggable';
 import {Droppable} from '../Droppable';
 import {SidebarButton} from "../SidebarButton"
@@ -14,40 +13,38 @@ import {SidebarButton} from "../SidebarButton"
  * @param {string} calendarDate The name of the quarter (e.g., Fall 2022) 
  * @returns CalendarBlock HTML div object
  */
-function CalendarBlock({ color, calendarDate, blockId, blockState }) {
+
+function CalendarBlock({ color, calendarDate, blockId, courses, blockState }) {
   const [isDropped, setIsDropped] = useState(null); 
   const draggable = (index) => (
     <Draggable key={index} id={index}>
       <SidebarButton text={"CS "+(index)} />                    
     </Draggable>
   );
+
   const empty_draggable = (
     <SidebarButton text={"Drop Here"} />
   );
-
+  
   return (
     <div className="BackgroundBlock" style={{backgroundColor: color}}>
       <div className="CalendarTitle">{calendarDate}</div>
       <div className="DisplayBlock">
         <Droppable id={blockId+" 1"}>
-          {blockState[0] ? draggable(blockState[0]) : empty_draggable}
+          {courses[0] ? draggable(courses[0]) : empty_draggable}
         </Droppable>
         <Droppable id={blockId+" 2"}>
-          {blockState[1] ? draggable(blockState[1]) : empty_draggable}
+          {courses[1] ? draggable(courses[1]) : empty_draggable}
         </Droppable>
         <Droppable id={blockId+" 3"}>
-          {blockState[2] ? draggable(blockState[2]) : empty_draggable}
+          {courses[2] ? draggable(courses[2]) : empty_draggable}
         </Droppable>
         <Droppable id={blockId+" 4"}>
-          {blockState[3] ? draggable(blockState[3]) : empty_draggable}
+          {courses[3] ? draggable(courses[3]) : empty_draggable}
         </Droppable>
        </div>
      </div>
   );
-
-  function handleDragEnd({over}) {
-    setIsDropped(over ? over.id : null);
-  }
 }
 
 export default CalendarBlock;

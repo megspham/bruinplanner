@@ -1,0 +1,114 @@
+{
+    "calendar": {
+        "quarters": [
+            {
+                "quarter": {
+                    "year": 19,
+                    "quarter": "FA",
+                    "courses": []
+                }
+            },
+            {
+                "quarter": {
+                    "year": 20,
+                    "quarter": "WI",
+                    "courses": []
+                }
+            },{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SP",
+                    "courses": []
+                }
+            }
+            ,{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SU",
+                    "courses": []
+                }
+            },
+            {
+                "quarter": {
+                    "year": 19,
+                    "quarter": "FA",
+                    "courses": []
+                }
+            },
+            {
+                "quarter": {
+                    "year": 20,
+                    "quarter": "WI",
+                    "courses": []
+                }
+            },{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SP",
+                    "courses": []
+                }
+            }
+            ,{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SU",
+                    "courses": []
+                }
+            },
+            {
+                "quarter": {
+                    "year": 19,
+                    "quarter": "FA",
+                    "courses": []
+                }
+            },
+            {
+                "quarter": {
+                    "year": 20,
+                    "quarter": "WI",
+                    "courses": []
+                }
+            },{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SP",
+                    "courses": []
+                }
+            }
+            ,{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SU",
+                    "courses": []
+                }
+            },
+            {
+                "quarter": {
+                    "year": 19,
+                    "quarter": "FA",
+                    "courses": []
+                }
+            },
+            {
+                "quarter": {
+                    "year": 20,
+                    "quarter": "WI",
+                    "courses": []
+                }
+            },{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SP",
+                    "courses": []
+                }
+            }
+            ,{
+                "quarter": {
+                    "year": 20,
+                    "quarter": "SU",
+                    "courses": []
+                }
+            }
+        ]
+    }
+}
