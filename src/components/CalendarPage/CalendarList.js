@@ -137,12 +137,6 @@ function CalendarList({classMappings}) {
         courses={row[i].courses}>
       </CalendarBlock>)
     }
-    for (const quarter of row) {
-      rows.push(<CalendarBlock color={color_dict[row_idx]}
-        calendarDate={quarter.name + " " + quarter.year}
-        courses={quarter.courses}>
-      </CalendarBlock>)
-    }
     return <div className="CalendarRow">{rows}</div>;
   }
 
