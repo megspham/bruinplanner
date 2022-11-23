@@ -30,6 +30,10 @@ def makeAPIRequest(URL):
         r_j = None
     return r_j
 
+def getClassesURL(department):
+    URL = "https://api.ucla.edu/sis/courses/v1?subjectAreaCode={}&PageSize={}".format(department, 100)
+    return URL
+
 def getGEClassesURL(category, subcategory):
     """
     Generates URL to query courses API to get list of GEs.
@@ -292,6 +296,9 @@ def parseCourses(courses):
         start_term = course[2] if len(course)>=3 else None
         type_ = course[3] if len(course)>=4 else None
         
+        if department=="COM SCI" and "0186" in number: #These classes usually result in gateway error, so skipping them for now
+            continue
+
         courseInfo = parseCourse(department, number, start_term=start_term, type_=type_)
         courseInfos.append(courseInfo)
     return courseInfos
@@ -316,6 +323,51 @@ def parseCoursesByName(course_names_types):
         department, number = courseNameToDepartmentNumber(course_name)
         courses.append((department, number, None, course_type))
     return parseCourses(courses)
+
+def parseElectives():
+    response = makeAPIRequest(getClassesURL("COM SCI"))
+    course_collection = []
+    while True:
+        course_collection += response["courses"][0]["courseCatalogNumberCollection"]
+        nextPage = False
+        for link in response["links"]:
+            if link["rel"] == "nextPage":
+                response = makeAPIRequest(link["href"] + "&subjectAreaCode=COM%20SCI")
+                nextPage = True
+        if not nextPage:
+            break
+
+    print(course_collection)
+
+    courses = []
+    for course in course_collection:
+        courseNumber = course["courseCatalogNumber"]
+
+        courseNumberStripped = ""
+        for c in courseNumber:
+            if c.isdigit():
+                courseNumberStripped += c
+        courseNumberStripped = int(courseNumberStripped)
+
+        if not (courseNumberStripped >= 111 and courseNumberStripped <= 188):
+            continue
+
+        # In the following block, we are ensuring that each course is repeated only once
+        # Basically we want to avoid duplicate start terms
+        # Start terms increase along with the course entries, so we always overwrite the previous entry
+        repeatIndex = -1
+        for i in range(len(courses)):
+            course_sub = courses[i]
+            if course_sub[1] == course["courseCatalogNumber"]:
+                repeatIndex = i
+                break
+        if repeatIndex != -1:
+            courses.remove(courses[repeatIndex])
+        courses.append(("COM SCI", course["courseCatalogNumber"], course["courseStartTermCode"], "cs-elective"))
+
+    print(courses)
+    courseInfos = parseCourses(courses)
+    return courseInfos
 
 def parseGEs(categories):
     """
@@ -343,7 +395,7 @@ def parseGEs(categories):
                 if link["rel"] == "nextPage":
                     response = makeAPIRequest(link["href"])
                     nextPage = True
-            if not nextPage:    
+            if not nextPage:
                 break
         
         ge_courses = []
@@ -464,9 +516,11 @@ def populateCourses():
 
     ge_infos = parseGEs(macros.GE_CATEGORIES)
     addClasses(ge_infos)
-    
-    recursivelyAddPrereqs()
 
+    elective_course_infos = parseElectives()
+    addClasses(elective_course_infos)
+
+    recursivelyAddPrereqs()
     addHistoricalOfferings()
 
 if __name__ == "__main__":
