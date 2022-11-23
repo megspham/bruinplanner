@@ -23,7 +23,7 @@ function CalendarList({classMappings}) {
       start_year = parsedInput.calendar.quarters[0].quarter.year;
     }
     let default_calendar = [];
-    let default_courses = ["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
+    let default_courses = [];
     for (let row_idx = 0; row_idx < 4; row_idx++) {
       let fall = {
         'name': "Fall",
@@ -70,7 +70,7 @@ function CalendarList({classMappings}) {
         const year = q.quarter.year;
         const quarter_name = quarter_name_dict[q.quarter.quarter];
         const quarter_id = quarter_id_dict[q.quarter.quarter];
-        let courses = ["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
+        let courses = [];
         for (let j = 0; j < q.quarter.courses.length; j++) {
           courses[j] = q.quarter.courses[j].course.name;
         }
@@ -137,7 +137,6 @@ function CalendarList({classMappings}) {
         calendarDate={row[i].name + " " + row[i].year}
         courses={row[i].courses}>
       </CalendarBlock>);
-      console.log(block_ids[i]);
     }
     return <div className="CalendarRow">{rows}</div>;
   }

@@ -38,18 +38,6 @@ function CalendarBlock({ color, calendarDate, blockId, courses, blockState }) {
     <div className="BackgroundBlock" style={{backgroundColor: color}}>
       <div className="CalendarTitle">{calendarDate}</div>
       <div className="DisplayBlock">
-        {/*<Droppable id={blockId+" 1"}>
-          {courses[0] ? draggable(courses[0]) : empty_draggable}
-        </Droppable>
-        <Droppable id={blockId+" 2"}>
-          {courses[1] ? draggable(courses[1]) : empty_draggable}
-        </Droppable>
-        <Droppable id={blockId+" 3"}>
-          {courses[2] ? draggable(courses[2]) : empty_draggable}
-        </Droppable>
-        <Droppable id={blockId+" 4"}>
-          {courses[3] ? draggable(courses[3]) : empty_draggable}
-        </Droppable>*/}
         <Container id={blockId} items={blockState}/>
        </div>
      </div>
