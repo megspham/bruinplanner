@@ -36,7 +36,12 @@ function Login({destination}) {
         console.log('Login Success: currentUser:', res.profileObj);
 
         if (dest_url) {
-            navigate("/dars/upload", { state: { id: res.profileObj.googleId } })
+            if (dest_url === "/dars/upload") {
+                navigate(dest_url, { state: { id: res.profileObj.googleId } })
+            }
+            if (dest_url === "/dars") {
+                navigate(dest_url, { state: res.profileObj })
+            }
         } else {
             const requestBody = {
                 "id": res.profileObj.googleId
