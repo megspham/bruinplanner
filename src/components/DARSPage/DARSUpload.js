@@ -39,7 +39,7 @@ const DARSUpload = () => {
                         Please sign in again
                     </h1>
                     <div class="dars-button-container">
-                        <Login destination={"dars/upload"}></Login>
+                        <Login destination={"/dars/upload"}></Login>
                     </div>
                 </div>
             }
