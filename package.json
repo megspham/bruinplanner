@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@dnd-kit/core": "^6.0.5",
+    "@dnd-kit/sortable": "^7.0.1",
     "babel-preset-es2015": "^6.24.1",
     "gapi-script": "^1.2.0",
     "react": "^16.2.0",

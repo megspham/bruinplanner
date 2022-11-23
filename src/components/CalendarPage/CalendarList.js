@@ -128,14 +128,16 @@ function CalendarList({classMappings}) {
       2: "#FFE9AD",
       3: "#005587"
     };
-    let block_ids = Object.keys(calendarState).slice(0 + 4 * row_idx, 4 + 4 * row_idx);
+    let block_ids = Object.keys(calendarState).slice(1 + 4 * row_idx, 5 + 4 * row_idx);
     let rows = []
     for (let i = 0; i < 4; i++) {
       rows.push(<CalendarBlock color={color_dict[row_idx]}
         blockId={block_ids[i]}
+        blockState={calendarState[block_ids[i]]}
         calendarDate={row[i].name + " " + row[i].year}
         courses={row[i].courses}>
-      </CalendarBlock>)
+      </CalendarBlock>);
+      console.log(block_ids[i]);
     }
     return <div className="CalendarRow">{rows}</div>;
   }
