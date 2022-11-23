@@ -49,7 +49,7 @@ function Login() {
                 if (Object.keys(data).length === 0) {
                     navigate("/dars", { state: res.profileObj });
                 } else {
-                    navigate("/calendar", { state: { data: data } });
+                    navigate("/calendar", { state: { data: data , id: res.profileObj.googleId } });
                 }
             })
             .catch(err => console.log(err));
