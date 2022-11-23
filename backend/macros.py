@@ -38,6 +38,7 @@ REQUIRED_CS_COURSES = [
 GE_CATEGORIES = [
     "GE-AH-LC",
     "GE-AH-VP",
+    "GE-AH-PL",
     "GE-SC-HA",
     "GE-SC-SA",
     "GE-SI-LS"
