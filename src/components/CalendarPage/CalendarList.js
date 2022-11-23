@@ -5,16 +5,17 @@
 import React from "react";
 import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
+import Login from "../Login";
 
-function CalendarList({classMappings}) {
+function CalendarList({ classMappings }) {
   const location = useLocation();
-  const data = location.state.data;
-  const id = location.state.id;
+  const data = location.state ? location.state.data : null;
+  const id = location.state ? location.state.id : null;
   const calendarState = classMappings;
 
+  console.log(id);
   const parse_json = () => {
     let parsedInput = data;
-    console.log(data)
 
     // TODO: get the start year from the user (add a form on the DARs page?)
     let start_year = new Date().getFullYear();
@@ -142,10 +143,23 @@ function CalendarList({classMappings}) {
 
   return (
     <div>
-      {get_row(0)}
-      {get_row(1)}
-      {get_row(2)}
-      {get_row(3)}
+      {id ?
+        <div>
+          {get_row(0)}
+          {get_row(1)}
+          {get_row(2)}
+          {get_row(3)}
+        </div>
+        :
+        <div>
+          <h1 class="welcome-message">
+            Please sign in again
+          </h1>
+          <div class="dars-button-container">
+            <Login destination="/dars/upload"></Login>
+          </div>
+        </div>
+      }
     </div>
   );
 }
