@@ -38,7 +38,7 @@ function Login() {
             "id": res.profileObj.googleId
         }
         refreshTokenSetup(res);
-        fetch("http://127.0.0.1:8000/api/getCalendar", {
+        fetch("http://131.179.38.252:8000/api/getCalendar", {
             crossDomain: true,
             mode: 'cors',
             method: 'POST',

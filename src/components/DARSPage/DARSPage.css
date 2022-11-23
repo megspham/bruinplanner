@@ -25,6 +25,7 @@
   text-align: center;
   font-family: 'Montserrat';
   font-style: 'normal';
-  color: '#757575';
   font-weight: 500;
+  font-size: 25px;
+  color: rgba(0, 0, 0, 0.54);
 }

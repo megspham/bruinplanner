@@ -7,6 +7,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+import "./UploadFileForm.css";
+
 function UploadFileForm({ googleId }) {
   const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ function UploadFileForm({ googleId }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="HI" onSubmit={handleSubmit}>
       <label>Upload your DARS HTML file:
         <input type="file" id="myfile" name="myfile" onChange={uploadFile} />
       </label>
