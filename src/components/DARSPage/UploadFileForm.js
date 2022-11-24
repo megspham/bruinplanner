@@ -1,7 +1,7 @@
 /**
  * @file Gets the DARS html file, starting quarter, and starting year
  * from users who wish to import in their DARS file into the calendar.
- * @author Andy Goh
+ * @author Andy Goh (JS), Megan Pham (CSS)
  */
 
 import React from "react";
@@ -47,25 +47,31 @@ function UploadFileForm({ googleId }) {
   }
 
   return (
-    <form className="HI" onSubmit={handleSubmit}>
+    <form className="formInput" onSubmit={handleSubmit}>
       <label>Upload your DARS HTML file:
-        <input type="file" id="myfile" name="myfile" onChange={uploadFile} />
+        <input type="file" className="fileInput" id="myfile" name="myfile" onChange={uploadFile} />
       </label>
       <br></br>
+      <br></br>
+      <div className="twoCol">
+        <div className="col1">
       <label>What is your starting year?
-        <input name="year" type="number" min="1919" max="2022" step="1" />
+        <input name="year" className="yearInput" type="number" min="1919" max="2022" step="1" />
       </label>
-      <br></br>
+      </div>
+      <div className="col2">
       <label>What is your starting quarter?
-        <select name="quarter" id="quarter" form="carform">
+        <select name="quarter" id="quarter" className="yearInput" form="carform">
           <option value="Fall">Fall</option>
           <option value="Winter">Winter</option>
           <option value="Spring">Spring</option>
           <option value="Summer">Summer</option>
         </select>
       </label>
+      </div>
+      </div>
       <br></br>
-      <input type="submit" value="Submit" />
+      <input type="submit" className="submitInput" value="Submit" />
     </form>
   );
 }

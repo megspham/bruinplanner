@@ -6,8 +6,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  
 }
+.instructions {
+  text-align: center;
+  /* list-style-position: inside; */
 
+}
 .dars-bg {
   display: block;
   width: 75%;
