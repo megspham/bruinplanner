@@ -28,8 +28,8 @@ function UploadFileForm({ googleId }) {
     //       with values submitted by the user via form
     const requestBody = {
       "id": state.id,
-      "start_quarter": "Fall",
-      "start_year": "2019",
+      "start_quarter": document.getElementById('quarter').value,
+      "start_year": document.getElementById('year').value,
       "dars_file": state.file
     }
     if (state.file) {
@@ -56,7 +56,7 @@ function UploadFileForm({ googleId }) {
       <div className="twoCol">
         <div className="col1">
       <label>What is your starting year?
-        <input name="year" className="yearInput" type="number" min="1919" max="2022" step="1" />
+        <input name="year" className="yearInput" type="number" min="1919" max="2022" step="1" id="year"/>
       </label>
       </div>
       <div className="col2">
