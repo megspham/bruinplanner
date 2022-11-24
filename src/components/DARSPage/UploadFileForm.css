@@ -1,4 +1,11 @@
+body {
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
 
+}
 .submitInput {
     /* width: '38vw';
     height: '88px'; */
