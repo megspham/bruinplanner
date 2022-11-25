@@ -22,7 +22,7 @@ const DARSUpload = () => {
             <ol className='instructions'>
                 <h2 align='center'>To obtain your DARS Report...</h2>
                 <li>Generate a DARS audit from MyUCLA</li>
-                <li>Click on "View Report"</li>
+                <li>Click on "View Audit"</li>
                 <li>Right click and press "Save As..." and choose the option "Webpage, complete"</li>
             </ol>
             <div class="page-content">
