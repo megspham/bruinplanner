@@ -13,9 +13,7 @@ import './DropdownButton.css';
  * @param {Array[str]} type_list Requirement(s) that the returned classes should satisfy
  * @returns Dropdown button
  */
-export function DropdownButton({ text, options, type_list }) {
-    const [selectedOption, setSelectedOption] = useState(null);
-
+export function DropdownButton({ selectedOption, setSelectedOption, text, options, type_list }) {
     const style = {
         width: '38vw',
         height: '88px',
@@ -50,7 +48,6 @@ export function DropdownButton({ text, options, type_list }) {
                     options.push(dict);
                 }
             }).catch(err => console.log(err))
-        console.log(type_list, options)
         return options
     }
     
