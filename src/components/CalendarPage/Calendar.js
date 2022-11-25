@@ -37,6 +37,7 @@ async function getClasses(type_list=null, department_list=null, min_units=null, 
 }
 
 function Calendar() {
+  const [classInfo, setClassInfo] = useState({});
   const [classes, setClasses] = useState({
     sidebar: [],
     fa_1: [],
@@ -64,7 +65,8 @@ function Calendar() {
       for (const c of result) {
         classNames.push(c[1])
       }
-      
+
+      setClassInfo(result);
       setClasses({
         sidebar: classNames,
         fa_1: [],
