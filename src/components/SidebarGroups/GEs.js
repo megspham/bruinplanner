@@ -121,7 +121,7 @@ export function GEs() {
             console.log("loading")
             loaded_classes['GE-SI-LS'] = create_options(['GE-SI-LS'])
         }
-    }, 9000);
+    }, 11000);
 
     return (
         <div className="ge-ah-list">
