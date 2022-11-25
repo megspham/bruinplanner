@@ -21,7 +21,7 @@ export default function Calendar() {
               "MATH 31A", "MATH 31B", "MATH 32A", "MATH 32B",
               "MATH 33A", "MATH 33B", "MATH 61",
               "PHYSICS 1A", "PHYSICS 1B", "PHYSICS 1C"],
-    fa_1: ['GE'],
+    fa_1: [],
     wi_1: [],
     sp_1: [],
     su_1: [],

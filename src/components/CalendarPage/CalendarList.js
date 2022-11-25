@@ -6,16 +6,23 @@ import React from "react";
 import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 
-function CalendarList({classMappings}) {
+const parsed_to_block_id = [
+  ["fa_1", "wi_1", "sp_1", "su_1"],
+  ["fa_2", "wi_2", "sp_2", "su_2"],
+  ["fa_3", "wi_3", "sp_3", "su_3"],
+  ["fa_4", "wi_4", "sp_4", "su_4"]
+];
+
+function CalendarList({ classMappings }) {
   const location = useLocation();
   const data = location.state.data;
   const id = location.state.id;
   const calendarState = classMappings;
 
   const parse_json = () => {
+    // console.log("parsing", calendarState)
     let parsedInput = data;
-    console.log(data)
-
+    
     // TODO: get the start year from the user (add a form on the DARs page?)
     let start_year = new Date().getFullYear();
 
@@ -87,9 +94,12 @@ function CalendarList({classMappings}) {
           continue;
         }
         default_calendar[row_num][quarter_id] = quarter;
+        for (const course of quarter.courses) {
+          if (calendarState[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
+            calendarState[parsed_to_block_id[row_num][quarter_id]].push(course);
+          }
+        }
       }
-      // 0 1 1 1
-      // 1 2 2 2
     } else {
       let dc_json = require('./default_calendar.json');
       let year_offset = [
@@ -101,7 +111,6 @@ function CalendarList({classMappings}) {
       for (let i = 0; i < dc_json.calendar.quarters.length; i++) {
         dc_json.calendar.quarters[i].quarter.year = start_year + year_offset[i]
       }
-      console.log(dc_json)
       const requestBody = {
         "id": id,
         "calendar": dc_json
@@ -117,8 +126,9 @@ function CalendarList({classMappings}) {
     }
     return default_calendar;
   }
-
-  const parsed = parse_json();
+  
+  let parsed = null;
+  parsed = parse_json();
 
   const get_row = (row_idx) => {
     const row = parsed[row_idx];
@@ -134,8 +144,7 @@ function CalendarList({classMappings}) {
       rows.push(<CalendarBlock color={color_dict[row_idx]}
         blockId={block_ids[i]}
         blockState={calendarState[block_ids[i]]}
-        calendarDate={row[i].name + " " + row[i].year}
-        courses={row[i].courses}>
+        calendarDate={row[i].name + " " + row[i].year}>
       </CalendarBlock>);
     }
     return <div className="CalendarRow">{rows}</div>;
