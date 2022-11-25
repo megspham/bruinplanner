@@ -20,11 +20,11 @@ const DARSUpload = () => {
     return (
         <div>
             {id ?
-                <div className="dars-upload-container">
+                <div className="dars-upload-container welcome-message">
                     <img src={BackgroundSvg} alt="Your SVG" class="dars-bg" />
                     <ol className='instructions'>
                         <li>Generate a DARS audit from MyUCLA</li>
-                        <li>Click on "View Report"</li>
+                        <li>Click on "View Audit"</li>
                         <li>Right click and press "Save As..." and choose the option "Webpage, complete"</li>
                     </ol>
                     <div class="page-content">

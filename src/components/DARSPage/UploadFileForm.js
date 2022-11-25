@@ -1,11 +1,13 @@
 /**
  * @file Gets the DARS html file, starting quarter, and starting year
  * from users who wish to import in their DARS file into the calendar.
- * @author Andy Goh
+ * @author Andy Goh (JS), Megan Pham (CSS)
  */
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
+
+import "./UploadFileForm.css";
 
 function UploadFileForm({ googleId }) {
   const navigate = useNavigate();
@@ -26,8 +28,8 @@ function UploadFileForm({ googleId }) {
     //       with values submitted by the user via form
     const requestBody = {
       "id": state.id,
-      "start_quarter": "Fall",
-      "start_year": "2019",
+      "start_quarter": document.getElementById('quarter').value,
+      "start_year": document.getElementById('year').value,
       "dars_file": state.file
     }
     if (state.file) {
@@ -45,25 +47,31 @@ function UploadFileForm({ googleId }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="formInput" onSubmit={handleSubmit}>
       <label>Upload your DARS HTML file:
-        <input type="file" id="myfile" name="myfile" onChange={uploadFile} />
+        <input type="file" className="fileInput" id="myfile" name="myfile" onChange={uploadFile} />
       </label>
       <br></br>
+      <br></br>
+      <div className="twoCol">
+        <div className="col1">
       <label>What is your starting year?
-        <input name="year" type="number" min="1919" max="2022" step="1" />
+        <input name="year" className="yearInput" type="number" min="1919" max="2022" step="1" id="year"/>
       </label>
-      <br></br>
+      </div>
+      <div className="col2">
       <label>What is your starting quarter?
-        <select name="quarter" id="quarter" form="carform">
+        <select name="quarter" id="quarter" className="yearInput" form="carform">
           <option value="Fall">Fall</option>
           <option value="Winter">Winter</option>
           <option value="Spring">Spring</option>
           <option value="Summer">Summer</option>
         </select>
       </label>
+      </div>
+      </div>
       <br></br>
-      <input type="submit" value="Submit" />
+      <input type="submit" className="submitInput" value="Submit" />
     </form>
   );
 }

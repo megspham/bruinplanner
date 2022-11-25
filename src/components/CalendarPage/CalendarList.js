@@ -11,18 +11,23 @@ function CalendarList({ classMappings }) {
   const location = useLocation();
   const data = location.state ? location.state.data : null;
   const id = location.state ? location.state.id : null;
+  const startYear = location.state ? location.state.startYear: null; 
+
   const calendarState = classMappings;
+  console.log(startYear);
+
 
   console.log(id);
   const parse_json = () => {
-    let parsedInput = data;
+    let parsedInput = data;   
 
-    // TODO: get the start year from the user (add a form on the DARs page?)
-    let start_year = new Date().getFullYear();
+    let start_year = startYear;
+    
 
     if (parsedInput !== null) {
       start_year = parsedInput.calendar.quarters[0].quarter.year;
     }
+
     let default_calendar = [];
     let default_courses = ["DROP HERE", "DROP HERE", "DROP HERE", "DROP HERE"];
     for (let row_idx = 0; row_idx < 4; row_idx++) {
