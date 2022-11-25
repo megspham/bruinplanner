@@ -18,19 +18,11 @@ const DARSPage = () => {
   const location = useLocation();
   const [startYear, setStartYear] = useState(new Date().getFullYear());
 
-  // function handleChange(event) {
-  //   setStartYear(parseInt(event.target.value,10));
-  //   console.log(startYear);
-  // }
-
-  function onClick() {
-    // startYear = prompt("What is your starting year?");
-    // if (startYear!==null) {
-      setStartYear(parseInt(prompt("What is your starting year?"),10));
-    // }
+  function handleChange(event) {
+    setStartYear(parseInt(event.target.value,10));
     console.log(startYear);
-
   }
+
 
   return (
     <div className="dars-page-container">
@@ -40,17 +32,17 @@ const DARSPage = () => {
         <h1 class="welcome-message">
             Welcome, {location.state.name}!
         </h1>
-        {/* <div className="new-template-container">
-          <label className="yearInput">What is your starting year?
-            <input name="year" type="number" min="1919" max ="2022" step="1" id="year" onChange={handleChange}/>
+        <div className="new-template-container">
+          <label className="yearLabel">What is your starting year?
+            <input name="year" className="yearInput" type="number" min="1919" max ="2022" step="1" id="year" onChange={handleChange}/>
           </label>
-          </div> */}
+          </div>
         <div class="dars-button-container">
           <Link to="/calendar" state={{ startYear: startYear, data: null, id: location.state.googleId }} >
-            <CustomizedButton onClick={onClick} class="button disabled" id="button" text="Start with a blank template"></CustomizedButton>
+            <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
           </Link>
           <Link to="/dars/upload" state={{ startYear: null, id: location.state.googleId }}>
-            <CustomizedButton class="button" idtext="Import DARs"></CustomizedButton>
+            <CustomizedButton class="button" text="Import DARs"></CustomizedButton>
           </Link>
         </div>
       </div>
