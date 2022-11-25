@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { componentDidMount, useEffect, useState } from 'react';
 import './Calendar.css';
 import Sidebar from "./Sidebar";
 import CalendarList from './CalendarList';
@@ -13,15 +13,33 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-export default function Calendar() {
+async function sendRequest(apiName, requestBody){
+  const response = await fetch("http://127.0.0.1:8000/api/" + apiName, {
+		crossDomain:true,
+		mode: 'cors',
+		method: 'POST',
+		headers: {'Content-Type':'application/json'},
+		body: JSON.stringify(requestBody)
+	});
+	const responseJson = await response.json();
+	return responseJson["classes"];
+}
+
+async function getClasses(type_list=null, department_list=null, min_units=null, max_units=null, classes_taken=null){
+  const requestBody = {
+    "type_list": type_list,
+    "department_list": department_list,
+    "min_units": min_units,
+    "max_units": max_units,
+    "classes_taken": classes_taken
+  }
+  return sendRequest("getClasses", requestBody);
+}
+
+function Calendar() {
   const [classes, setClasses] = useState({
-    sidebar: ["CS 1", "CS 31", "CS 32", "CS 33", "CS 35L", "CS M51A",
-              "CS 111", "CS 118", "CS 130", "CS 131", "CS M151B",
-              "CS M152A", "CS 180", "CS 181",
-              "MATH 31A", "MATH 31B", "MATH 32A", "MATH 32B",
-              "MATH 33A", "MATH 33B", "MATH 61",
-              "PHYSICS 1A", "PHYSICS 1B", "PHYSICS 1C"],
-    fa_1: ['GE'],
+    sidebar: [],
+    fa_1: [],
     wi_1: [],
     sp_1: [],
     su_1: [],
@@ -38,6 +56,39 @@ export default function Calendar() {
     sp_4: [],
     su_4: []
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 2, 4, null);
+      const classNames = [];
+      for (const c of result) {
+        classNames.push(c[1])
+      }
+      
+      setClasses({
+        sidebar: classNames,
+        fa_1: [],
+        wi_1: [],
+        sp_1: [],
+        su_1: [],
+        fa_2: [],
+        wi_2: [],
+        sp_2: [],
+        su_2: [],
+        fa_3: [],
+        wi_3: [],
+        sp_3: [],
+        su_3: [],
+        fa_4: [],
+        wi_4: [],
+        sp_4: [],
+        su_4: []
+      })
+    }
+
+    fetchData()
+  }, []);
+
   const [activeId, setActiveId] = useState(null);
   return (
       <div className="BruinPlanner">
@@ -163,3 +214,5 @@ export default function Calendar() {
     });
   }
 }
+
+export default Calendar;

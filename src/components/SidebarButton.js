@@ -4,7 +4,7 @@
  */
 
 import React from "react"; 
-import "./CustomizedButton.css"; 
+// import "./CustomizedButton.css"; 
 
 /**
  * Create a CustomizedButton
@@ -25,6 +25,7 @@ export function SidebarButton({ text, onClick }) {
         fontWeight: '500',
         fontSize: '15px',
         lineHeight: '37px',
+        borderRadius: '3px'
         
     }
     return (
