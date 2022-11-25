@@ -22,6 +22,11 @@ function CalendarList({ classMappings }) {
   const parse_json = () => {
     // console.log("parsing", calendarState)
     let parsedInput = data;
+    let return_json = {
+      "calendar": {
+        "quarters": []
+      }
+    }
     
     // TODO: get the start year from the user (add a form on the DARs page?)
     let start_year = new Date().getFullYear();
@@ -93,12 +98,18 @@ function CalendarList({ classMappings }) {
         if (row_num < 0) {
           continue;
         }
-        default_calendar[row_num][quarter_id] = quarter;
         for (const course of quarter.courses) {
           if (calendarState[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
             calendarState[parsed_to_block_id[row_num][quarter_id]].push(course);
           }
         }
+        for (const course of calendarState[parsed_to_block_id[row_num][quarter_id]]) {
+          if (quarter.courses.indexOf(course) === -1) {
+            quarter.courses.push(course);
+          }
+        }
+        default_calendar[row_num][quarter_id] = quarter;
+        return_json.calendar.quarters.push(quarter);
       }
     } else {
       let dc_json = require('./default_calendar.json');
@@ -124,6 +135,7 @@ function CalendarList({ classMappings }) {
       }).then(res => console.log(res))
         .catch(err => console.log(err));
     }
+    console.log(data, return_json)
     return default_calendar;
   }
   
