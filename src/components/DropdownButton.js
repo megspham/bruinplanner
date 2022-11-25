@@ -15,7 +15,7 @@ import './DropdownButton.css';
  */
 export function DropdownButton({ selectedOption, setSelectedOption, text, options, type_list }) {
     const style = {
-        width: '38vw',
+        // width: '38vw',
         height: '88px',
         background: '#FFFFFF',
         color: '#757575',
@@ -23,6 +23,7 @@ export function DropdownButton({ selectedOption, setSelectedOption, text, option
         border: 'none',
         fontFamily: 'Montserrat',
         fontStyle: 'normal',
+        margin: '5px'
     }
 
     const create_options = (type_list) => {
