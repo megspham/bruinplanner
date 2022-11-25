@@ -7,6 +7,25 @@
   align-items: center;
 }
 
+.disabled{
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.yearInput {
+  width: 50%;
+  padding: 1000px;
+  margin: 8px 0;
+  font-family: 'Montserrat';
+  font-style: 'normal';
+  font-weight: '500';
+  line-height: '37px'; 
+}
+
 .dars-bg {
   display: block;
   width: 75%;
