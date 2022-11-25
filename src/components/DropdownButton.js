@@ -13,7 +13,7 @@ import './DropdownButton.css';
  * @param {Array[str]} type_list Requirement(s) that the returned classes should satisfy
  * @returns Dropdown button
  */
-export function DropdownButton({ text, type_list }) {
+export function DropdownButton({ text, options, type_list }) {
     const [selectedOption, setSelectedOption] = useState(null);
 
     const style = {
@@ -31,7 +31,7 @@ export function DropdownButton({ text, type_list }) {
         let options = []
         const requestBody = {
             "type_list": type_list,
-            "department_list": ['COM SCI'],
+            "department_list": null,
             "min_units": 0,
             "max_units": 99,
             "classes_taken": null
@@ -50,16 +50,25 @@ export function DropdownButton({ text, type_list }) {
                     options.push(dict);
                 }
             }).catch(err => console.log(err))
+        console.log(type_list, options)
         return options
     }
+    
+    const get_options = () => {
+        if (type_list) {
+            return create_options(type_list);
+        } else {
+            return options;
+        }
+    };
 
     return (
         <div className="dropdown-button" style={style}>
             <div className="name">{text}</div>
             <Select
                 defaultValue={selectedOption}
-                onChange={setSelectedOption}
-                options={create_options(type_list)}
+                onChange={newOption => setSelectedOption(newOption)}
+                options={get_options()}
                 placeholder="Choose a class..."
                 isSearchable
                 className='dropdown'
