@@ -16,10 +16,16 @@
   box-shadow: none;
 }
 
+.new-template-container {
+  width: 100vw;
+  display: flex;
+  justify-content: space-evenly;
+  position: relative;
+}
 .yearInput {
-  width: 50%;
+  /* width: 50%;
   padding: 1000px;
-  margin: 8px 0;
+  margin: 8px 0; */
   font-family: 'Montserrat';
   font-style: 'normal';
   font-weight: '500';

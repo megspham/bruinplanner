@@ -2,10 +2,10 @@
  * @file Defines the page that new users are taken to upon login. It has a welcome
  * message for the user, and options (via buttons) to start with a blank template 
  * or import DARs.
- * @author Andy Goh
+ * @author Andy Goh, Megan Pham
  */
 
-import React from "react";
+import React, { useState } from "react";
 import "./DARSPage.css";
 import BackgroundSvg from "../images/DARSPageBackground.svg";
 import { CustomizedButton } from "../CustomizedButton";
@@ -13,12 +13,23 @@ import Login from "../Login";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
+
 const DARSPage = () => {
   const location = useLocation();
+  const [startYear, setStartYear] = useState(new Date().getFullYear());
 
-  async function handleChange() {
-    location.state.startYear = parseInt(document.getElementById('year').value,10);
-    console.log(location.state.startYear);
+  // function handleChange(event) {
+  //   setStartYear(parseInt(event.target.value,10));
+  //   console.log(startYear);
+  // }
+
+  function onClick() {
+    // startYear = prompt("What is your starting year?");
+    // if (startYear!==null) {
+      setStartYear(parseInt(prompt("What is your starting year?"),10));
+    // }
+    console.log(startYear);
+
   }
 
   return (
@@ -29,14 +40,14 @@ const DARSPage = () => {
         <h1 class="welcome-message">
             Welcome, {location.state.name}!
         </h1>
-        <div class="dars-button-container">
-          <form className="formInput" onChange={handleChange}>
-          <label>What is your starting year?
-            <input name="year" className="yearInput" type="number" min="1919" max ="2022" step="1" id="year"/>
+        {/* <div className="new-template-container">
+          <label className="yearInput">What is your starting year?
+            <input name="year" type="number" min="1919" max ="2022" step="1" id="year" onChange={handleChange}/>
           </label>
-          </form>
-          <Link to="/calendar" state={{ data: null, id: location.state.googleId }} >
-            <CustomizedButton class="button disabled" id="button" text="Start with a blank template"></CustomizedButton>
+          </div> */}
+        <div class="dars-button-container">
+          <Link to="/calendar" state={{ startYear: startYear, data: null, id: location.state.googleId }} >
+            <CustomizedButton onClick={onClick} class="button disabled" id="button" text="Start with a blank template"></CustomizedButton>
           </Link>
           <Link to="/dars/upload" state={{ startYear: null, id: location.state.googleId }}>
             <CustomizedButton class="button" idtext="Import DARs"></CustomizedButton>

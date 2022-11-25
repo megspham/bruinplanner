@@ -20,11 +20,10 @@ function CalendarList({classMappings}) {
     // console.log(data)
 
     // TODO: get the start year from the user (add a form on the DARs page?)
-    let start_year = new Date().getFullYear();
+   
 
-    if (startYear !== null) {
-      start_year = startYear;
-    }
+    let start_year = startYear;
+    
 
     if (parsedInput !== null) {
       start_year = parsedInput.calendar.quarters[0].quarter.year;
