@@ -7,8 +7,6 @@ body {
 
 }
 .submitInput {
-    /* width: '38vw';
-    height: '88px'; */
     width: 50%;
     padding: 10px 10px;
     background: '#FFFFFF';
@@ -40,8 +38,7 @@ body {
     font-family: 'Montserrat';
     font-style: 'normal';
     font-weight: '500';
-    line-height: '37px'; 
-}
+} 
 
 .fileInput {
     color: transparent;    

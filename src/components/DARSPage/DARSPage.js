@@ -34,15 +34,15 @@ const DARSPage = () => {
         </h1>
         <div className="new-template-container">
           <label className="yearLabel">What is your starting year?
-            <input name="year" className="yearInput" type="number" min="1919" max ="2022" step="1" id="year" onChange={handleChange}/>
+            <input name="year" type="number" min="1919" max ="2022" step="1" id="year" onChange={handleChange}/>
           </label>
           </div>
         <div class="dars-button-container">
           <Link to="/calendar" state={{ startYear: startYear, data: null, id: location.state.googleId }} >
-            <CustomizedButton class="button" text="Start with a blank template"></CustomizedButton>
+            <CustomizedButton text="Start with a blank template"></CustomizedButton>
           </Link>
           <Link to="/dars/upload" state={{ startYear: null, id: location.state.googleId }}>
-            <CustomizedButton class="button" text="Import DARs"></CustomizedButton>
+            <CustomizedButton text="Import DARs"></CustomizedButton>
           </Link>
         </div>
       </div>
