@@ -10,12 +10,12 @@ import { Text } from "react-native";
 
 /**
  * Create a CustomizedButton
- * @param {string} classInfo Information on units, prerequisites, and historical course information
+ * @param {string} info Information on units, prerequisites, and historical course information
  * @param {string} text What to write on the button
  * @param {function} onClick Defines what function to call when the button is clicked
  * @returns CustomizedButton HTML div object
  */
-export function SidebarButton({ classInfo, text, onClick }) {
+export function SidebarButton({ info, text, onClick }) {
 
     const style = {
         width: '12vw',
@@ -48,11 +48,11 @@ export function SidebarButton({ classInfo, text, onClick }) {
                 data-tip={ReactDOMServer.renderToString(
                     <div style={tooltipStyle}> 
                         <Text>{"\n"}</Text>
-                        <b>Units: </b> {classInfo.split("|")[0]} 
+                        <b>Units: </b> {info.split("|")[0]} 
                         <Text>{"\n\n"}</Text>
-                        <b>Prerequisites: </b> {classInfo.split("|")[1]}
+                        <b>Prerequisites: </b> {info.split("|")[1]}
                         <Text>{"\n\n"}</Text>
-                        <b>Historical Offerings: </b> {classInfo.split("|")[2]}
+                        <b>Historical Offerings: </b> {info.split("|")[2]}
                         <Text>{"\n\n"}</Text>
                     </div>)}
             >

@@ -109,15 +109,15 @@ function Calendar() {
           onDragOver={handleDragOver}
           collisionDetection={closestCorners}
         >
-          <CalendarList classMappings={classes} classInfo={classInfo}/>        
+          <CalendarList classMappings={classes}/>        
           <div className="Sidebar">
             <div className="ClassList">
-                <Container id="sidebar" items={classes.sidebar} classInfo={classInfo}/>
+                <Container id="sidebar" items={classes.sidebar} info={classInfo}/>
             </div>
           </div>
           <DragOverlay>
             {activeId
-              ? ( <SidebarButton classInfo={classInfo[activeId]} text={activeId}/> )
+              ? ( <SidebarButton info={classInfo[activeId]} text={"Hello"}/> )
               : null}
           </DragOverlay>
         </DndContext>
