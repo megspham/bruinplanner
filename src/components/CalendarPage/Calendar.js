@@ -86,6 +86,7 @@ async function saveAndCheck(start_year, classes, id) {
 function Calendar() {
   const [hasParsed, setHasParsed] = useState(false);
   const [loadedSidebar, setloadedSidebar] = useState(false);
+  const [unsatisfiedPreReqs, setunsatisfiedPreReqs] = useState("")
   const [startYear, setStartYear] = useState(2022);
   const [classInfo, setClassInfo] = useState({});
   const [classes, setClasses] = useState({
@@ -121,16 +122,22 @@ function Calendar() {
   const calendarState = classes;
 
   const display_unsatisfied_prereqs = async (start_year, classes, id) => {
-    const calendar = await saveAndCheck(start_year, classes, id);
-    console.log(calendar.calendar.quarters)
-    const quarters = calendar.calendar.quarters;
-    for (const quarter of quarters) {
-      for (const course of quarter.courses) {
-        if ("unsatisfied_pre_requisites" in course) {
-          console.log(course.name, course.unsatisfied_pre_requisites);
+    const returned_calendar = await saveAndCheck(start_year, classes, id);
+    let display_string = 'The following courses have unmet pre-requisities: \n'
+    for (let i = 0; i < returned_calendar.calendar.quarters.length; i++) {
+      let quarter = returned_calendar.calendar.quarters[i]
+      let courses = quarter.quarter.courses
+      for (let j = 0; j < courses.length; j++) {
+        if ("unsatisfied_pre_requisites" in courses[j].course) {
+          display_string = display_string + courses[j].course.name + ' needs: '
+          for (const unmet_req of courses[j].course.unsatisfied_pre_requisites) {
+            display_string = display_string + unmet_req.name + ', ';
+          }
+          display_string = display_string.slice(0, -2) + '\n'
         }
       }
     }
+    setunsatisfiedPreReqs(display_string);
   }
 
   useEffect(() => {
@@ -172,34 +179,7 @@ function Calendar() {
         start_year = parsedInput.calendar.quarters[0].quarter.year;
       }
       setStartYear(start_year);
-      let default_calendar = [];
-      let default_courses = [];
-      for (let row_idx = 0; row_idx < 4; row_idx++) {
-        let fall = {
-          'name': "Fall",
-          'year': start_year + row_idx,
-          'courses': default_courses
-        }
-        let winter = {
-          'name': "Winter",
-          'year': start_year + 1 + row_idx,
-          'courses': default_courses
-        }
-        let spring = {
-          'name': "Spring",
-          'year': start_year + 1 + row_idx,
-          'courses': default_courses
-        }
-        let summer = {
-          'name': "Summer",
-          'year': start_year + 1 + row_idx,
-          'courses': default_courses
-        }
-
-        let default_year = [fall, winter, spring, summer];
-        default_calendar.push(default_year);
-      }
-
+  
       if (parsedInput !== null) {
         const quarter_name_dict = {
           "FA": "Fall",
@@ -236,7 +216,6 @@ function Calendar() {
           if (row_num < 0) {
             continue;
           }
-          console.log('classes', row_num, quarter_id);
           for (const course of quarter.courses) {
             if (classes[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
               setClasses(prev => ({
@@ -256,7 +235,6 @@ function Calendar() {
           if (return_json.calendar.quarters.indexOf(quarter) === -1) {
             return_json.calendar.quarters.push(quarter);
           }
-          // console.log("return", return_json)
         }
       } else {
         let dc_json = require('./default_calendar.json');
@@ -313,7 +291,10 @@ function Calendar() {
       >
         <CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo} />
         <div className="Sidebar">
-          <button onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calaendar</button>
+          <div className='display-linebreak'>
+            <button onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calaendar</button>
+            <p>{unsatisfiedPreReqs}</p>
+          </div>
           <div className="ClassList">
             <Container id="sidebar" items={classes.sidebar} classInfo={classInfo} />
             <Container id="variable" items={classes.variableClasses} kind="dropdown" classInfo={classInfo} />

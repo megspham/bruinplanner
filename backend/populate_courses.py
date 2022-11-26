@@ -511,14 +511,14 @@ def addHistoricalOfferings():
         db_utils.execute("UPDATE courses SET historical_offerings=%s WHERE department=%s AND number=%s", (",".join(historical_offerings), class_[2], class_[3]))
 
 def populateCourses():
-    req_cs_course_infos = parseCoursesByName(macros.REQUIRED_CS_COURSES)
-    addClasses(req_cs_course_infos)
+    # req_cs_course_infos = parseCoursesByName(macros.REQUIRED_CS_COURSES)
+    # addClasses(req_cs_course_infos)
 
-    ge_infos = parseGEs(macros.GE_CATEGORIES)
-    addClasses(ge_infos)
+    # ge_infos = parseGEs(macros.GE_CATEGORIES)
+    # addClasses(ge_infos)
 
-    elective_course_infos = parseElectives()
-    addClasses(elective_course_infos)
+    # elective_course_infos = parseElectives()
+    # addClasses(elective_course_infos)
 
     recursivelyAddPrereqs()
     addHistoricalOfferings()

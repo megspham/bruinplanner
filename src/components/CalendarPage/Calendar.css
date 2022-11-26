@@ -1,7 +1,7 @@
 body {
     background: #DAEBFE;
 }
-  
+
 .BruinPlanner {
     margin-top: 20px;
     display: flex;
@@ -18,13 +18,16 @@ body {
     scrollbar-width: 10px;
     /* width: 12vw; */
     height: 100vh;
-  
+
     justify-content: right;
     position: relative;
-  
+
 }
 
-.sidebar-button {
-    
-}
+.sidebar-button {}
 
+.display-linebreak {
+    padding-left: 10px;
+    width: 80%;
+    white-space: pre-line;
+}
