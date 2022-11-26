@@ -4,6 +4,7 @@ import json
 import json_format
 import parse_dars
 import populate_database
+import difflib import SequenceMatcher
 
 # POST /api/addUser
 def addUser(id):
@@ -185,9 +186,11 @@ def checkCalendar(calendar):
                 
                     prev_course = prev_course_dict['course']
 
-                    # if the course is in the list of prereqs, remove it
-                    if prev_course['name'] in prereqs:
-                        prereqs.remove(prev_course['name'])
+                    # if the course is in the list of prereqs, remove it, use the similarity function to check if the course is similar enough to the prereq
+                    for prereq in prereqs:
+                        if prereq == prev_course['name'] or prereq.replace(' ', '') == prev_course['name'].replace(' ', ''):
+                            prereqs.remove(prereq)
+                            break
             
             # if there are still prereqs left not met, add an error message to the course listing the prereqs that are not met
             if len(prereqs) > 0:       
