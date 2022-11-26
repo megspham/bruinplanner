@@ -15,7 +15,10 @@ def execute(*args):
     Function that executes a certain query in the database and fetches result.
     """
     mycursor.execute(*args)
-    myresult = mycursor.fetchall()
+    try:
+      myresult = mycursor.fetchall()
+    except:
+      myresult = None
     mydb.commit()
     mycursor.close()
     mycursor = mydb.cursor(buffered = True)
