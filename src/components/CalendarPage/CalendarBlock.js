@@ -24,11 +24,6 @@ import {SortableItem} from '../SortableItem';
 
 function CalendarBlock({ color, calendarDate, blockId, courses, blockState }) {
   const [isDropped, setIsDropped] = useState(null); 
-  const draggable = (index) => (
-    <Draggable key={index} id={index}>
-      <SidebarButton text={index} />                    
-    </Draggable>
-  );
 
   const empty_draggable = (
     <SidebarButton text={"Drop Here"} />

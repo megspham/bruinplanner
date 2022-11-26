@@ -1,6 +1,5 @@
-import React, { componentDidMount, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Calendar.css';
-import Sidebar from "./Sidebar";
 import CalendarList from './CalendarList';
 import {DndContext, DragOverlay, closestCorners} from '@dnd-kit/core';
 import Draggable from '../Draggable';
@@ -60,15 +59,25 @@ function Calendar() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 2, 4, null);
-      const classNames = [];
+      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
+
+      const extractedClassNames = [];
+      const extractedClassInfo = {};
       for (const c of result) {
-        classNames.push(c[1])
+        extractedClassNames.push(c[1]);
+
+        let units = c[5]; 
+        let prereqs = c[6] == null ? "" : c[6];
+        let hist = c[7] == null ? "" : c[7];
+
+        if (!extractedClassInfo[c[1]]) {
+          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
+        }
       }
 
-      setClassInfo(result);
+      setClassInfo(extractedClassInfo);
       setClasses({
-        sidebar: classNames,
+        sidebar: extractedClassNames,
         fa_1: [],
         wi_1: [],
         sp_1: [],
@@ -103,13 +112,13 @@ function Calendar() {
           <CalendarList classMappings={classes}/>        
           <div className="Sidebar">
             <div className="ClassList">
-                <Container id="sidebar" items={classes.sidebar}/>
+                <Container id="sidebar" items={classes.sidebar} info={classInfo}/>
             </div>
           </div>
           <DragOverlay>
-            {activeId ? (
-              <SidebarButton text={activeId} /> 
-            ): null}
+            {activeId
+              ? ( <SidebarButton info={classInfo[activeId]} text={"Hello"}/> )
+              : null}
           </DragOverlay>
         </DndContext>
       </div>
