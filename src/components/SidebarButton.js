@@ -5,6 +5,7 @@
 
 import React from "react"; 
 import './SidebarButton.css';
+
 /**
  * Create a CustomizedButton
  * @param {string} text What to write on the button
