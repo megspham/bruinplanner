@@ -8,6 +8,7 @@ import {
   arrayMove
 } from '@dnd-kit/sortable';
 import { useLocation } from "react-router-dom";
+import { VariableClasses } from "../SidebarGroups/VariableClasses"
 
 async function sendRequest(apiName, requestBody){
   const response = await fetch("http://127.0.0.1:8000/api/" + apiName, {
@@ -233,6 +234,7 @@ function Calendar() {
           <div className="Sidebar">
             <div className="ClassList">
                 <Container id="sidebar" items={classes.sidebar}/>
+                <VariableClasses />
             </div>
           </div>
           <DragOverlay>
