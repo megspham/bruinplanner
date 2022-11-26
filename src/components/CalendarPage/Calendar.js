@@ -69,38 +69,6 @@ function Calendar() {
   const calendarState = classes;
   
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
-      const classNames = [];
-      const extractedClassInfo = {};
-      for (const c of result) {
-        classNames.push(c[1])
-
-        let units = c[5]; 
-        let prereqs = c[6] == null ? "" : c[6];
-        let hist = c[7] == null ? "" : c[7];
-
-        if (!extractedClassInfo[c[1]]) {
-          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
-        }
-      }
-
-      setClassInfo(extractedClassInfo);
-      console.log(extractedClassInfo)
-      console.log('setting')
-      setClasses(prev => ({
-        ...prev,
-        sidebar : classNames
-      }));
-    }
-
-    if (!loadedSidebar) {
-      fetchData();
-      setloadedSidebar(true);
-    } else {
-      return
-    }
-
     if (!hasParsed) {
       setHasParsed(true);
     } else {
@@ -123,6 +91,7 @@ function Calendar() {
     setStartYear(start_year);
     let default_calendar = [];
     let default_courses = [];
+    let user_taken_courses = [];
     for (let row_idx = 0; row_idx < 4; row_idx++) {
       let fall = {
         'name': "Fall",
@@ -172,6 +141,7 @@ function Calendar() {
         let courses = [];
         for (let j = 0; j < q.quarter.courses.length; j++) {
           courses[j] = q.quarter.courses[j].course.name;
+          user_taken_courses.push(courses[j])
         }
         const quarter = {
           'name': quarter_name,
@@ -229,6 +199,43 @@ function Calendar() {
       }).then(res => console.log(res))
         .catch(err => console.log(err));
     }
+
+    // Fill sidebar with rest of classes not in parsedInput
+    const fetchData = async () => {
+      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
+      const classNames = [];
+      const extractedClassInfo = {};
+      for (const c of result) {
+        if (user_taken_courses.includes(c[1].replace(/\s/g, ''))) {
+          continue;
+        }
+
+        classNames.push(c[1]);
+
+        let units = c[5]; 
+        let prereqs = c[6] == null ? "" : c[6];
+        let hist = c[7] == null ? "" : c[7];
+
+        if (!extractedClassInfo[c[1]]) {
+          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
+        }
+      }
+
+      setClassInfo(extractedClassInfo);
+      console.log('setting')
+      setClasses(prev => ({
+        ...prev,
+        sidebar : classNames
+      }));
+    }
+
+    if (!loadedSidebar) {
+      fetchData();
+      setloadedSidebar(true);
+    } else {
+      return
+    }
+
   });
 
   const [activeId, setActiveId] = useState(null);

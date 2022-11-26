@@ -17,10 +17,8 @@ import { Text } from "react-native";
  * @returns CustomizedButton HTML div object
  */
 export function SidebarButton({ width, height, text, kind, classInfo }) {
-  console.log("From sidebar")
-  console.log(classInfo)
   if (classInfo == undefined) {
-    classInfo = "|||";
+    classInfo = "";
   }
 
   let sidebar_style = {
@@ -77,6 +75,7 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
         <a
           data-for={text}
           data-html={true}
+          data-tip-disable={classInfo === "" ? true : false}
           data-tip={ReactDOMServer.renderToString(
             <div style={tooltipStyle}>
               <p> 
