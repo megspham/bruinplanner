@@ -9,7 +9,7 @@ import {SortableItem} from "../SortableItem";
 import {SidebarButton} from "../SidebarButton";
 
 export default function Container(props) {
-  const { id, items } = props;
+  const { id, items, kind } = props;
 
   const { setNodeRef } = useDroppable({
     id
@@ -23,8 +23,8 @@ export default function Container(props) {
     >
       <div ref={setNodeRef}>
         {items.map((id) => (
-          <SortableItem key={id} id={id}>
-            <SidebarButton text={id} />  
+          <SortableItem key={id} id={id} >
+            <SidebarButton text={id} kind={kind} style="width:12vw" />  
           </SortableItem>
         ))}
       </div>

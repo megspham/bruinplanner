@@ -3,7 +3,28 @@ body {
 }
   
 .BruinPlanner {
+    margin-top: 20px;
     display: flex;
     overflow: hidden;
     flex-direction: row;
 }
+
+.Sidebar {
+    margin-left: 50px;
+    display: flex;
+    display: inline-block;
+    overflow: scroll;
+    scrollbar-color: white;
+    scrollbar-width: 10px;
+    /* width: 12vw; */
+    height: 100vh;
+  
+    justify-content: right;
+    position: relative;
+  
+}
+
+.sidebar-button {
+    
+}
+

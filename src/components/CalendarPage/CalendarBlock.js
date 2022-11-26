@@ -38,7 +38,7 @@ function CalendarBlock({ color, calendarDate, blockId, courses, blockState }) {
     <div className="BackgroundBlock" style={{backgroundColor: color}}>
       <div className="CalendarTitle">{calendarDate}</div>
       <div className="DisplayBlock">
-        <Container id={blockId} items={blockState}/>
+        <Container id={blockId} items={blockState} kind="calendar"/>
        </div>
      </div>
   );
