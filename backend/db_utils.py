@@ -8,7 +8,7 @@ mydb = mysql.connector.connect(
   database="bruinplanner"
 )
 
-mycursor = mydb.cursor()
+mycursor = mydb.cursor(buffered = True)
 
 def execute(*args):
     """
