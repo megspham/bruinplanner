@@ -269,7 +269,7 @@ def parseCourse(department, number, start_term=None, type_=None):
                 number_index += 1
             if numberFound:
                 requisite_department = requisite["requisiteCourseName"][:number_index].strip()
-                requisite_number = requisite["requisiteCourseName"][number_index:].strip()
+                requisite_number = requisite["requisiteCourseName"][number_index:].strip().lstrip("0")
                 class_requisites_list.append(requisite_department + " " + requisite_number)
             else:
                 class_requisites_list.append(requisiteName)

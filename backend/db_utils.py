@@ -20,6 +20,6 @@ def execute(*args):
     except:
       myresult = None
     mydb.commit()
-    mycursor.close()
-    mycursor = mydb.cursor(buffered = True)
+    #mycursor.close()
+    #mycursor = mydb.cursor(buffered = True)
     return myresult
