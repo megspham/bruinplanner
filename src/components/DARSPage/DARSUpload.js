@@ -32,7 +32,7 @@ const DARSUpload = () => {
             </ol>
           </div>
           <div class="page-content">
-            <div class="dars-button-container">
+            <div class="dars-button-container2">
               <UploadFileForm googleId={id}></UploadFileForm>
             </div>
           </div>
@@ -40,7 +40,7 @@ const DARSUpload = () => {
       ) : (
         <div>
           <h1 class="welcome-message">Please sign in again</h1>
-          <div class="dars-button-container">
+          <div class="dars-button-container2">
             <Login destination={"/dars/upload"}></Login>
           </div>
         </div>
