@@ -30,7 +30,7 @@ schema = '''{
                                 {
                                     "type": "int"
                                 },
-                                "quarter_name":
+                                "name":
                                 {
                                     "type": "string",
                                     "enum": ["WI", "SP", "SU", "FA"]
@@ -45,27 +45,27 @@ schema = '''{
                                             "type": "object",
                                             "properties":
                                             {
-                                                "course_name":
+                                                "name":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_department":
+                                                "department":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_description":
+                                                "description":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_units":
+                                                "units":
                                                 {
                                                     "type": "float"
                                                 },
-                                                "course_requirement":
+                                                "requirement":
                                                 {
                                                     "type": "string"
                                                 },
-                                                "course_pre_requisites":
+                                                "pre_requisites":
                                                 {
                                                     "type": "array",
                                                     "items":
@@ -86,9 +86,20 @@ schema = '''{
                                                             "type": "string"
                                                         }
                                                     }
+                                                },
+                                                "unsatisfied_pre_requisites":
+                                                {
+                                                    "type": "array",
+                                                    "items":
+                                                    {
+                                                        "name":
+                                                        {
+                                                            "type": "string"
+                                                        }
+                                                    }
                                                 }
                                             },
-                                            "required": ["course_name", "course_units", "course_requirement"]
+                                            "required": ["name", "units", "requirement"]
                                         }
                                     },
                                     "required": ["course"]
@@ -106,50 +117,155 @@ schema = '''{
 
 # minimal example of how the JSON format would be used
 example = '''{
-	"calendar": {
-		"quarters": [{
-				"quarter": {
-					"year": 2020,
-					"quarter_name": "WI",
-					"courses": [{
-						"course": {
-							"course_name": "CS 32",
-							"course_department": "CS",
-							"course_description": "Data Structures and Algorithms",
-							"course_units": 4.0,
-							"course_requirement": "CS",
-							"course_pre_requisites": [
-                                {
-								    "pre_requisite_name": "CS 31"
-							    }
-                            ]
-						}
-					}]
-				}
-			},
-			{
-				"quarter2": {
-					"year": 2020,
-					"quarter_name": "SP",
-					"courses": [{
-						"course": {
-							"course_name": "CS 33",
-							"course_department": "CS",
-							"course_description": "Intro to Computer Architecture",
-							"course_units": 4.0,
-							"course_requirement": "CS",
-							"course_pre_requisites": [
-                                {
-								    "pre_requisite_name": "CS 31"
-							    }
-                            ]
-						}
-					}]
-				}
-			}
-		]
-	}
-}'''
+                "calendar": 
+                {
+                    "quarters": 
+                    [
+                        {
+                            "quarter": 
+                            {
+                                "year": 2019,
+                                "name": "FA",
+                                "courses": 
+                                [
+                                    {
+                                        "course": 
+                                        {
+                                            "name": "CS 31",
+                                            "department": "CS",
+                                            "description": "Introduction to C++",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "SP 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "WI 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2018"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "quarter": 
+                            {
+                                "year": 2020,
+                                "name": "WI",
+                                "courses": 
+                                [
+                                    {
+                                        "course": 
+                                        {
+                                            "name": "CS 32",
+                                            "department": "CS",
+                                            "description": "Data Structures and Algorithms",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
+                                            [
+                                                {
+                                                    "pre_requisite_name": "CS 31"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "WI 2018"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "quarter": 
+                            {
+                                "year": 2020,
+                                "name": "SP",
+                                "courses": 
+                                [
+                                    {
+                                        "course": 
+                                        {
+                                            "name": "CS 33",
+                                            "department": "CS",
+                                            "description": "Intro to Computer Architecture",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
+                                            [
+                                                {
+                                                    "pre_requisite_name": "CS 31"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "WI 2020"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2018"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "course": 
+                                        {
+                                            "name": "CS 111",
+                                            "department": "CS",
+                                            "description": "Operating Systems Principles",
+                                            "units": 4.0,
+                                            "requirement": "CS",
+                                            "pre_requisites": 
+                                            [
+                                                {
+                                                    "pre_requisite_name": "CS 32"
+                                                },
+                                                {
+                                                    "pre_requisite_name": "CS 33"
+                                                },
+                                                {
+                                                    "pre_requisite_name": "CS 35L"
+                                                }
+                                            ],
+                                            "historical_offerings":
+                                            [
+                                                {
+                                                    "historical_offering_term": "WI 2020"
+                                                },
+                                                {
+                                                    "historical_offering_term": "FA 2019"
+                                                },
+                                                {
+                                                    "historical_offering_term": "SP 2018"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }'''    
 
 def validate_json(json_string):
     """

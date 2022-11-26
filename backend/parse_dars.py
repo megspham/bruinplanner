@@ -21,12 +21,12 @@ requirement_categories_mapping = {
 
 def parse_dars(dars_file, start_quarter, start_year):
 	"""
-	Parses a DARS report, returning the corresponding courses list.
+	Parses a DARS report, returning the corresponding courses.
 
 	Parameters
 	----------
 	dars_file : str
-		The path to the DARS report file
+		The DARS report file as a string
 	start_quarter : str
 		The start quarter of the DARS report
 	start_year : int
@@ -34,9 +34,8 @@ def parse_dars(dars_file, start_quarter, start_year):
 
 	Returns
 	-------
-	courses : List[Tuple]
-		List of tuples, where each tuple contains information about a previously taken course:
-		
+	courses : pandas.DataFrame
+		pandas.DataFrame, where each row contains information about the quarters of that year and the corresponding courses:		
 			- Requirement
 			- Course Name
 			- Course Department
@@ -45,11 +44,28 @@ def parse_dars(dars_file, start_quarter, start_year):
 			- Year
 			- Units
 	"""
-	
-	quarter_to_number = {'WI': 1, 'SP': 2, 'SU': 3, 'FA': 4}
 
-	with open(dars_file, 'r', encoding="ISO-8859-1") as f:
-		soup = bs4.BeautifulSoup(f, 'html.parser')    
+	# check if the start quarter is valid
+	if start_quarter not in ['Winter', 'Spring', 'Summer', 'Fall']:
+		raise ValueError('Invalid start quarter')
+	
+	# check if the start year is valid
+	if start_year < 0:
+		raise ValueError('Invalid start year')
+
+	# convert the start year to a 2-digit string then to an int
+	start_year = int(str(start_year)[-2:])
+
+	# conert the start quarter to a 2-digit string
+	start_quarter = start_quarter[0:2].upper()
+
+	quarter_to_number = {'WI': 0.1, 'SP': 0.2, 'SU': 0.3, 'FA': 0.4}
+
+	# turn the dars file into a BeautifulSoup object
+	soup = bs4.BeautifulSoup(dars_file, 'html.parser')
+
+	# with open(dars_file, 'r', encoding="ISO-8859-1") as f:
+	# 	soup = bs4.BeautifulSoup(f, 'html.parser')    
 
 	requirements = soup.find_all('div', class_='reqTitle')
 	req_dividers = soup.find_all('div', class_='auditSubrequirements')
@@ -167,7 +183,7 @@ def parse_dars(dars_file, start_quarter, start_year):
 						quarter, year = term[:2], int(term[2:])
 
 						# get numeric representation of quarter
-						term_num = quarter_to_number[quarter] + (year - start_year) * 4
+						term_num = quarter_to_number[quarter] + year
 
 						if quarter != 'FA' and quarter != 'WI' and quarter != 'SP' and quarter != 'SU':
 							continue
@@ -186,12 +202,13 @@ def parse_dars(dars_file, start_quarter, start_year):
 	courses = pd.DataFrame(data, columns = ['Requirement', 'Course', 'Department', 'Description', 'Quarter', 'Year', 'Units', 'Term_Num'])
 
 	courses = courses[courses['Units'] > 0.0]
+	print(start_year)
 	courses = courses[courses['Year'] >= start_year]
 	courses = courses[courses['Term_Num'] >= quarter_to_number[start_quarter]]
 
 	courses = courses.sort_values(by=['Term_Num']).drop_duplicates(subset = ['Course'], keep='first').drop(columns=['Term_Num']).reset_index(drop=True)
 
-	# convert dataframe to list of tuples for easier population of database
-	courses = list(courses.itertuples(index=False, name=None)) 
+	# group courses by year
+	courses = courses.groupby(['Year']).agg({'Quarter': lambda x: list(x), 'Course': lambda x: list(x), 'Requirement': lambda x: list(x), 'Department': lambda x: list(x), 'Description': lambda x: list(x), 'Units': lambda x: list(x)}).reset_index()
 
 	return courses

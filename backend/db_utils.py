@@ -8,9 +8,12 @@ mydb = mysql.connector.connect(
   database="bruinplanner"
 )
 
-mycursor = mydb.cursor()
+mycursor = mydb.cursor(buffered = True)
 
 def execute(*args):
+    """
+    Function that executes a certain query in the database and fetches result.
+    """
     mycursor.execute(*args)
     myresult = mycursor.fetchall()
     mydb.commit()
