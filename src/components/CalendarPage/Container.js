@@ -7,6 +7,7 @@ import {
 
 import {SortableItem} from "../SortableItem";
 import {SidebarButton} from "../SidebarButton";
+import {DropdownButton} from "../DropdownButton"
 
 export default function Container(props) {
   const { id, items, kind } = props;
@@ -24,7 +25,7 @@ export default function Container(props) {
       <div ref={setNodeRef}>
         {items.map((id) => (
           <SortableItem key={id} id={id} >
-            <SidebarButton text={id} kind={kind} style="width:12vw" />  
+            {<SidebarButton text={id} kind={kind} style="width:12vw" />  }
           </SortableItem>
         ))}
       </div>

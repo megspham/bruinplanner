@@ -4,9 +4,7 @@ import CalendarList from './CalendarList';
 import {DndContext, DragOverlay, closestCorners} from '@dnd-kit/core';
 import {SidebarButton} from "../SidebarButton"
 import Container from "./Container";
-import {
-  arrayMove
-} from '@dnd-kit/sortable';
+import { arrayMove } from '@dnd-kit/sortable';
 import { useLocation } from "react-router-dom";
 import { VariableClasses } from "../SidebarGroups/VariableClasses"
 
@@ -55,7 +53,8 @@ function Calendar() {
     fa_4: [],
     wi_4: [],
     sp_4: [],
-    su_4: []
+    su_4: [],
+    variableClasses: ["CS Elective 1","CS Elective 2","CS Elective 3"]
   });
 
   const parsed_to_block_id = [
@@ -221,6 +220,7 @@ function Calendar() {
         .catch(err => console.log(err));
     }
   });
+
   const [activeId, setActiveId] = useState(null);
   return (
       <div className="BruinPlanner">
@@ -234,7 +234,7 @@ function Calendar() {
           <div className="Sidebar">
             <div className="ClassList">
                 <Container id="sidebar" items={classes.sidebar}/>
-                <VariableClasses />
+                <Container id="variable" items={classes.variableClasses} kind="dropdown"/>
             </div>
           </div>
           <DragOverlay>

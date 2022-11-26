@@ -5,6 +5,7 @@
 
 import React from "react";
 import "./SidebarButton.css";
+import {DropdownButton} from "./DropdownButton"
 
 /**
  * Create a CustomizedButton
@@ -45,12 +46,20 @@ export function SidebarButton({ width, height, text, kind }) {
     boxShadow: "0px 0px 11.0283px #8BB8E8",
     margin: "2px",
   };
-  return (
-    <button
-      type="button"
-      style={kind === "calendar" ? calendar_style : sidebar_style}
-    >
-      {text}
-    </button>
-  );
+  if (kind === "dropdown") {
+    return (
+        <DropdownButton
+            text={text}
+        />
+    );
+  } else {
+    return (
+        <button
+          type="button"
+          style={kind === "calendar" ? calendar_style : sidebar_style}
+        >
+          {text}
+        </button>
+    );
+  }
 }

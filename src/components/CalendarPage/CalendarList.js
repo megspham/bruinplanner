@@ -7,21 +7,12 @@ import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 import Login from "../Login";
 
-const parsed_to_block_id = [
-  ["fa_1", "wi_1", "sp_1", "su_1"],
-  ["fa_2", "wi_2", "sp_2", "su_2"],
-  ["fa_3", "wi_3", "sp_3", "su_3"],
-  ["fa_4", "wi_4", "sp_4", "su_4"]
-];
-
 function CalendarList({ classMappings, startYear }) {
   const location = useLocation();
   const id = location.state ? location.state.id : null;
   const calendarState = classMappings;
 
   const get_row = (row_idx) => {
-    // console.log(parsed);
-    // const row = parsed[row_idx];
     const color_dict = {
       0: "#005587",
       1: "#8BB8E8",
