@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
 import './Calendar.css';
-import Sidebar from "./Sidebar";
 import CalendarList from './CalendarList';
 import {DndContext, DragOverlay, closestCorners} from '@dnd-kit/core';
-import Draggable from '../Draggable';
 import {SidebarButton} from "../SidebarButton"
 import Container from "./Container";
 import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
+  arrayMove
 } from '@dnd-kit/sortable';
 
 export default function Calendar() {
@@ -55,7 +50,7 @@ export default function Calendar() {
           </div>
           <DragOverlay>
             {activeId ? (
-              <SidebarButton text={activeId} /> 
+              <SidebarButton className= "sidebar-button" text={activeId} /> 
             ): null}
           </DragOverlay>
         </DndContext>

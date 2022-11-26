@@ -23,8 +23,8 @@ export default function Container(props) {
     >
       <div ref={setNodeRef}>
         {items.map((id) => (
-          <SortableItem key={id} id={id}>
-            <SidebarButton text={id} />  
+          <SortableItem key={id} id={id} >
+            <SidebarButton text={id} style="width:12vw" />  
           </SortableItem>
         ))}
       </div>

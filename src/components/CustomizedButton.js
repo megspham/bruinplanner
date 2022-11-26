@@ -5,7 +5,6 @@
  */
 
 import React from "react"; 
-import "./CustomizedButton.css"; 
 
 /**
  * Create a CustomizedButton
