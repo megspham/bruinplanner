@@ -4,6 +4,13 @@ import {DndContext} from '@dnd-kit/core';
 import Draggable from '../Draggable';
 import {Droppable} from '../Droppable';
 import {SidebarButton} from "../SidebarButton"
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {SortableItem} from '../SortableItem';
 
 function Sidebar() {
   const [isDropped, setIsDropped] = useState(null); 
