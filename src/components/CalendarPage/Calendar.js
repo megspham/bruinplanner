@@ -1,4 +1,4 @@
-import React, { componentDidMount, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Calendar.css';
 import CalendarList from './CalendarList';
 import {DndContext, DragOverlay, closestCorners} from '@dnd-kit/core';
@@ -7,6 +7,7 @@ import Container from "./Container";
 import {
   arrayMove
 } from '@dnd-kit/sortable';
+import { useLocation } from "react-router-dom";
 
 async function sendRequest(apiName, requestBody){
   const response = await fetch("http://127.0.0.1:8000/api/" + apiName, {
@@ -32,6 +33,9 @@ async function getClasses(type_list=null, department_list=null, min_units=null, 
 }
 
 function Calendar() {
+  const [hasParsed, setHasParsed] = useState(false);
+  const [loadedSidebar, setloadedSidebar] = useState(false);
+  const [startYear, setStartYear] = useState(2022);
   const [classInfo, setClassInfo] = useState({});
   const [classes, setClasses] = useState({
     sidebar: [],
@@ -53,6 +57,17 @@ function Calendar() {
     su_4: []
   });
 
+  const parsed_to_block_id = [
+    ["fa_1", "wi_1", "sp_1", "su_1"],
+    ["fa_2", "wi_2", "sp_2", "su_2"],
+    ["fa_3", "wi_3", "sp_3", "su_3"],
+    ["fa_4", "wi_4", "sp_4", "su_4"]
+  ];
+  const location = useLocation();
+  const data = location.state.data;
+  const id = location.state.id;
+  const calendarState = classes;
+  
   useEffect(() => {
     const fetchData = async () => {
       const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 2, 4, null);
@@ -62,30 +77,149 @@ function Calendar() {
       }
 
       setClassInfo(result);
-      setClasses({
-        sidebar: classNames,
-        fa_1: [],
-        wi_1: [],
-        sp_1: [],
-        su_1: [],
-        fa_2: [],
-        wi_2: [],
-        sp_2: [],
-        su_2: [],
-        fa_3: [],
-        wi_3: [],
-        sp_3: [],
-        su_3: [],
-        fa_4: [],
-        wi_4: [],
-        sp_4: [],
-        su_4: []
-      })
+      console.log('setting')
+      setClasses(prev => ({
+        ...prev,
+        sidebar : classNames
+      }));
     }
 
-    fetchData()
-  }, []);
+    if (!loadedSidebar) {
+      fetchData();
+      setloadedSidebar(true);
+    } else {
+      return
+    }
 
+    if (!hasParsed) {
+      setHasParsed(true);
+    } else {
+      return;
+    }
+    console.log("parsing", calendarState)
+    let parsedInput = data;
+    let return_json = {
+      "calendar": {
+        "quarters": []
+      }
+    }
+    
+    // TODO: get the start year from the user (add a form on the DARs page?)
+    let start_year = new Date().getFullYear();
+
+    if (parsedInput !== null) {
+      start_year = parsedInput.calendar.quarters[0].quarter.year;
+    }
+    setStartYear(start_year);
+    let default_calendar = [];
+    let default_courses = [];
+    for (let row_idx = 0; row_idx < 4; row_idx++) {
+      let fall = {
+        'name': "Fall",
+        'year': start_year + row_idx,
+        'courses': default_courses
+      }
+      let winter = {
+        'name': "Winter",
+        'year': start_year + 1 + row_idx,
+        'courses': default_courses
+      }
+      let spring = {
+        'name': "Spring",
+        'year': start_year + 1 + row_idx,
+        'courses': default_courses
+      }
+      let summer = {
+        'name': "Summer",
+        'year': start_year + 1 + row_idx,
+        'courses': default_courses
+      }
+
+      let default_year = [fall, winter, spring, summer];
+      default_calendar.push(default_year);
+    }
+
+    if (parsedInput !== null) {
+      const quarter_name_dict = {
+        "FA": "Fall",
+        "WI": "Winter",
+        "SP": "Spring",
+        "SU": "Summer"
+      };
+      const quarter_id_dict = {
+        "FA": 0,
+        "WI": 1,
+        "SP": 2,
+        "SU": 3
+      }
+
+      let json_quarters = parsedInput.calendar.quarters;
+      for (let i = 0; i < json_quarters.length; i++) {
+        const q = json_quarters[i];
+        const year = q.quarter.year;
+        const quarter_name = quarter_name_dict[q.quarter.quarter];
+        const quarter_id = quarter_id_dict[q.quarter.quarter];
+        let courses = [];
+        for (let j = 0; j < q.quarter.courses.length; j++) {
+          courses[j] = q.quarter.courses[j].course.name;
+        }
+        const quarter = {
+          'name': quarter_name,
+          'year': year,
+          'courses': courses
+        }
+        let row_num = year - start_year - 1;
+        if (quarter_name === "Fall") {
+          row_num += 1;
+        }
+        if (row_num < 0) {
+          continue;
+        }
+        for (const course of quarter.courses) {
+          if (classes[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
+            setClasses(prev => ({
+              ...prev,
+              [[parsed_to_block_id[row_num][quarter_id]]]: [
+                ...prev[parsed_to_block_id[row_num][quarter_id]],
+                course
+              ]
+            }));
+          }
+        }
+        for (const course of classes[parsed_to_block_id[row_num][quarter_id]]) {
+          if (quarter.courses.indexOf(course) === -1) {
+            quarter.courses.push(course);
+          }
+        }
+        default_calendar[row_num][quarter_id] = quarter;
+        return_json.calendar.quarters.push(quarter);
+      }
+      console.log("parsed", classes);
+    } else {
+      let dc_json = require('./default_calendar.json');
+      let year_offset = [
+        0, 1, 1, 1,
+        1, 2, 2, 2,
+        2, 3, 3, 3,
+        3, 4, 4, 4
+      ]
+      for (let i = 0; i < dc_json.calendar.quarters.length; i++) {
+        dc_json.calendar.quarters[i].quarter.year = start_year + year_offset[i]
+      }
+      const requestBody = {
+        "id": id,
+        "calendar": dc_json
+      }
+      fetch("http://127.0.0.1:8000/api/updateCalendar", {
+        crossDomain: true,
+        mode: 'cors',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestBody)
+      }).then(res => console.log(res))
+        .catch(err => console.log(err));
+    }
+  });
   const [activeId, setActiveId] = useState(null);
   return (
       <div className="BruinPlanner">
@@ -95,7 +229,7 @@ function Calendar() {
           onDragOver={handleDragOver}
           collisionDetection={closestCorners}
         >
-          <CalendarList classMappings={classes}/>        
+          <CalendarList classMappings={classes} startYear={startYear}/>        
           <div className="Sidebar">
             <div className="ClassList">
                 <Container id="sidebar" items={classes.sidebar}/>
@@ -182,7 +316,7 @@ function Calendar() {
     setClasses((prev) => {
       const activeItems = prev[activeContainer];
       const overItems = prev[overContainer];
-
+      
       // Find the indexes for the items
       const activeIndex = activeItems.indexOf(id);
       const overIndex = overItems.indexOf(overId);
@@ -197,6 +331,7 @@ function Calendar() {
         newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
       }
 
+      console.log("inside set classes");
       return {
         ...prev,
         [activeContainer]: [
@@ -209,6 +344,7 @@ function Calendar() {
         ]
       };
     });
+    console.log(classes);
   }
 }
 
