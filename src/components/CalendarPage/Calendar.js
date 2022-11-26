@@ -54,7 +54,29 @@ function Calendar() {
     wi_4: [],
     sp_4: [],
     su_4: [],
-    variableClasses: ["CS Elective 1","CS Elective 2","CS Elective 3"]
+    variableClasses: [
+      {
+        trueId: "CS Elective 1",
+        options: [],
+        selected: "Choose a class...",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "CS Elective 2",
+        options: [],
+        selected: "Choose a class...",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "CS Elective 3",
+        options: [],
+        selected: "Choose a class...",
+        type: "elective",
+        status: "available"
+      }
+    ]
   });
 
   const parsed_to_block_id = [
@@ -72,8 +94,17 @@ function Calendar() {
     const fetchData = async () => {
       const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 2, 4, null);
       const classNames = [];
+      // Fetch classes and load into sidebar
       for (const c of result) {
-        classNames.push(c[1])
+        classNames.push(
+          {
+            trueId: c[1],
+            options: [c[1]],
+            selected: c[1],
+            type: c[0],
+            status: "available"
+          }
+        );
       }
 
       setClassInfo(result);
@@ -161,7 +192,14 @@ function Calendar() {
         const quarter_id = quarter_id_dict[q.quarter.quarter];
         let courses = [];
         for (let j = 0; j < q.quarter.courses.length; j++) {
-          courses[j] = q.quarter.courses[j].course.name;
+          // Populate course data from DARS
+          courses[j] = {
+            trueId: q.quarter.courses[j].course.name,
+            options: [q.quarter.courses[j].course.name],
+            selected: q.quarter.courses[j].course.name,
+            type: q.quarter.courses[j].course.type,
+            status: "taken"
+          }
         }
         const quarter = {
           'name': quarter_name,
@@ -251,7 +289,8 @@ function Calendar() {
       return id;
     }
 
-    return Object.keys(classes).find((key) => classes[key].includes(id));
+    // return Object.keys(classes).find((key) => classes[key].includes(id)); - changed to work w new format
+    return Object.keys(classes).find((key) => classes[key].find(e => (e ? e.trueId == id : false)));
   }
 
   function handleDragStart({active}) {
@@ -316,8 +355,9 @@ function Calendar() {
     }
 
     setClasses((prev) => {
-      const activeItems = prev[activeContainer];
-      const overItems = prev[overContainer];
+      // changed to work with the new object format
+      const activeItems = prev[activeContainer].flatMap(e => (e ? e.trueId : e));
+      const overItems = prev[overContainer].flatMap(e => (e ? e.trueId : e));
       
       // Find the indexes for the items
       const activeIndex = activeItems.indexOf(id);
@@ -328,16 +368,16 @@ function Calendar() {
         // We're at the root droppable of a container
         newIndex = overItems.length + 1;
       } else {
+        // We're on top of an element inside the container
         const isBelowLastItem = over && overIndex === overItems.length - 1;
         const modifier = isBelowLastItem ? 1 : 0;
         newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
       }
 
-      console.log("inside set classes");
       return {
         ...prev,
         [activeContainer]: [
-          ...prev[activeContainer].filter((item) => item !== active.id)
+          ...prev[activeContainer].filter((item) => item.trueId !== active.id)
         ],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),

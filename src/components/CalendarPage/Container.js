@@ -16,6 +16,9 @@ export default function Container(props) {
     id
   });
 
+  //console.log(items);
+  
+  // now supports loading classes in object format
   return (
     <SortableContext
       id={id}
@@ -23,10 +26,11 @@ export default function Container(props) {
       strategy={verticalListSortingStrategy}
     >
       <div ref={setNodeRef}>
-        {items.map((id) => (
-          <SortableItem key={id} id={id} >
-            {<SidebarButton text={id} kind={kind} style="width:12vw" />  }
+        {items.map((obj) => (obj ?
+          <SortableItem key={obj.trueId} id={obj.trueId} >
+            {<SidebarButton text={obj.selected} kind={kind} style="width:12vw" />  }
           </SortableItem>
+          : null
         ))}
       </div>
     </SortableContext>
