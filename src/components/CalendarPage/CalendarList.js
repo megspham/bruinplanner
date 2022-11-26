@@ -7,7 +7,7 @@ import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 import Login from "../Login";
 
-function CalendarList({ classMappings, startYear }) {
+function CalendarList({ classMappings, startYear, classInfo }) {
   const location = useLocation();
   const id = location.state ? location.state.id : null;
   const calendarState = classMappings;
@@ -32,7 +32,8 @@ function CalendarList({ classMappings, startYear }) {
       rows.push(<CalendarBlock color={color_dict[row_idx]}
         blockId={block_ids[i]}
         blockState={calendarState[block_ids[i]]}
-        calendarDate={quarters[i] + " " + (startYear + year_offset[4 * row_idx + i])}>
+        calendarDate={quarters[i] + " " + (startYear + year_offset[4 * row_idx + i])}
+        classInfo={classInfo}>
       </CalendarBlock>);
     }
     return <div className="CalendarRow">{rows}</div>;

@@ -70,13 +70,23 @@ function Calendar() {
   
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 2, 4, null);
+      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
       const classNames = [];
+      const extractedClassInfo = {};
       for (const c of result) {
         classNames.push(c[1])
+
+        let units = c[5]; 
+        let prereqs = c[6] == null ? "" : c[6];
+        let hist = c[7] == null ? "" : c[7];
+
+        if (!extractedClassInfo[c[1]]) {
+          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
+        }
       }
 
-      setClassInfo(result);
+      setClassInfo(extractedClassInfo);
+      console.log(extractedClassInfo)
       console.log('setting')
       setClasses(prev => ({
         ...prev,
@@ -230,16 +240,16 @@ function Calendar() {
           onDragOver={handleDragOver}
           collisionDetection={closestCorners}
         >
-          <CalendarList classMappings={classes} startYear={startYear}/>        
+          <CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo}/>        
           <div className="Sidebar">
             <div className="ClassList">
-                <Container id="sidebar" items={classes.sidebar}/>
-                <Container id="variable" items={classes.variableClasses} kind="dropdown"/>
+                <Container id="sidebar" items={classes.sidebar} classInfo={classInfo}/>
+                <Container id="variable" items={classes.variableClasses} kind="dropdown" classInfo={classInfo}/>
             </div>
           </div>
           <DragOverlay>
             {activeId ? (
-              <SidebarButton className= "sidebar-button" text={activeId} /> 
+              <SidebarButton className= "sidebar-button" text={activeId} classInfo={classInfo[activeId]}/> 
             ): null}
           </DragOverlay>
         </DndContext>
