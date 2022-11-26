@@ -17,4 +17,6 @@ def execute(*args):
     mycursor.execute(*args)
     myresult = mycursor.fetchall()
     mydb.commit()
+    mycursor.close()
+    mycursor = mydb.cursor(buffered = True)
     return myresult
