@@ -257,7 +257,21 @@ def parseCourse(department, number, start_term=None, type_=None):
 
     # get prerequisites
     if class_requisites_info:
-        class_requisites = ",".join([requisite["requisiteCourseName"] for requisite in class_requisites_info['courseRequisite']['requisiteCollection']])
+        class_requisites_list = []
+        for requisite in class_requisites_info['courseRequisite']['requisiteCollection']:
+            requisiteName = requisite['requisiteCourseName']
+            number_index = 0
+            numberFound = False
+            for c in requisiteName:
+                if c.isdigit():
+                    numberFound = True
+                    break
+                number_index += 1
+            assert numberFound
+            requisite_department = requisite["requisiteCourseName"][:number_index].strip()
+            requisite_number = requisite["requisiteCourseName"][number_index:].strip()
+            class_requisites_list.append(requisite_department + " " + requisite_number)
+        class_requisites = ", ".join(class_requisites_list)
     else:
         class_requisites = None
 
