@@ -89,19 +89,19 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
           <button
             type="button"
             style={kind === "calendar" ? calendar_style : sidebar_style}>
-          {text}
+            {text}
           </button>
         </a>
           <ReactTooltip
               id={text}
-              place={"left"}
-              type={"light"}
-              effect={"solid"}
+              place="left"
+              type="light"
+              effect="solid"
               multiline={true}
-              textColor={"#005587"}
-              backgroundColor={"#E5F1FF"}
-              border={"true"}
-              borderColor={"#0070E8"}
+              textColor="#005587"
+              backgroundColor="#E5F1FF"
+              border={true}
+              borderColor="#0070E8"
           />
       </div>
     );
