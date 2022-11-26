@@ -4,7 +4,7 @@ import json
 import json_format
 import parse_dars
 import populate_database
-import difflib import SequenceMatcher
+import difflib
 
 # POST /api/addUser
 def addUser(id):
@@ -160,7 +160,14 @@ def checkCalendar(calendar):
         # loop over each course in the current quarter
         for curr_course_dict in curr_quarter_classes:
             curr_course = curr_course_dict['course']
-
+            def my_split(s):
+                split_list = list(filter(None, re.split(r'(\d+)', s)))
+                try:
+                    stripped_course_num = str(int(split_list[-1]))
+                    return split_list[0] + ' ' + stripped_course_num
+                except:
+                    stripped_course_num = str(int(split_list[-2]))
+                    return split_list[0] + ' ' + stripped_course_num + split_list[-1]
             try:
                 # prereqs = [curr_course['pre_requisites'][i]['pre_requisite_name'] for i in range(len(curr_course['pre_requisites']))]
                 prereqs = db.execute("SELECT class_requisites FROM courses WHERE name=%s", (curr_course['name'], ))
@@ -168,6 +175,9 @@ def checkCalendar(calendar):
                     continue
                 else:
                     prereqs = prereqs[0][0].split(',')
+                    print(prereqs)
+                    prereqs = list(map(lambda course : my_split(course), prereqs))
+                    print(prereqs)
             except Exception as e:
                 print(curr_course['name'], e)
                 continue # there are no prereqs for this course

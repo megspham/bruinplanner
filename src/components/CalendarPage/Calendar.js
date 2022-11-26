@@ -73,15 +73,14 @@ async function saveAndCheck(start_year, classes, id) {
     "id": id,
     "calendar": return_json
   }
-  fetch("http://127.0.0.1:8000/api/updateCalendar", {
+  const res = await fetch("http://127.0.0.1:8000/api/updateCalendar", {
     crossDomain: true,
     mode: 'cors',
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(requestBody)
-  }).then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+  });
+  return res.json();
 }
 
 function Calendar() {
@@ -121,6 +120,19 @@ function Calendar() {
   const id = location.state.id;
   const calendarState = classes;
 
+  const display_unsatisfied_prereqs = async (start_year, classes, id) => {
+    const calendar = await saveAndCheck(start_year, classes, id);
+    console.log(calendar.calendar.quarters)
+    const quarters = calendar.calendar.quarters;
+    for (const quarter of quarters) {
+      for (const course of quarter.courses) {
+        if ("unsatisfied_pre_requisites" in course) {
+          console.log(course.name, course.unsatisfied_pre_requisites);
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
@@ -139,149 +151,155 @@ function Calendar() {
       }
 
       setClassInfo(extractedClassInfo);
-      console.log(extractedClassInfo)
+      // console.log(extractedClassInfo)
       setClasses(prev => ({
         ...prev,
         sidebar: classNames
       }));
     }
-
-    if (!loadedSidebar) {
-      fetchData();
-      setloadedSidebar(true);
-    } else {
-      return
-    }
-
-    if (!hasParsed) {
-      setHasParsed(true);
-    } else {
-      return;
-    }
-
-    let parsedInput = data;
-    let return_json = {
-      "calendar": {
-        "quarters": []
-      }
-    }
-
-    // TODO: get the start year from the user (add a form on the DARs page?)
-    let start_year = new Date().getFullYear();
-
-    if (parsedInput !== null) {
-      start_year = parsedInput.calendar.quarters[0].quarter.year;
-    }
-    setStartYear(start_year);
-    let default_calendar = [];
-    let default_courses = [];
-    for (let row_idx = 0; row_idx < 4; row_idx++) {
-      let fall = {
-        'name': "Fall",
-        'year': start_year + row_idx,
-        'courses': default_courses
-      }
-      let winter = {
-        'name': "Winter",
-        'year': start_year + 1 + row_idx,
-        'courses': default_courses
-      }
-      let spring = {
-        'name': "Spring",
-        'year': start_year + 1 + row_idx,
-        'courses': default_courses
-      }
-      let summer = {
-        'name': "Summer",
-        'year': start_year + 1 + row_idx,
-        'courses': default_courses
-      }
-
-      let default_year = [fall, winter, spring, summer];
-      default_calendar.push(default_year);
-    }
-
-    if (parsedInput !== null) {
-      const quarter_name_dict = {
-        "FA": "Fall",
-        "WI": "Winter",
-        "SP": "Spring",
-        "SU": "Summer"
-      };
-      const quarter_id_dict = {
-        "FA": 0,
-        "WI": 1,
-        "SP": 2,
-        "SU": 3
-      }
-
-      let json_quarters = parsedInput.calendar.quarters;
-      for (let i = 0; i < json_quarters.length; i++) {
-        const q = json_quarters[i];
-        const year = q.quarter.year;
-        const quarter_name = quarter_name_dict[q.quarter.quarter];
-        const quarter_id = quarter_id_dict[q.quarter.quarter];
-        let courses = [];
-        for (let j = 0; j < q.quarter.courses.length; j++) {
-          courses[j] = q.quarter.courses[j].course.name;
+    
+    const parseData = async () => {
+      let parsedInput = data;
+      let return_json = {
+        "calendar": {
+          "quarters": []
         }
-        const quarter = {
-          'name': quarter_name,
-          'year': year,
-          'courses': courses
+      }
+      // TODO: get the start year from the user (add a form on the DARs page?)
+      let start_year = new Date().getFullYear();
+
+      if (parsedInput !== null) {
+        start_year = parsedInput.calendar.quarters[0].quarter.year;
+      }
+      setStartYear(start_year);
+      let default_calendar = [];
+      let default_courses = [];
+      for (let row_idx = 0; row_idx < 4; row_idx++) {
+        let fall = {
+          'name': "Fall",
+          'year': start_year + row_idx,
+          'courses': default_courses
         }
-        let row_num = year - start_year - 1;
-        if (quarter_name === "Fall") {
-          row_num += 1;
+        let winter = {
+          'name': "Winter",
+          'year': start_year + 1 + row_idx,
+          'courses': default_courses
         }
-        if (row_num < 0) {
-          continue;
+        let spring = {
+          'name': "Spring",
+          'year': start_year + 1 + row_idx,
+          'courses': default_courses
         }
-        for (const course of quarter.courses) {
-          if (classes[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
-            setClasses(prev => ({
-              ...prev,
-              [[parsed_to_block_id[row_num][quarter_id]]]: [
-                ...prev[parsed_to_block_id[row_num][quarter_id]],
-                course
-              ]
-            }));
+        let summer = {
+          'name': "Summer",
+          'year': start_year + 1 + row_idx,
+          'courses': default_courses
+        }
+
+        let default_year = [fall, winter, spring, summer];
+        default_calendar.push(default_year);
+      }
+
+      if (parsedInput !== null) {
+        const quarter_name_dict = {
+          "FA": "Fall",
+          "WI": "Winter",
+          "SP": "Spring",
+          "SU": "Summer"
+        };
+        const quarter_id_dict = {
+          "FA": 0,
+          "WI": 1,
+          "SP": 2,
+          "SU": 3
+        }
+
+        let json_quarters = parsedInput.calendar.quarters;
+        for (let i = 0; i < json_quarters.length; i++) {
+          const q = json_quarters[i];
+          const year = q.quarter.year;
+          const quarter_name = quarter_name_dict[q.quarter.name];
+          const quarter_id = quarter_id_dict[q.quarter.name];
+          let courses = [];
+          for (let j = 0; j < q.quarter.courses.length; j++) {
+            courses[j] = q.quarter.courses[j].course.name;
           }
-        }
-        for (const course of classes[parsed_to_block_id[row_num][quarter_id]]) {
-          if (quarter.courses.indexOf(course) === -1) {
-            quarter.courses.push(course);
+          const quarter = {
+            'name': quarter_name,
+            'year': year,
+            'courses': courses
           }
+          let row_num = year - start_year - 1;
+          if (quarter_name === "Fall") {
+            row_num += 1;
+          }
+          if (row_num < 0) {
+            continue;
+          }
+          console.log('classes', row_num, quarter_id);
+          for (const course of quarter.courses) {
+            if (classes[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
+              setClasses(prev => ({
+                ...prev,
+                [[parsed_to_block_id[row_num][quarter_id]]]: [
+                  ...prev[parsed_to_block_id[row_num][quarter_id]],
+                  course
+                ]
+              }));
+            }
+          }
+          for (const course of classes[parsed_to_block_id[row_num][quarter_id]]) {
+            if (quarter.courses.indexOf(course) === -1) {
+              quarter.courses.push(course);
+            }
+          }
+          if (return_json.calendar.quarters.indexOf(quarter) === -1) {
+            return_json.calendar.quarters.push(quarter);
+          }
+          // console.log("return", return_json)
         }
-        if (return_json.calendar.quarters.indexOf(quarter) === -1) {
-          return_json.calendar.quarters.push(quarter);
+      } else {
+        let dc_json = require('./default_calendar.json');
+        let year_offset = [
+          0, 1, 1, 1,
+          1, 2, 2, 2,
+          2, 3, 3, 3,
+          3, 4, 4, 4
+        ]
+        for (let i = 0; i < dc_json.calendar.quarters.length; i++) {
+          dc_json.calendar.quarters[i].quarter.year = start_year + year_offset[i]
         }
-        // console.log("return", return_json)
+        const requestBody = {
+          "id": id,
+          "calendar": dc_json
+        }
+        fetch("http://127.0.0.1:8000/api/updateCalendar", {
+          crossDomain: true,
+          mode: 'cors',
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody)
+        }).then(res => console.log(res))
+          .catch(err => console.log(err));
       }
-    } else {
-      let dc_json = require('./default_calendar.json');
-      let year_offset = [
-        0, 1, 1, 1,
-        1, 2, 2, 2,
-        2, 3, 3, 3,
-        3, 4, 4, 4
-      ]
-      for (let i = 0; i < dc_json.calendar.quarters.length; i++) {
-        dc_json.calendar.quarters[i].quarter.year = start_year + year_offset[i]
-      }
-      const requestBody = {
-        "id": id,
-        "calendar": dc_json
-      }
-      fetch("http://127.0.0.1:8000/api/updateCalendar", {
-        crossDomain: true,
-        mode: 'cors',
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(requestBody)
-      }).then(res => console.log(res))
-        .catch(err => console.log(err));
     }
+
+    const load_and_parse = async () => {
+      if (!hasParsed) {
+        setHasParsed(true);
+        if (!loadedSidebar) {
+          setloadedSidebar(true);
+          fetchData().then(() => {
+            parseData();
+          })
+        } else {
+          return
+        }
+      } else {
+        return;
+      }
+    }
+    load_and_parse();
   });
 
   const [activeId, setActiveId] = useState(null);
@@ -295,7 +313,7 @@ function Calendar() {
       >
         <CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo} />
         <div className="Sidebar">
-          <button onClick={() => saveAndCheck(startYear, classes, id)}>Click to Save and Check Calaendar</button>
+          <button onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calaendar</button>
           <div className="ClassList">
             <Container id="sidebar" items={classes.sidebar} classInfo={classInfo} />
             <Container id="variable" items={classes.variableClasses} kind="dropdown" classInfo={classInfo} />

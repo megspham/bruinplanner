@@ -5,7 +5,7 @@
 
 import React from "react";
 import "./SidebarButton.css";
-import {DropdownButton} from "./DropdownButton";
+import { DropdownButton } from "./DropdownButton";
 import ReactTooltip from "react-tooltip";
 import ReactDOMServer from "react-dom/server";
 import { Text } from "react-native";
@@ -17,8 +17,8 @@ import { Text } from "react-native";
  * @returns CustomizedButton HTML div object
  */
 export function SidebarButton({ width, height, text, kind, classInfo }) {
-  console.log("From sidebar")
-  console.log(classInfo)
+  // console.log("From sidebar")
+  // console.log(classInfo)
   if (classInfo == undefined) {
     classInfo = "|||";
   }
@@ -67,9 +67,9 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
 
   if (kind === "dropdown") {
     return (
-        <DropdownButton
-            text={text}
-        />
+      <DropdownButton
+        text={text}
+      />
     );
   } else {
     return (
@@ -79,15 +79,9 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
           data-html={true}
           data-tip={ReactDOMServer.renderToString(
             <div style={tooltipStyle}>
-              <p> 
-                <Text>{"\n"}</Text>
-                <b>Units: </b> {classInfo.split("|")[0]} 
-                <Text>{"\n\n"}</Text>
-                <b>Prerequisites: </b> {classInfo.split("|")[1]}
-                <Text>{"\n\n"}</Text>
-                <b>Historical Offerings: </b> {classInfo.split("|")[2]}
-                <Text>{"\n\n"}</Text>
-                </p>
+              <p><b>Units: </b> {classInfo.split("|")[0]}</p>
+              <p><b>Prerequisites: </b> {classInfo.split("|")[1]}</p>
+              <p><b>Historical Offerings: </b> {classInfo.split("|")[2]}</p>
             </div>)}>
           <button
             type="button"
@@ -95,17 +89,17 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
             {text}
           </button>
         </a>
-          <ReactTooltip
-              id={text}
-              place="left"
-              type="light"
-              effect="solid"
-              multiline={true}
-              textColor="#005587"
-              backgroundColor="#E5F1FF"
-              border={true}
-              borderColor="#0070E8"
-          />
+        <ReactTooltip
+          id={text}
+          place="left"
+          type="light"
+          effect="solid"
+          multiline={true}
+          textColor="#005587"
+          backgroundColor="#E5F1FF"
+          border={true}
+          borderColor="#0070E8"
+        />
       </div>
     );
   }
