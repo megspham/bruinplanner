@@ -144,7 +144,8 @@ def checkCalendar(calendar):
     try:
         # now loop over each quarter in order
         list_of_quarters_sorted = sorted(calendar['calendar']['quarters'], key=lambda x: x['quarter']['year'] + quarter2Num[x['quarter']['name']])
-    except:
+    except Exception as e:
+        print("Exception on quarter sorting", e)
         return calendar # if the calendar is empty, it is valid
 
     for quart_index, quarter_dict in enumerate(list_of_quarters_sorted):
@@ -160,8 +161,14 @@ def checkCalendar(calendar):
             curr_course = curr_course_dict['course']
 
             try:
-                prereqs = [curr_course['pre_requisites'][i]['pre_requisite_name'] for i in range(len(curr_course['pre_requisites']))]
-            except:
+                # prereqs = [curr_course['pre_requisites'][i]['pre_requisite_name'] for i in range(len(curr_course['pre_requisites']))]
+                prereqs = db.execute("SELECT class_requisites FROM courses WHERE name=%s", (curr_course['name'], ))
+                if prereqs == []:
+                    continue
+                else:
+                    prereqs = prereqs[0][0].split(',')
+            except Exception as e:
+                print(curr_course['name'], e)
                 continue # there are no prereqs for this course
             
             # loop over every previous quarter
