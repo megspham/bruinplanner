@@ -12,12 +12,12 @@ import Container from "./Container";
  * @returns CalendarBlock HTML div object
  */
 
-function CalendarBlock({ color, calendarDate, blockId, courses, blockState }) {
+function CalendarBlock({ color, calendarDate, blockId, courses, blockState, classInfo }) {
   return (
     <div className="BackgroundBlock" style={{backgroundColor: color}}>
       <div className="CalendarTitle">{calendarDate}</div>
       <div className="DisplayBlock">
-        <Container id={blockId} items={blockState} kind="calendar"/>
+        <Container id={blockId} items={blockState} kind="calendar" classInfo={classInfo}/>
        </div>
      </div>
   );
