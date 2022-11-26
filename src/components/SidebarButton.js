@@ -19,6 +19,9 @@ import { Text } from "react-native";
 export function SidebarButton({ width, height, text, kind, classInfo }) {
   console.log("From sidebar")
   console.log(classInfo)
+  if (classInfo == undefined) {
+    classInfo = "|||";
+  }
 
   let sidebar_style = {
     width: "333.78px",
