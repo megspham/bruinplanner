@@ -58,9 +58,11 @@ async function saveAndCheck(start_year, classes, id) {
         continue;
       }
       let return_quarter = {
-        year: encoding_to_nameyear(quarter_name).year,
-        name: encoding_to_nameyear(quarter_name).name,
-        courses: await expand_quarter_info(quarter_courses)
+        quarter: {
+          year: encoding_to_nameyear(quarter_name).year,
+          name: encoding_to_nameyear(quarter_name).name,
+          courses: await expand_quarter_info(quarter_courses)
+        }
       }
       return_json.calendar.quarters.push(return_quarter);
     }
