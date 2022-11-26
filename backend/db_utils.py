@@ -15,6 +15,9 @@ def execute(*args):
     Function that executes a certain query in the database and fetches result.
     """
     mycursor.execute(*args)
-    myresult = mycursor.fetchall()
+    if (args[0].split(" ")[0] == "INSERT"):
+      myresult = None
+    else:
+      myresult = mycursor.fetchall()
     mydb.commit()
     return myresult

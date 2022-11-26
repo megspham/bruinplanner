@@ -75,8 +75,8 @@ def getCalendar(id):
     """
     try:
         return db.execute("SELECT calendar FROM users WHERE id=%s;", (id,))[0][0]
-    except:
-        print("User does not exist in database")
+    except Exception as e:
+        print(e)
         return None
 
 # POST /api/updateCalendar
@@ -116,6 +116,7 @@ def updateCalendar(id, calendar):
 
         return calendar_with_possible_errors
     except Exception as e:
+        print(e)
         return None
 
 # POST /api/checkCalendar
