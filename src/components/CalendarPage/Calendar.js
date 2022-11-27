@@ -328,7 +328,7 @@ function Calendar() {
         <CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo} />
         <div className="Sidebar">
           <div className='display-linebreak'>
-            <button onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calaendar</button>
+            <button className="save-button" onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calendar</button>
             <p>{unsatisfiedPreReqs}</p>
           </div>
           <div className="ClassList">

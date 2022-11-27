@@ -27,7 +27,26 @@ body {
 .sidebar-button {}
 
 .display-linebreak {
+    font-family: Montserrat;
+    font-style: normal;
     padding-left: 10px;
     width: 80%;
     white-space: pre-line;
+}
+
+.save-button {
+    width: 333.78px;
+    height: 73.86px;
+    background: #FFFFFF;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25.7902px;
+    line-height: 31px;
+    border: none;
+    border-radius: 3.68431px;
+    /* text-transform: uppercase; */
+    color: #005587;
+    box-shadow: 0px 0px 11.0283px #8BB8E8;
+    margin-top: 10px;
 }
