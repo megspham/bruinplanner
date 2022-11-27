@@ -17,7 +17,17 @@ const display_text = {
     'GE-AH-PL': "PLA"
 }
 
-let elective_options = [];
+const json_to_options = (json) => {
+    let classes = json.classes;
+    let options =[]
+    for (const c of classes) {
+        var dict = { value: c[1], label: c[1] };
+        options.push(dict);
+    }
+    return options
+}
+
+let elective_options = json_to_options(require("./class-info/req-cs.json"))
 
 export function Electives() {
     const [elective1, setelective1] = useState(null);
@@ -25,37 +35,7 @@ export function Electives() {
     const [elective3, setelective3] = useState(null);
     const [elective4, setelective4] = useState(null);
     const [elective5, setelective5] = useState(null);
-
-    const create_options = (type_list) => {
-        console.log("creating option")
-        let options = []
-        const requestBody = {
-            "type_list": type_list,
-            "department_list": null,
-            "min_units": 0,
-            "max_units": 99,
-            "classes_taken": null
-        }
-        fetch("http://127.0.0.1:8000/api/getClasses", {
-            crossDomain: true,
-            mode: 'cors',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody)
-        }).then(res => res.json())
-            .then(json => {
-                let classes = json.classes;
-                for (const c of classes) {
-                    var dict = { value: c[1], label: c[1] };
-                    options.push(dict);
-                }
-            }).catch(err => console.log(err))
-        return options
-    }
-    if (elective_options.length === 0) {
-        elective_options = create_options(['cs-elective']);
-    }
-
+    
     return (
         <div className="ge-ah-list">
             <DropdownButton

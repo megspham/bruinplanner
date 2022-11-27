@@ -173,9 +173,10 @@ function Calendar() {
         let units = c[5];
         let prereqs = c[6] == null ? "" : c[6];
         let hist = c[7] == null ? "" : c[7];
+        let title = c[8] == null ? "" : c[8];
 
         if (!extractedClassInfo[c[1]]) {
-          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
+          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist + "|" + title;
         }
       }
       let filtered_classNames = classNames.filter(course => !(inCalendar.includes(course.split(' ').join(''))));

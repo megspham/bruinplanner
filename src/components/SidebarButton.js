@@ -78,6 +78,7 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
           data-tip-disable={classInfo === "" ? true : false}
           data-tip={ReactDOMServer.renderToString(
             <div style={tooltipStyle}>
+              <p><b>Title: </b> {classInfo.split("|")[3]}</p>
               <p><b>Units: </b> {classInfo.split("|")[0]}</p>
               <p><b>Prerequisites: </b> {classInfo.split("|")[1] === "" ? "None" : classInfo.split("|")[1]}</p>
               <p><b>Historical Offerings: </b> {classInfo.split("|")[2]}</p>
