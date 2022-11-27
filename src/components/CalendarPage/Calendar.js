@@ -199,6 +199,7 @@ function Calendar() {
       if (parsedInput !== null) {
         start_year = parsedInput.calendar.quarters[0].quarter.year;
       }
+
       setStartYear(start_year);
   
       if (parsedInput !== null) {
