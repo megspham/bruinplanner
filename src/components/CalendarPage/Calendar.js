@@ -135,9 +135,11 @@ function Calendar() {
   const calendarState = classes;
 
   const display_unsatisfied_prereqs = async (start_year, classes, id) => {
+    const targetDiv = document.getElementById("status");
+    targetDiv.style.display = "none";
     const returned_calendar = await saveAndCheck(start_year, classes, id);
     console.log(returned_calendar)
-    let display_string = 'The following courses have unmet pre-requisities: \n'
+    let display_string = 'Saved successfully.\n The following courses have unmet pre-requisities: \n'
     for (let i = 0; i < returned_calendar.calendar.quarters.length; i++) {
       let quarter = returned_calendar.calendar.quarters[i]
       let courses = quarter.quarter.courses
@@ -151,11 +153,12 @@ function Calendar() {
         }
       }
     }
-    if (display_string === 'The following courses have unmet pre-requisities: \n') {
-      setunsatisfiedPreReqs("All pre-requisites satisfied")
+    if (display_string === 'Saved successfully.\n The following courses have unmet pre-requisities: \n') {
+      setunsatisfiedPreReqs("Saved successfully. All pre-requisites satisfied.")
     } else {
       setunsatisfiedPreReqs(display_string);
     }
+    targetDiv.style.display = "block";
   }
 
   useEffect(() => {
@@ -297,21 +300,6 @@ function Calendar() {
       } else {
         return;
       }
-
-      // if (!hasParsed) {
-      //   setHasParsed(true);
-      //   if (!loadedSidebar) {
-      //     setloadedSidebar(true);
-      //     fetchData().then(() => {
-      //       parseData();
-      //       console.log(inCalendar)
-      //     })
-      //   } else {
-      //     return
-      //   }
-      // } else {
-      //   return;
-      // }
     }
     load_and_parse();
   });
@@ -328,8 +316,8 @@ function Calendar() {
         <CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo} />
         <div className="Sidebar">
           <div className='display-linebreak'>
-            <button className="save-button" onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calendar</button>
-            <p>{unsatisfiedPreReqs}</p>
+            <button id='save-button' className="save-button" onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calendar</button>
+            <p id='status'>{unsatisfiedPreReqs}</p>
           </div>
           <div className="ClassList">
             <Container id="sidebar" items={classes.sidebar} classInfo={classInfo} />

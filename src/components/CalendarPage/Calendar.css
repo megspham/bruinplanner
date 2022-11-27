@@ -50,3 +50,9 @@ body {
     box-shadow: 0px 0px 11.0283px #8BB8E8;
     margin-top: 10px;
 }
+.save-button:active {
+    transform: scale(0.98);
+    /* Scaling button to 0.98 to its original size */
+    box-shadow: 3px 2px 22px 1px #8BB8E8;;
+    /* Lowering the shadow */
+}
