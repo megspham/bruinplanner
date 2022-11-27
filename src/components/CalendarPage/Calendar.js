@@ -7,6 +7,7 @@ import Container from "./Container";
 import { arrayMove } from '@dnd-kit/sortable';
 import { useLocation } from "react-router-dom";
 import { VariableClasses } from "../SidebarGroups/VariableClasses"
+import Select from 'react-select';
 
 async function sendRequest(apiName, requestBody) {
   const response = await fetch("http://127.0.0.1:8000/api/" + apiName, {
@@ -102,7 +103,7 @@ function Calendar() {
   const [startYear, setStartYear] = useState(2022);
   const [classInfo, setClassInfo] = useState({});
   const [classes, setClasses] = useState({
-    sidebar: [],
+    sidebar: ["CS 1", "CS 31", "CS 32"],
     fa_1: [],
     wi_1: [],
     sp_1: [],
@@ -322,7 +323,7 @@ function Calendar() {
           </div>
           <div className="ClassList">
             <Container id="sidebar" items={classes.sidebar} classInfo={classInfo} />
-            <Container id="variable" items={classes.variableClasses} kind="dropdown" classInfo={classInfo} />
+            <Container id="variable" items={classes.variableClasses} kind="dropdown" classInfo={classInfo} onUpdate={updateClasses}/>
           </div>
         </div>
         <DragOverlay>
@@ -333,6 +334,38 @@ function Calendar() {
       </DndContext>
     </div>
   );
+
+  function updateClasses(oldVal, newVal) {
+    console.log(oldVal);
+    console.log(newVal);
+    setClasses((classes) => {
+      let idx = classes["variableClasses"].indexOf(oldVal);
+      console.log(idx);
+      if (idx === -1) {
+        return classes;
+      }
+      return {
+      ...classes,
+      ["variableClasses"]: [
+        ...classes["variableClasses"].slice(0, idx),
+        newVal.value,
+        ...classes["variableClasses"].slice(idx+1, classes["variableClasses"].length)
+      ]
+      };
+    });
+    // setClasses((classes) => {
+    //   let updated = classes["variableClasses"].map(item => {
+    //     if (item.trueId === id) {
+    //       return {...item, selected: val}
+    //     }
+    //     return item;
+    //   })
+    //   return {
+    //   ...classes,
+    //   ["variableClasses"]: updated
+    //   };
+    // });
+  }
 
   function findContainer(id) {
     if (id in classes) {

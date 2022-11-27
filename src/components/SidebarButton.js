@@ -8,7 +8,7 @@ import "./SidebarButton.css";
 import { DropdownButton } from "./DropdownButton";
 import ReactTooltip from "react-tooltip";
 import ReactDOMServer from "react-dom/server";
-import { Text } from "react-native";
+//import { Text } from "react-native";
 
 /**
  * Create a CustomizedButton
@@ -35,7 +35,7 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
     textTransform: "uppercase",
     color: "#005587",
     boxShadow: "0px 0px 11.0283px #8BB8E8",
-    margin: "10px",
+    margin: "0px",
   };
 
   let calendar_style = {
@@ -63,14 +63,7 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
     textAlign: "left"
   }
 
-  if (kind === "dropdown") {
-    return (
-      <DropdownButton
-        text={text}
-      />
-    );
-  } else {
-    return (
+  return (
       <div className="myButton">
         <a
           data-for={text}
@@ -100,6 +93,5 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
           borderColor="#0070E8"
         />
       </div>
-    );
-  }
+  );
 }

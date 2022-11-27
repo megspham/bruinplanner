@@ -9,7 +9,7 @@ import {SortableItem} from "../SortableItem";
 import {SidebarButton} from "../SidebarButton";
 import {DropdownButton} from "../DropdownButton"
 
-export default function Container({ id, items, kind, classInfo }) {
+export default function Container({ id, items, kind, classInfo, onUpdate }) {
   const { setNodeRef } = useDroppable({
     id
   });
@@ -22,10 +22,15 @@ export default function Container({ id, items, kind, classInfo }) {
     >
       <div ref={setNodeRef}>
         {items.map((id) => (
+        <div style={{margin: (kind !== "calendar" ? "10px" : "0px")}}>
           <SortableItem key={id} id={id} >
-            {<SidebarButton text={id} kind={kind} style="width:12vw" classInfo={classInfo[id]}/>  }
+            {<SidebarButton text={id} kind={kind} classInfo={classInfo[id]}/>  }
           </SortableItem>
-        ))}
+          {kind === "dropdown" && <DropdownButton
+            text={id}
+            setSelectedOption={onUpdate}
+          />}
+        </div>))}
       </div>
     </SortableContext>
   );
