@@ -193,8 +193,8 @@ function Calendar() {
           "quarters": []
         }
       }
-      // TODO: get the start year from the user (add a form on the DARs page?)
-      let start_year = new Date().getFullYear();
+
+      let start_year = location.state.startYear;
 
       if (parsedInput !== null) {
         start_year = parsedInput.calendar.quarters[0].quarter.year;

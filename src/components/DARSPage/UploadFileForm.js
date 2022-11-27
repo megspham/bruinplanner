@@ -24,8 +24,6 @@ function UploadFileForm({ googleId }) {
   }
 
   async function handleSubmit(event) {
-    // TODO: Update requestBody.start_quarter and requestBody.start_year
-    //       with values submitted by the user via form
     const requestBody = {
       "id": state.id,
       "start_quarter": document.getElementById('quarter').value,
