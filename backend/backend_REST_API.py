@@ -144,7 +144,7 @@ def checkCalendar(calendar):
 
     try:
         # now loop over each quarter in order
-        list_of_quarters_sorted = sorted(calendar['calendar']['quarters'], key=lambda x: x['quarter']['year'] + quarter2Num[x['quarter']['name']])
+        list_of_quarters_sorted = sorted(calendar['calendar']['quarters'], key=lambda x: x['quarter']['year'] + quarter2Num[x['quarter']['quarter']])
     except Exception as e:
         print("Exception on quarter sorting", e)
         return calendar # if the calendar is empty, it is valid
