@@ -54,14 +54,25 @@ async function saveAndCheck(start_year, classes, id) {
       return expanded_courses;
     }
     for (const [quarter_name, quarter_courses] of Object.entries(classes)) {
+      let return_quarter = null;
       if (quarter_name === "sidebar" || quarter_name === "variableClasses") {
         continue;
-      }
-      let return_quarter = {
-        quarter: {
-          year: encoding_to_nameyear(quarter_name).year,
-          quarter: encoding_to_nameyear(quarter_name).quarter,
-          courses: await expand_quarter_info(quarter_courses)
+      } else if (quarter_name === "extra_credit") {
+        console.log('extra')
+        return_quarter = {
+          quarter: {
+            year: start_year - 1,
+            quarter: "FA",
+            courses: await expand_quarter_info(quarter_courses)
+          }
+        }
+      } else {
+        return_quarter = {
+          quarter: {
+            year: encoding_to_nameyear(quarter_name).year,
+            quarter: encoding_to_nameyear(quarter_name).quarter,
+            courses: await expand_quarter_info(quarter_courses)
+          }
         }
       }
       return_json.calendar.quarters.push(return_quarter);
@@ -69,6 +80,7 @@ async function saveAndCheck(start_year, classes, id) {
     return return_json;
   }
   const return_json = await classes_to_json();
+  console.log(return_json)
   const requestBody = {
     "id": id,
     "calendar": return_json
@@ -107,6 +119,7 @@ function Calendar() {
     wi_4: [],
     sp_4: [],
     su_4: [],
+    extra_credit: [],
     variableClasses: ["CS Elective 1", "CS Elective 2", "CS Elective 3"]
   });
 
@@ -123,6 +136,7 @@ function Calendar() {
 
   const display_unsatisfied_prereqs = async (start_year, classes, id) => {
     const returned_calendar = await saveAndCheck(start_year, classes, id);
+    console.log(returned_calendar)
     let display_string = 'The following courses have unmet pre-requisities: \n'
     for (let i = 0; i < returned_calendar.calendar.quarters.length; i++) {
       let quarter = returned_calendar.calendar.quarters[i]
@@ -147,7 +161,7 @@ function Calendar() {
   useEffect(() => {
     let inCalendar = [];
     const fetchData = async () => {
-      const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
+      const result = await getClasses(["lower-cs", "lower-math", "lower-physics", "req-cs"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
       let classNames = [];
       const extractedClassInfo = {};
       for (const c of result) {
@@ -162,7 +176,6 @@ function Calendar() {
         }
       }
       let filtered_classNames = classNames.filter(course => !(inCalendar.includes(course.split(' ').join(''))));
-      console.log(filtered_classNames)
       setClassInfo(extractedClassInfo);
       setClasses(prev => ({
         ...prev,
@@ -218,28 +231,29 @@ function Calendar() {
           if (quarter_name === "Fall") {
             row_num += 1;
           }
-          if (row_num < 0) {
-            continue;
-          }
           for (const course of quarter.courses) {
-            if (classes[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
-              setClasses(prev => ({
-                ...prev,
-                [[parsed_to_block_id[row_num][quarter_id]]]: [
-                  ...prev[parsed_to_block_id[row_num][quarter_id]],
-                  course
-                ],
-              }));
-            }
             inCalendar.push(course.split(' ').join(''));
-          }
-          for (const course of classes[parsed_to_block_id[row_num][quarter_id]]) {
-            if (quarter.courses.indexOf(course) === -1) {
-              quarter.courses.push(course);
+            if (row_num >= 0) {
+              if (classes[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
+                setClasses(prev => ({
+                  ...prev,
+                  [[parsed_to_block_id[row_num][quarter_id]]]: [
+                    ...prev[parsed_to_block_id[row_num][quarter_id]],
+                    course
+                  ],
+                }));
+              }
+            } else {
+              if (classes['extra_credit'].indexOf(course) === -1) {
+                setClasses(prev => ({
+                  ...prev,
+                  [["extra_credit"]]: [
+                    ...prev['extra_credit'],
+                    course
+                  ],
+                }));
+              }
             }
-          }
-          if (return_json.calendar.quarters.indexOf(quarter) === -1) {
-            return_json.calendar.quarters.push(quarter);
           }
         }
       } else {
