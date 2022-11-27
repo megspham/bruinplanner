@@ -44,7 +44,7 @@ async function saveAndCheck(start_year, classes, id) {
       if (name !== "FA") {
         year += 1;
       }
-      return { name: name , year : year }
+      return { quarter: name , year : year }
     }
     const expand_quarter_info = async (quarter_courses) => {
       let expanded_courses = [];
@@ -60,7 +60,7 @@ async function saveAndCheck(start_year, classes, id) {
       let return_quarter = {
         quarter: {
           year: encoding_to_nameyear(quarter_name).year,
-          name: encoding_to_nameyear(quarter_name).name,
+          quarter: encoding_to_nameyear(quarter_name).quarter,
           courses: await expand_quarter_info(quarter_courses)
         }
       }
@@ -137,13 +137,18 @@ function Calendar() {
         }
       }
     }
-    setunsatisfiedPreReqs(display_string);
+    if (display_string === 'The following courses have unmet pre-requisities: \n') {
+      setunsatisfiedPreReqs("All pre-requisites satisfied")
+    } else {
+      setunsatisfiedPreReqs(display_string);
+    }
   }
 
   useEffect(() => {
+    let inCalendar = [];
     const fetchData = async () => {
       const result = await getClasses(["req-cs", "lower-cs", "lower-math", "lower-physics"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
-      const classNames = [];
+      let classNames = [];
       const extractedClassInfo = {};
       for (const c of result) {
         classNames.push(c[1])
@@ -156,12 +161,12 @@ function Calendar() {
           extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
         }
       }
-
+      let filtered_classNames = classNames.filter(course => !(inCalendar.includes(course.split(' ').join(''))));
+      console.log(filtered_classNames)
       setClassInfo(extractedClassInfo);
-      // console.log(extractedClassInfo)
       setClasses(prev => ({
         ...prev,
-        sidebar: classNames
+        sidebar: filtered_classNames
       }));
     }
     
@@ -198,8 +203,8 @@ function Calendar() {
         for (let i = 0; i < json_quarters.length; i++) {
           const q = json_quarters[i];
           const year = q.quarter.year;
-          const quarter_name = quarter_name_dict[q.quarter.name];
-          const quarter_id = quarter_id_dict[q.quarter.name];
+          const quarter_name = quarter_name_dict[q.quarter.quarter];
+          const quarter_id = quarter_id_dict[q.quarter.quarter];
           let courses = [];
           for (let j = 0; j < q.quarter.courses.length; j++) {
             courses[j] = q.quarter.courses[j].course.name;
@@ -223,9 +228,10 @@ function Calendar() {
                 [[parsed_to_block_id[row_num][quarter_id]]]: [
                   ...prev[parsed_to_block_id[row_num][quarter_id]],
                   course
-                ]
+                ],
               }));
             }
+            inCalendar.push(course.split(' ').join(''));
           }
           for (const course of classes[parsed_to_block_id[row_num][quarter_id]]) {
             if (quarter.courses.indexOf(course) === -1) {
@@ -263,12 +269,13 @@ function Calendar() {
     }
 
     const load_and_parse = async () => {
-      if (!hasParsed) {
-        setHasParsed(true);
-        if (!loadedSidebar) {
-          setloadedSidebar(true);
-          fetchData().then(() => {
-            parseData();
+      if (!loadedSidebar) {
+        setloadedSidebar(true);
+        if (!hasParsed) {
+          setHasParsed(true);
+          parseData().then(() => {
+            // console.log(inCalendar)
+            fetchData();
           })
         } else {
           return
@@ -276,6 +283,21 @@ function Calendar() {
       } else {
         return;
       }
+
+      // if (!hasParsed) {
+      //   setHasParsed(true);
+      //   if (!loadedSidebar) {
+      //     setloadedSidebar(true);
+      //     fetchData().then(() => {
+      //       parseData();
+      //       console.log(inCalendar)
+      //     })
+      //   } else {
+      //     return
+      //   }
+      // } else {
+      //   return;
+      // }
     }
     load_and_parse();
   });
