@@ -34,7 +34,6 @@ async function getClasses(type_list=null, department_list=null, min_units=null, 
 function Calendar() {
   const [hasParsed, setHasParsed] = useState(false);
   const [loadedSidebar, setloadedSidebar] = useState(false);
-  const [startYear, setStartYear] = useState(2022);
   const [classInfo, setClassInfo] = useState({});
   const [classes, setClasses] = useState({
     sidebar: [],
@@ -67,6 +66,7 @@ function Calendar() {
   const data = location.state.data;
   const id = location.state.id;
   const calendarState = classes;
+  const start_year = location.state.startYear;
   
   useEffect(() => {
     if (!hasParsed) {
@@ -82,13 +82,6 @@ function Calendar() {
       }
     }
     
-    // TODO: get the start year from the user (add a form on the DARs page?)
-    let start_year = new Date().getFullYear();
-
-    if (parsedInput !== null) {
-      start_year = parsedInput.calendar.quarters[0].quarter.year;
-    }
-    setStartYear(start_year);
     let default_calendar = [];
     let default_courses = [];
     let user_taken_courses = [];
@@ -247,7 +240,7 @@ function Calendar() {
           onDragOver={handleDragOver}
           collisionDetection={closestCorners}
         >
-          <CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo}/>        
+          <CalendarList classMappings={classes} startYear={start_year} classInfo={classInfo}/>        
           <div className="Sidebar">
             <div className="ClassList">
                 <Container id="sidebar" items={classes.sidebar} classInfo={classInfo}/>
