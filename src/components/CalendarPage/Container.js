@@ -10,7 +10,7 @@ import {SidebarButton} from "../SidebarButton";
 import {DropdownButton} from "../DropdownButton"
 
 export default function Container(props) {
-  const { id, items, kind } = props;
+  const { id, items, kind, onUpdate } = props;
 
   const { setNodeRef } = useDroppable({
     id
@@ -28,7 +28,7 @@ export default function Container(props) {
       <div ref={setNodeRef}>
         {items.map((obj) => (obj ?
           <SortableItem key={obj.trueId} id={obj.trueId} >
-            {<SidebarButton text={obj.selected} kind={kind} style="width:12vw" />  }
+            {<SidebarButton text={obj.trueId} obj={obj} kind={kind} onUpdate={onUpdate} style="width:12vw" />  }
           </SortableItem>
           : null
         ))}

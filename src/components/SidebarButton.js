@@ -13,7 +13,12 @@ import {DropdownButton} from "./DropdownButton"
  * @param {function} onClick Defines what function to call when the button is clicked
  * @returns CustomizedButton HTML div object
  */
-export function SidebarButton({ width, height, text, kind }) {
+export function SidebarButton({ width, height, text, kind, obj, onUpdate }) {
+  const type = obj ? obj.type : null;
+  const options = obj ? obj.options : [];
+  //console.log(options);
+  const bg_col = type == "elective" ? "#F8F3E8" : "#FFFFFF";
+
   let sidebar_style = {
     width: "333.78px",
     height: "73.86px",
@@ -33,7 +38,7 @@ export function SidebarButton({ width, height, text, kind }) {
   let calendar_style = {
     width: "200px",
     height: "28px",
-    background: "#FFFFFF",
+    background: bg_col,
     fontFamily: "Montserrat",
     fontStyle: "normal",
     fontWeight: "500",
@@ -47,9 +52,12 @@ export function SidebarButton({ width, height, text, kind }) {
     margin: "2px",
   };
   if (kind === "dropdown") {
+    console.log(onUpdate);
     return (
         <DropdownButton
             text={text}
+            options={options.map(e => ({value: e, label: e}))}
+            setSelectedOption={onUpdate}
         />
     );
   } else {

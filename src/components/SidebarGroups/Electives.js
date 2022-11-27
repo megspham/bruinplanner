@@ -55,6 +55,8 @@ export function Electives() {
     if (elective_options.length === 0) {
         elective_options = create_options(['cs-elective']);
     }
+    // elective_options.push({ value: "A", label: "A" });
+    // console.log("pushed");
 
     return (
         <div className="ge-ah-list">

@@ -71,8 +71,8 @@ function Calendar() {
       },
       {
         trueId: "CS Elective 3",
-        options: [],
-        selected: "Choose a class...",
+        options: ["COMSCI143", "COMSCI161", "COMSCI174A"],
+        selected: "COMSCI143",
         type: "elective",
         status: "available"
       }
@@ -272,7 +272,8 @@ function Calendar() {
           <div className="Sidebar">
             <div className="ClassList">
                 <Container id="sidebar" items={classes.sidebar}/>
-                <Container id="variable" items={classes.variableClasses} kind="dropdown"/>
+                <Container id="variable" items={classes.variableClasses} kind="dropdown" onUpdate={updateDropdown}/>
+                <VariableClasses/>
             </div>
           </div>
           <DragOverlay>
@@ -283,6 +284,22 @@ function Calendar() {
         </DndContext>
       </div>
   );
+  
+  function updateDropdown(id, val) {
+    console.log("updateDropdown");
+    setClasses((classes) => {
+      let updated = classes["variableClasses"].map(item => {
+        if (item.trueId === id) {
+          return {...item, selected: val}
+        }
+        return item;
+      })
+      return {
+      ...classes,
+      ["variableClasses"]: updated
+      };
+    });
+  }
 
   function findContainer(id) {
     if (id in classes) {

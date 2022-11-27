@@ -53,6 +53,7 @@ export function DropdownButton({ selectedOption, setSelectedOption, text, option
     }
     
     const get_options = () => {
+        console.log(text);
         if (type_list) {
             return create_options(type_list);
         } else {
@@ -65,7 +66,7 @@ export function DropdownButton({ selectedOption, setSelectedOption, text, option
             <div className="name">{text}</div>
             <Select
                 defaultValue={selectedOption}
-                onChange={newOption => setSelectedOption(newOption)}
+                onChange={newOption => setSelectedOption(text, newOption)}
                 options={get_options()}
                 placeholder="Choose a class..."
                 isSearchable
