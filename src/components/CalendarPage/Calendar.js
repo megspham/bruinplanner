@@ -103,7 +103,7 @@ function Calendar() {
   const [startYear, setStartYear] = useState(2022);
   const [classInfo, setClassInfo] = useState({});
   const [classes, setClasses] = useState({
-    sidebar: ["CS 1", "CS 31", "CS 32"],
+    sidebar: [],
     fa_1: [],
     wi_1: [],
     sp_1: [],
@@ -121,7 +121,27 @@ function Calendar() {
     sp_4: [],
     su_4: [],
     extra_credit: [],
-    variableClasses: ["CS Elective 1", "CS Elective 2", "CS Elective 3"]
+    variableClasses: [{
+      trueId: "CS Elective 1",
+      options: ["COMSCIM146", "COMSCIM148", "COMSCI161"],
+      selected: "COMSCIM146",
+      type: "elective",
+      status: "available"
+    },
+    {
+      trueId: "CS Elective 2",
+      options: ["COMSCI174A", "COMSCI188", "COMSCI192"],
+      selected: "COMSCI174A",
+      type: "elective",
+      status: "available"
+    },
+    {
+      trueId: "CS Elective 3",
+      options: ["COMSCI143", "COMSCI144", "COMSCI145"],
+      selected: "COMSCI143",
+      type: "elective",
+      status: "available"
+    }]
   });
 
   const parsed_to_block_id = [
@@ -169,7 +189,15 @@ function Calendar() {
       let classNames = [];
       const extractedClassInfo = {};
       for (const c of result) {
-        classNames.push(c[1])
+        classNames.push(
+          {
+            trueId: c[1],
+            options: [c[1]],
+            selected: c[1],
+            type: c[0],
+            status: "available"
+          }
+        );
 
         let units = c[5];
         let prereqs = c[6] == null ? "" : c[6];
@@ -179,7 +207,7 @@ function Calendar() {
           extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
         }
       }
-      let filtered_classNames = classNames.filter(course => !(inCalendar.includes(course.split(' ').join(''))));
+      let filtered_classNames = classNames.filter(course => !(inCalendar.includes(course.trueId.split(' ').join('')))); //changed
       setClassInfo(extractedClassInfo);
       setClasses(prev => ({
         ...prev,
@@ -225,7 +253,13 @@ function Calendar() {
           const quarter_id = quarter_id_dict[q.quarter.quarter];
           let courses = [];
           for (let j = 0; j < q.quarter.courses.length; j++) {
-            courses[j] = q.quarter.courses[j].course.name;
+            courses[j] = {
+              trueId: q.quarter.courses[j].course.name,
+              options: [q.quarter.courses[j].course.name],
+              selected: q.quarter.courses[j].course.name,
+              type: q.quarter.courses[j].course.type,
+              status: "taken"
+            }
           }
           const quarter = {
             'name': quarter_name,
@@ -239,7 +273,7 @@ function Calendar() {
           for (const course of quarter.courses) {
             inCalendar.push(course.split(' ').join(''));
             if (row_num >= 0) {
-              if (classes[parsed_to_block_id[row_num][quarter_id]].indexOf(course) === -1) {
+              if (classes[parsed_to_block_id[row_num][quarter_id]].map(e => e.trueId).indexOf(course) === -1) {
                 setClasses(prev => ({
                   ...prev,
                   [[parsed_to_block_id[row_num][quarter_id]]]: [
@@ -249,7 +283,7 @@ function Calendar() {
                 }));
               }
             } else {
-              if (classes['extra_credit'].indexOf(course) === -1) {
+              if (classes['extra_credit'].map(e => e.trueId).indexOf(course) === -1) {
                 setClasses(prev => ({
                   ...prev,
                   [["extra_credit"]]: [
@@ -339,7 +373,8 @@ function Calendar() {
     console.log(oldVal);
     console.log(newVal);
     setClasses((classes) => {
-      let idx = classes["variableClasses"].indexOf(oldVal);
+      let idx = classes["variableClasses"].map(e => e.trueId).indexOf(oldVal);
+      console.log(classes["variableClasses"].map(e => e.trueId));
       console.log(idx);
       if (idx === -1) {
         return classes;
@@ -348,11 +383,15 @@ function Calendar() {
       ...classes,
       ["variableClasses"]: [
         ...classes["variableClasses"].slice(0, idx),
-        newVal.value,
+        {
+          ...classes["variableClasses"][idx],
+          selected: newVal.value
+        },
         ...classes["variableClasses"].slice(idx+1, classes["variableClasses"].length)
       ]
       };
     });
+    console.log(classes);
     // setClasses((classes) => {
     //   let updated = classes["variableClasses"].map(item => {
     //     if (item.trueId === id) {
@@ -372,7 +411,8 @@ function Calendar() {
       return id;
     }
 
-    return Object.keys(classes).find((key) => classes[key].includes(id));
+    // return Object.keys(classes).find((key) => classes[key].includes(id));
+    return Object.keys(classes).find((key) => classes[key].find(e => (e ? e.trueId == id : false)));
   }
 
   function handleDragStart({ active }) {
@@ -437,8 +477,9 @@ function Calendar() {
     }
 
     setClasses((prev) => {
-      const activeItems = prev[activeContainer];
-      const overItems = prev[overContainer];
+      // changed to work with the new object format
+      const activeItems = prev[activeContainer].flatMap(e => (e ? e.trueId : e));
+      const overItems = prev[overContainer].flatMap(e => (e ? e.trueId : e));
 
       // Find the indexes for the items
       const activeIndex = activeItems.indexOf(id);
@@ -458,7 +499,7 @@ function Calendar() {
       return {
         ...prev,
         [activeContainer]: [
-          ...prev[activeContainer].filter((item) => item !== active.id)
+          ...prev[activeContainer].filter((item) => item.trueId !== active.id) // changed
         ],
         [overContainer]: [
           ...prev[overContainer].slice(0, newIndex),

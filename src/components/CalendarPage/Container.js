@@ -21,16 +21,17 @@ export default function Container({ id, items, kind, classInfo, onUpdate }) {
       strategy={verticalListSortingStrategy}
     >
       <div ref={setNodeRef}>
-        {items.map((id) => (
+        {items.map((obj) => (obj ?
         <div style={{margin: (kind !== "calendar" ? "10px" : "0px")}}>
-          <SortableItem key={id} id={id} >
-            {<SidebarButton text={id} kind={kind} classInfo={classInfo[id]}/>  }
+          <SortableItem key={obj.trueId} id={obj.trueId} >
+            {<SidebarButton text={(kind !== "calendar" ? obj.trueId : obj.selected)} kind={kind} classInfo={classInfo[obj.trueId]} obj={obj}/>  }
           </SortableItem>
           {kind === "dropdown" && <DropdownButton
-            text={id}
+            text={obj.trueId}
+            options={obj.options.map(e => ({value: e, label: e}))}
             setSelectedOption={onUpdate}
           />}
-        </div>))}
+        </div> : null))}
       </div>
     </SortableContext>
   );
