@@ -27,7 +27,7 @@ const DARSUpload = () => {
               <li>Click on "View Audit"</li>
               <li>
                 Right click and press "Save As..." and choose the option
-                "Webpage, complete"
+                "Webpage, HTML only"
               </li>
             </ol>
           </div>

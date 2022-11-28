@@ -50,7 +50,7 @@ async function saveAndCheck(start_year, classes, id) {
     const expand_quarter_info = async (quarter_courses) => {
       let expanded_courses = [];
       for (const course_name of quarter_courses) {
-        expanded_courses.push({ course : { name : course_name }});
+        expanded_courses.push({ course : { name : course_name.trueId }});
       }
       return expanded_courses;
     }
@@ -254,6 +254,7 @@ function Calendar() {
     let inCalendar = [];
     const fetchData = async () => {
       const result = await getClasses(["lower-cs", "lower-math", "lower-physics", "req-cs"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
+      // const result = await getClasses(["lower-cs", "lower-math", "req-cs"], ["MATH", "PHYSICS"], 1, 5, null);
       let classNames = [];
       const extractedClassInfo = {};
       for (const c of result) {
