@@ -1,5 +1,5 @@
 # Bruin Planner
-Using React-Django based off of Nicholas Kajoh set up. See tutorial here: https://alphacoder.xyz/dead-simple-react-django-setup.
+Andy [Han] Goh, Belle Lerdworatawee, Ian Galvez, Megan Pham, Ravit Sharma, Taykhoom Dalal
 
 ## Setup
 - Download/clone repo.
