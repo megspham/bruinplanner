@@ -120,7 +120,9 @@ function Calendar() {
     sp_4: [],
     su_4: [],
     extra_credit: [],
-    variableClasses: ["CS Elective 1", "CS Elective 2", "CS Elective 3"]
+    variableClasses: ["CS Elective 1", "CS Elective 2", "CS Elective 3", "CS Elective 4", "CS Elective 5",
+      "S&C #1: Historical Analysis", "S&C #1: Social Analysis",
+      "SI #1: Life Sciences"]
   });
 
   const parsed_to_block_id = [
