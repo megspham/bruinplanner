@@ -17,13 +17,23 @@ const display_text = {
     'GE-AH-PL': "PLA"
 }
 
+const json_to_options = (json) => {
+    let classes = json.classes;
+    let options =[]
+    for (const c of classes) {
+        var dict = { value: c[1], label: c[1] };
+        options.push(dict);
+    }
+    return options
+}
+
 let loaded_classes = {
-    'GE-AH-LC': [],
-    'GE-AH-VP': [],
-    'GE-AH-PL': [],
-    'GE-SC-HA': [],
-    'GE-SC-SA': [],
-    'GE-SI-LS': []
+    'GE-AH-LC': json_to_options(require("./class-info/GE-AH-LC.json")),
+    'GE-AH-VP': json_to_options(require("./class-info/GE-AH-VP.json")),
+    'GE-AH-PL': json_to_options(require("./class-info/GE-AH-PL.json")),
+    'GE-SC-HA': json_to_options(require("./class-info/GE-SC-HA.json")),
+    'GE-SC-SA': json_to_options(require("./class-info/GE-SC-SA.json")),
+    'GE-SI-LS': json_to_options(require("./class-info/GE-SI-LS.json"))
 }
 
 let ge1_options = options;
@@ -53,75 +63,6 @@ export function GEs() {
             return item !== newOption
         })
     }
-
-    const create_options = (type_list) => {
-        let options = []
-        const requestBody = {
-            "type_list": type_list,
-            "department_list": null,
-            "min_units": 0,
-            "max_units": 99,
-            "classes_taken": null
-        }
-        fetch("http://127.0.0.1:8000/api/getClasses", {
-            crossDomain: true,
-            mode: 'cors',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody)
-        }).then(res => res.json())
-            .then(json => {
-                let classes = json.classes;
-                for (const c of classes) {
-                    var dict = { value: c[1], label: c[1] };
-                    options.push(dict);
-                }
-            }).catch(err => console.log(err))
-        return options
-    }
-
-    setTimeout(function () {
-        console.log("1");
-        if (loaded_classes['GE-AH-LC'].length === 0) {
-            console.log("loading")
-            loaded_classes['GE-AH-LC'] = create_options(['GE-AH-LC'])
-        }
-    }, 1000);
-    setTimeout(function () {
-        console.log("2");
-        if (loaded_classes['GE-AH-VP'].length === 0) {
-            console.log("loading")
-            loaded_classes['GE-AH-VP'] = create_options(['GE-AH-VP'])
-        }
-    }, 3000);
-    setTimeout(function () {
-        console.log("3");
-        if (loaded_classes['GE-AH-PL'].length === 0) {
-            console.log("loading")
-            loaded_classes['GE-AH-PL'] = create_options(['GE-AH-PL'])
-        }
-    }, 5000);
-    setTimeout(function () {
-        console.log("4");
-        if (loaded_classes['GE-SC-HA'].length === 0) {
-            console.log("loading")
-            loaded_classes['GE-SC-HA'] = create_options(['GE-SC-HA'])
-        }
-    }, 7000);
-    setTimeout(function () {
-        console.log("5");
-        if (loaded_classes['GE-SC-SA'].length === 0) {
-            console.log("loading")
-            loaded_classes['GE-SC-SA'] = create_options(['GE-SC-SA'])
-        }
-    }, 9000);
-    setTimeout(function () {
-        console.log("6");
-        if (loaded_classes['GE-SI-LS'].length === 0) {
-            console.log("loading")
-            loaded_classes['GE-SI-LS'] = create_options(['GE-SI-LS'])
-        }
-    }, 11000);
 
     return (
         <div className="ge-ah-list">
