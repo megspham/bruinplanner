@@ -140,7 +140,8 @@ function Calendar() {
     sp_4: [],
     su_4: [],
     extra_credit: [],
-    variableClasses: [{
+    variableClasses: [
+      {
       trueId: "CS Elective 1",
       options: loaded_classes['cs-elective'],
       selected: "COMSCIM146",
@@ -254,7 +255,6 @@ function Calendar() {
     let inCalendar = [];
     const fetchData = async () => {
       const result = await getClasses(["lower-cs", "lower-math", "lower-physics", "req-cs"], ["COM SCI", "MATH", "PHYSICS"], 1, 5, null);
-      // const result = await getClasses(["lower-cs", "lower-math", "req-cs"], ["MATH", "PHYSICS"], 1, 5, null);
       let classNames = [];
       const extractedClassInfo = {};
       for (const c of result) {
