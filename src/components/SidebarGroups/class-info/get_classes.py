@@ -24,7 +24,7 @@ def get_all_categories():
         'GE-SC-HA',
         'GE-SC-SA',
         'GE-SI-LS',
-        'req-cs'
+        'cs-elective'
     ]
     for category in categories:
         classes = getClasses([category], None, 0, 99, None)

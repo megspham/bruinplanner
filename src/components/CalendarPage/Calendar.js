@@ -112,7 +112,7 @@ const loaded_classes = {
   'GE-SC-HA': json_to_options(require("../SidebarGroups/class-info/GE-SC-HA.json")),
   'GE-SC-SA': json_to_options(require("../SidebarGroups/class-info/GE-SC-SA.json")),
   'GE-SI-LS': json_to_options(require("../SidebarGroups/class-info/GE-SI-LS.json")),
-  'req-cs'  : json_to_options(require("../SidebarGroups/class-info/req-cs.json"))
+  'cs-elective'  : json_to_options(require("../SidebarGroups/class-info/cs-elective.json"))
 }
 
 function Calendar() {
@@ -142,25 +142,74 @@ function Calendar() {
     extra_credit: [],
     variableClasses: [{
       trueId: "CS Elective 1",
-      options: loaded_classes['req-cs'],
+      options: loaded_classes['cs-elective'],
       selected: "COMSCIM146",
       type: "elective",
       status: "available"
     },
     {
       trueId: "CS Elective 2",
-      options: loaded_classes['req-cs'],
+      options: loaded_classes['cs-elective'],
       selected: "COMSCI174A",
       type: "elective",
       status: "available"
     },
     {
       trueId: "CS Elective 3",
-      options: loaded_classes['req-cs'],
+      options: loaded_classes['cs-elective'],
       selected: "COMSCI143",
       type: "elective",
       status: "available"
-    }]
+      },
+      {
+        trueId: "CS Elective 4",
+        options: loaded_classes['cs-elective'],
+        selected: "COMSCI143",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "CS Elective 5",
+        options: loaded_classes['cs-elective'],
+        selected: "COMSCI143",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "A&H: Literary and Cultural Analysis",
+        options: loaded_classes['GE-AH-LC'],
+        selected: "",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "A&H: Philosophic & Linguistic Analysis",
+        options: loaded_classes['GE-AH-PL'],
+        selected: "",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "S&C: Historical Analysis",
+        options: loaded_classes['GE-SC-HA'],
+        selected: "",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "S&C: Social Analysis",
+        options: loaded_classes['GE-SC-SA'],
+        selected: "",
+        type: "elective",
+        status: "available"
+      },
+      {
+        trueId: "Scientific Inquiry: Life Science",
+        options: loaded_classes['GE-SI-LS'],
+        selected: "",
+        type: "elective",
+        status: "available"
+      }]
   });
 
   const parsed_to_block_id = [

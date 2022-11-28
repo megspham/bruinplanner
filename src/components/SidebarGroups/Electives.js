@@ -27,7 +27,7 @@ const json_to_options = (json) => {
     return options
 }
 
-let elective_options = json_to_options(require("./class-info/req-cs.json"))
+let elective_options = json_to_options(require("./class-info/cs-elective.json"))
 
 export function Electives() {
     const [elective1, setelective1] = useState(null);
