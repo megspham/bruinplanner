@@ -340,7 +340,7 @@ function Calendar() {
             row_num += 1;
           }
           for (const course of quarter.courses) {
-            inCalendar.push(course.split(' ').join(''));
+            inCalendar.push(course.trueId.split(' ').join(''));
             if (row_num >= 0) {
               if (classes[parsed_to_block_id[row_num][quarter_id]].map(e => e.trueId).indexOf(course) === -1) {
                 setClasses(prev => ({
