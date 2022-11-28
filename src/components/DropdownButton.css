@@ -1,0 +1,23 @@
+.dropdown-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* margin: 15px 0px 15px 10px !important; */
+    color: #005587;
+    box-shadow: 0px 0px 11.0283px #8BB8E8;
+    border-radius: 3.68431px;
+}
+
+.dropdown {
+    width: 100%;
+    margin-bottom: 0px;
+}
+
+.name {
+    font-weight: 500;
+    font-size: 1.25vw;
+    padding-top: 5px;
+    margin-bottom: 5px;
+    color: #005587;
+}

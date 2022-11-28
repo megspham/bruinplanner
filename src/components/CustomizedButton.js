@@ -5,7 +5,6 @@
  */
 
 import React from "react"; 
-import "./CustomizedButton.css"; 
 
 /**
  * Create a CustomizedButton
@@ -24,7 +23,7 @@ export function CustomizedButton({ text, onClick }) {
         fontFamily: 'Montserrat',
         fontStyle: 'normal',
         fontWeight: '500',
-        fontSize: '30.6431px',
+        fontSize: '25px',
         lineHeight: '37px',
         
     }

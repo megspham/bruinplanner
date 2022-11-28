@@ -3,51 +3,24 @@
  * @author Andy Goh, Megan Pham
  */
 
-import React, {useState} from "react";
+import React from "react";
 import "./CalendarBlock.css";
-import {DndContext} from '@dnd-kit/core';
-import Draggable from '../Draggable';
-import {Droppable} from '../Droppable';
-
+import Container from "./Container";
 /**
  * @param {string} color Defines the color of the block
  * @param {string} calendarDate The name of the quarter (e.g., Fall 2022) 
  * @returns CalendarBlock HTML div object
  */
-function CalendarBlock({ color, calendarDate }) {
-  const [isDropped, setIsDropped] = useState(null); 
-  const draggable = (
-    <Draggable id ="draggable"> 
-    DRAG ME
-    </Draggable>
-  );
 
+function CalendarBlock({ color, calendarDate, blockId, courses, blockState, classInfo }) {
   return (
     <div className="BackgroundBlock" style={{backgroundColor: color}}>
       <div className="CalendarTitle">{calendarDate}</div>
       <div className="DisplayBlock">
-        <DndContext onDragEnd={handleDragEnd}>
-          {!isDropped ? draggable : null}
-          <Droppable id="dropppedcourse1">
-            {isDropped === "dropppedcourse1" ? draggable : 'DROP HERE'}
-          </Droppable>
-          <Droppable id="dropppedcourse2">
-            {isDropped === "dropppedcourse2" ? draggable : 'DROP HERE'}
-          </Droppable>
-          <Droppable id="dropppedcourse3">
-            {isDropped === "dropppedcourse3" ? draggable : 'DROP HERE'}
-          </Droppable>
-          <Droppable id="dropppedcourse4">
-            {isDropped === "dropppedcourse4"? draggable : 'DROP HERE'}
-          </Droppable>
-        </DndContext>
+        <Container id={blockId} items={blockState} kind="calendar" classInfo={classInfo}/>
        </div>
      </div>
   );
-
-  function handleDragEnd({over}) {
-    setIsDropped(over ? over.id : null);
-  }
 }
 
 export default CalendarBlock;

@@ -4,6 +4,7 @@ import json
 import json_format
 import parse_dars
 import populate_database
+import difflib
 
 # POST /api/addUser
 def addUser(id):
@@ -75,8 +76,8 @@ def getCalendar(id):
     """
     try:
         return db.execute("SELECT calendar FROM users WHERE id=%s;", (id,))[0][0]
-    except:
-        print("User does not exist in database")
+    except Exception as e:
+        print(e)
         return None
 
 # POST /api/updateCalendar
@@ -116,6 +117,7 @@ def updateCalendar(id, calendar):
 
         return calendar_with_possible_errors
     except Exception as e:
+        print(e)
         return None
 
 # POST /api/checkCalendar
@@ -142,8 +144,9 @@ def checkCalendar(calendar):
 
     try:
         # now loop over each quarter in order
-        list_of_quarters_sorted = sorted(calendar['calendar']['quarters'], key=lambda x: x['quarter']['year'] + quarter2Num[x['quarter']['name']])
-    except:
+        list_of_quarters_sorted = sorted(calendar['calendar']['quarters'], key=lambda x: x['quarter']['year'] + quarter2Num[x['quarter']['quarter']])
+    except Exception as e:
+        print("Exception on quarter sorting", e)
         return calendar # if the calendar is empty, it is valid
 
     for quart_index, quarter_dict in enumerate(list_of_quarters_sorted):
@@ -157,10 +160,26 @@ def checkCalendar(calendar):
         # loop over each course in the current quarter
         for curr_course_dict in curr_quarter_classes:
             curr_course = curr_course_dict['course']
-
+            def my_split(s):
+                split_list = list(filter(None, re.split(r'(\d+)', s)))
+                try:
+                    stripped_course_num = str(int(split_list[-1]))
+                    return split_list[0] + ' ' + stripped_course_num
+                except:
+                    stripped_course_num = str(int(split_list[-2]))
+                    return split_list[0] + ' ' + stripped_course_num + split_list[-1]
             try:
-                prereqs = [curr_course['pre_requisites'][i]['pre_requisite_name'] for i in range(len(curr_course['pre_requisites']))]
-            except:
+                # prereqs = [curr_course['pre_requisites'][i]['pre_requisite_name'] for i in range(len(curr_course['pre_requisites']))]
+                prereqs = db.execute("SELECT class_requisites FROM courses WHERE name=%s", (curr_course['name'], ))
+                if prereqs == []:
+                    continue
+                else:
+                    prereqs = prereqs[0][0].split(',')
+                    print(prereqs)
+                    prereqs = list(map(lambda course : my_split(course), prereqs))
+                    print(prereqs)
+            except Exception as e:
+                print(curr_course['name'], e)
                 continue # there are no prereqs for this course
             
             # loop over every previous quarter
@@ -177,9 +196,11 @@ def checkCalendar(calendar):
                 
                     prev_course = prev_course_dict['course']
 
-                    # if the course is in the list of prereqs, remove it
-                    if prev_course['name'] in prereqs:
-                        prereqs.remove(prev_course['name'])
+                    # if the course is in the list of prereqs, remove it, use the similarity function to check if the course is similar enough to the prereq
+                    for prereq in prereqs:
+                        if prereq == prev_course['name'] or prereq.replace(' ', '') == prev_course['name'].replace(' ', ''):
+                            prereqs.remove(prereq)
+                            break
             
             # if there are still prereqs left not met, add an error message to the course listing the prereqs that are not met
             if len(prereqs) > 0:       
