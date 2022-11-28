@@ -6,8 +6,6 @@ import { SidebarButton } from "../SidebarButton"
 import Container from "./Container";
 import { arrayMove } from '@dnd-kit/sortable';
 import { useLocation } from "react-router-dom";
-import { VariableClasses } from "../SidebarGroups/VariableClasses"
-import Select from 'react-select';
 
 async function sendRequest(apiName, requestBody) {
   const response = await fetch("http://127.0.0.1:8000/api/" + apiName, {
@@ -222,7 +220,6 @@ function Calendar() {
   const location = useLocation();
   const data = location.state.data;
   const id = location.state.id;
-  const calendarState = classes;
 
   const display_unsatisfied_prereqs = async (start_year, classes, id) => {
     const targetDiv = document.getElementById("status");
@@ -287,12 +284,6 @@ function Calendar() {
     
     const parseData = async () => {
       let parsedInput = data;
-      let return_json = {
-        "calendar": {
-          "quarters": []
-        }
-      }
-
       let start_year = location.state.startYear;
 
       if (parsedInput !== null) {
@@ -482,7 +473,7 @@ function Calendar() {
     }
 
     // return Object.keys(classes).find((key) => classes[key].includes(id));
-    return Object.keys(classes).find((key) => classes[key].find(e => (e ? e.trueId == id : false)));
+    return Object.keys(classes).find((key) => classes[key].find(e => (e ? e.trueId === id : false)));
   }
 
   function handleDragStart({ active }) {

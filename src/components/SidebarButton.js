@@ -3,9 +3,8 @@
  * @author Ian Galvez, Megan Pham
  */
 
-import React, {useState} from "react";
+import React from "react";
 import "./SidebarButton.css";
-import { DropdownButton } from "./DropdownButton";
 import ReactTooltip from "react-tooltip";
 import ReactDOMServer from "react-dom/server";
 
@@ -16,7 +15,7 @@ import ReactDOMServer from "react-dom/server";
  * @returns CustomizedButton HTML div object
  */
 export function SidebarButton({ width, height, text, kind, classInfo }) {
-  if (classInfo == undefined) {
+  if (classInfo === undefined) {
     classInfo = "";
   }
 

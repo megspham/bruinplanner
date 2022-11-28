@@ -2,7 +2,7 @@
  * @file Aggregates multiple CalendarBlocks to form the full calendar.
  * @author Megan Pham, Andy Goh
  */
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CalendarBlock from "./CalendarBlock";
 import { useLocation } from "react-router-dom";
 import Login from "../Login";
