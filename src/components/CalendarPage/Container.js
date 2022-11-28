@@ -28,7 +28,7 @@ export default function Container({ id, items, kind, classInfo, onUpdate }) {
           </SortableItem>
           {kind === "dropdown" && <DropdownButton
             text={obj.trueId}
-            options={obj.options.map(e => ({value: e, label: e}))}
+            options={obj.options}
             setSelectedOption={onUpdate}
           />}
         </div> : null))}

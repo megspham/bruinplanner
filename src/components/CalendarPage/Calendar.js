@@ -96,6 +96,25 @@ async function saveAndCheck(start_year, classes, id) {
   return res.json();
 }
 
+const json_to_options = (json) => {
+  let classes = json.classes;
+  let options = []
+  for (const c of classes) {
+    var dict = { value: c[1], label: c[1] };
+    options.push(dict);
+  }
+  return options
+}
+const loaded_classes = {
+  'GE-AH-LC': json_to_options(require("../SidebarGroups/class-info/GE-AH-LC.json")),
+  'GE-AH-VP': json_to_options(require("../SidebarGroups/class-info/GE-AH-VP.json")),
+  'GE-AH-PL': json_to_options(require("../SidebarGroups/class-info/GE-AH-PL.json")),
+  'GE-SC-HA': json_to_options(require("../SidebarGroups/class-info/GE-SC-HA.json")),
+  'GE-SC-SA': json_to_options(require("../SidebarGroups/class-info/GE-SC-SA.json")),
+  'GE-SI-LS': json_to_options(require("../SidebarGroups/class-info/GE-SI-LS.json")),
+  'req-cs'  : json_to_options(require("../SidebarGroups/class-info/req-cs.json"))
+}
+
 function Calendar() {
   const [hasParsed, setHasParsed] = useState(false);
   const [loadedSidebar, setloadedSidebar] = useState(false);
@@ -123,21 +142,21 @@ function Calendar() {
     extra_credit: [],
     variableClasses: [{
       trueId: "CS Elective 1",
-      options: ["COMSCIM146", "COMSCIM148", "COMSCI161"],
+      options: loaded_classes['req-cs'],
       selected: "COMSCIM146",
       type: "elective",
       status: "available"
     },
     {
       trueId: "CS Elective 2",
-      options: ["COMSCI174A", "COMSCI188", "COMSCI192"],
+      options: loaded_classes['req-cs'],
       selected: "COMSCI174A",
       type: "elective",
       status: "available"
     },
     {
       trueId: "CS Elective 3",
-      options: ["COMSCI143", "COMSCI144", "COMSCI145"],
+      options: loaded_classes['req-cs'],
       selected: "COMSCI143",
       type: "elective",
       status: "available"
@@ -202,9 +221,10 @@ function Calendar() {
         let units = c[5];
         let prereqs = c[6] == null ? "" : c[6];
         let hist = c[7] == null ? "" : c[7];
+        let title = c[8] == null ? "" : c[8];
 
         if (!extractedClassInfo[c[1]]) {
-          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist;
+          extractedClassInfo[c[1]] = units + "|" + prereqs + "|" + hist + "|" + title;
         }
       }
       let filtered_classNames = classNames.filter(course => !(inCalendar.includes(course.trueId.split(' ').join('')))); //changed
