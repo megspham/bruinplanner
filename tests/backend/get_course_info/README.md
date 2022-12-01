@@ -12,8 +12,8 @@ Department and number of the desired course: "COM SCI" and "0032".
 
 ### Expected Output
 
-(None, 'COM SCI 32', 'COM SCI', '0032', '06F', 4.0, 'COM SCI0031', None)
+(None, 'COM SCI 32', 'COM SCI', '0032', '06F', 4.0, 'COM SCI 31', None)
 
 ### Actual Output
 
-(None, 'COM SCI 32', 'COM SCI', '0032', '06F', 4.0, 'COM SCI0031', None)
+(None, 'COM SCI 32', 'COM SCI', '0032', '06F', 4.0, 'COM SCI 31', None)
