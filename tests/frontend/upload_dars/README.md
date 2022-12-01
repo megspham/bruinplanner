@@ -29,7 +29,7 @@ This test checks whether or not the user is alerted if the backend parser raises
 
 ### Input
 
-The user clicks the "Upload DARs" button, uploads an valid DARs.html, but the backend parser runs into an error (e.g., connection error, edge-case, etc.)
+The user either 1) clicks the "Upload DARs" button, uploads an valid DARs.html, but the backend parser runs into an error (e.g., connection error, edge-case, etc.), or 2) uploads an invalid dars file. They both produce the same result.
 
 ### Expected Output
 
