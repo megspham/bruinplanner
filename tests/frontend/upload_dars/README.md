@@ -19,9 +19,9 @@ The user is redirected to the calendar page, which is already populated with the
 
 ### Actual Output
 
-*Not implemented yet*
+![GIF of valid parsing](valid_dars.gif)
 
-## Test 2: Valid file, Unsuccessful Parsing
+## Test 2: Invalid file or Unsuccessful Parsing
 
 ### Objective
 
@@ -37,22 +37,4 @@ The user is given an alert of the failure, and is suggested to populate the blan
 
 ### Actual Output
 
-*Not implemented yet*
-
-## Test 3: Invalid file
-
-### Objective
-
-This test checks whether or not the user is alerted if they upload an invalid file as the DARs.html
-
-### Input
-
-The user clicks the "Upload DARs" button, uploads an invalid DARs.html.
-
-### Expected Output
-
-The user is given an alert of the failure, and is reminded of exactly what file to upload.
-
-### Actual Output
-
-*Not implemented yet*
+![GIF of invalid parsing](invalid_dars.gif)

@@ -10,17 +10,22 @@ import BackgroundSvg from "../images/DARSPageBackground.svg";
 import { useLocation } from "react-router-dom";
 import UploadFileForm from "./UploadFileForm";
 import Login from "../Login";
+import { Link } from "react-router-dom";
 
 import "./DARSUpload.css";
 
 const DARSUpload = () => {
   const location = useLocation();
-  const id = location.state ? location.state.id : null;
+  const id = location.state ? location.state.user.googleId : null;
+  const error = location.state ? location.state.error : false;
   return (
     <div>
       {id ? (
         <div className="dars-upload-container">
           <img src={BackgroundSvg} alt="Your SVG" className="dars-bg" />
+          <div className="instructions">
+          {error ? <p>Invalid DARS file. Please check the file that you uploaded, or try <Link to="/dars" state={ location.state.user }>starting with a blank template</Link></p> : null}
+          </div>
           <div className="instructions">
             <ol>
               <li>Generate a DARS audit from MyUCLA</li>
@@ -33,7 +38,7 @@ const DARSUpload = () => {
           </div>
           <div class="page-content">
             <div class="dars-button-container2">
-              <UploadFileForm googleId={id}></UploadFileForm>
+              <UploadFileForm googleId={location.state.user}></UploadFileForm>
             </div>
           </div>
         </div>

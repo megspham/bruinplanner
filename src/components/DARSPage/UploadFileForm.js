@@ -16,7 +16,7 @@ function UploadFileForm({ googleId }) {
     file: null,
     start_quarter: null,
     start_year: null,
-    id : googleId
+    id : googleId.googleId
   };
 
   async function uploadFile(event) {
@@ -39,7 +39,10 @@ function UploadFileForm({ googleId }) {
         body: JSON.stringify(requestBody)
       }).then(res => res.json())
         .then(json => navigate('/calendar', { state: { data: json, id: state.id } }))
-        .catch(err => console.log(err));
+        .catch(err => {
+          navigate('/dars/upload', { state : { user: googleId , error : true }})
+        }
+      );
     }
     event.preventDefault();
   }

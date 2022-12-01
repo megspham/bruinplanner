@@ -41,7 +41,7 @@ const DARSPage = () => {
           <Link to="/calendar" state={{ startYear: startYear, data: null, id: location.state.googleId }} >
             <CustomizedButton text="Start with a blank template"></CustomizedButton>
           </Link>
-          <Link to="/dars/upload" state={{ startYear: null, id: location.state.googleId }}>
+          <Link to="/dars/upload" state={{ startYear: null, user: location.state }}>
             <CustomizedButton text="Import DARs"></CustomizedButton>
           </Link>
         </div>
