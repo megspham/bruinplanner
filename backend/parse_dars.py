@@ -202,7 +202,7 @@ def parse_dars(dars_file, start_quarter, start_year):
 	courses = pd.DataFrame(data, columns = ['Requirement', 'Course', 'Department', 'Description', 'Quarter', 'Year', 'Units', 'Term_Num'])
 
 	courses = courses[courses['Units'] > 0.0]
-	print(start_year)
+
 	courses = courses[courses['Year'] >= start_year]
 	courses = courses[courses['Term_Num'] >= quarter_to_number[start_quarter]]
 
