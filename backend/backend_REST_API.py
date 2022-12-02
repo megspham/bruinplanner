@@ -122,8 +122,8 @@ def checkCalendar(calendar):
     try:
         # now loop over each quarter in order
         list_of_quarters_sorted = sorted(calendar['calendar']['quarters'], key=lambda x: x['quarter']['year'] + quarter2Num[x['quarter']['quarter']])
-    except Exception as e:
-        print("Exception on quarter sorting", e)
+    except:
+        print("Calendar is empty. Calendar will be returned as is.")
         return calendar # if the calendar is empty, it is valid
 
     for quart_index, quarter_dict in enumerate(list_of_quarters_sorted):
