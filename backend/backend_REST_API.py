@@ -146,15 +146,18 @@ def checkCalendar(calendar):
                     stripped_course_num = str(int(split_list[-2]))
                     return split_list[0] + ' ' + stripped_course_num + split_list[-1]
             try:
-                # prereqs = [curr_course['pre_requisites'][i]['pre_requisite_name'] for i in range(len(curr_course['pre_requisites']))]
-                prereqs = db.execute("SELECT class_requisites FROM courses WHERE name=%s", (curr_course['name'], ))
-                if prereqs == []:
-                    continue
+                if 'pre_requisites' in curr_course.keys():
+                    prereqs = [curr_course['pre_requisites'][i]['pre_requisite_name'] for i in range(len(curr_course['pre_requisites']))]
                 else:
-                    prereqs = prereqs[0][0].split(',')
-                    print(prereqs)
-                    prereqs = list(map(lambda course : my_split(course), prereqs))
-                    print(prereqs)
+                    prereqs = db.execute("SELECT class_requisites FROM courses WHERE name=%s", (curr_course['name'], ))
+                    
+                    if prereqs == []:
+                        continue
+                    else:
+                        prereqs = prereqs[0][0].split(',')
+                        print(prereqs)
+                        prereqs = list(map(lambda course : my_split(course), prereqs))
+                        print(prereqs)
             except Exception as e:
                 print(curr_course['name'], e)
                 continue # there are no prereqs for this course
