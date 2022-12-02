@@ -1,4 +1,4 @@
-# DARS Database Population Unit Tests
+# DARS Database Population Tests
 
 The following tests are dedicated to ensuring that the parsed DARS is properly being converted to a JSON calendar and to ensure that the database is being populated correctly. In this case, since the parsed DARS is guaranteed to be correct, we only need to make sure that for a positive case the JSON is being generated correctly. For the database population, we need to check the case where the user is not in the database and the case where the user is in the database.
 

@@ -1,4 +1,4 @@
-# DARS Parsing Unit Tests
+# DARS Parsing Tests
 
 The following tests are dedicated to ensuring that the DARS parsing functionality is working as intended.
 
