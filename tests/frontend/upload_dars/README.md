@@ -1,4 +1,4 @@
-# Upload DARs Test
+# Upload DARS Test
 As this is a frontend UI test, there is no code to automate testing. The input is an interaction from a user, while the output is a visual element displayed on the screen.
 
 
@@ -18,6 +18,13 @@ The user is redirected to the calendar page, which is already populated with the
 
 
 ### Actual Output
+#### Server-side parsing success (backend)
+```
+[02/Dec/2022 00:48:47] "POST /api/importDars HTTP/1.1" 500 82461
+Attempting to convert courses list into a calendar format and then add to database
+JSON is valid!
+```
+#### Website Handling
 
 ![GIF of valid parsing](valid_dars.gif)
 
@@ -36,5 +43,14 @@ The user either 1) clicks the "Upload DARs" button, uploads an valid DARs.html, 
 The user is given an alert of the failure, and is suggested to populate the blank template themselves.
 
 ### Actual Output
-
+#### Server error detection (backend)
+```
+[02/Dec/2022 00:48:47] "OPTIONS /api/importDars HTTP/1.1" 200 0
+Internal Server Error: /api/importDars
+...
+TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+```
+#### Server response (frontend console)
+![GIF of invalid parsing](invalid_server_response.png)
+#### Website Handling
 ![GIF of invalid parsing](invalid_dars.gif)
