@@ -30,7 +30,7 @@ schema = '''{
                                 {
                                     "type": "int"
                                 },
-                                "name":
+                                "quarter":
                                 {
                                     "type": "string",
                                     "enum": ["WI", "SP", "SU", "FA"]
@@ -125,7 +125,7 @@ example = '''{
                             "quarter": 
                             {
                                 "year": 2019,
-                                "name": "FA",
+                                "quarter": "FA",
                                 "courses": 
                                 [
                                     {
@@ -157,7 +157,7 @@ example = '''{
                             "quarter": 
                             {
                                 "year": 2020,
-                                "name": "WI",
+                                "quarter": "WI",
                                 "courses": 
                                 [
                                     {
@@ -195,7 +195,7 @@ example = '''{
                             "quarter": 
                             {
                                 "year": 2020,
-                                "name": "SP",
+                                "quarter": "SP",
                                 "courses": 
                                 [
                                     {
