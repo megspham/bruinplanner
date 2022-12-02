@@ -210,7 +210,7 @@ JSON is valid!
 ### Actual Output
 ![](./imgs/test3_out.png)
 
-## Test 5: Calendar with Prerequisite Errors
+## Test 4: Calendar with Prerequisite Errors
 
 ### Objective
 This test ensures that the checkCalendar API correctly identifies prerequisite errors in the calendar JSON.
