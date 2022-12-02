@@ -15,7 +15,7 @@ import './DropdownButton.css';
  */
 export function DropdownButton({ selectedOption, setSelectedOption, text, options, type_list}) {
     const style = {
-        width: '333.78px',
+        width: '19vw',
         height: '40px',
         background: '#FFFFFF',
         color: '#757575',

@@ -20,7 +20,8 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
   }
 
   let sidebar_style = {
-    width: "333.78px",
+    // width: "333.78px",
+    width: "19vw",
     height: "73.86px",
     background: "#FFFFFF",
     fontFamily: "Montserrat",
@@ -37,13 +38,13 @@ export function SidebarButton({ width, height, text, kind, classInfo }) {
   };
 
   let calendar_style = {
-    width: "200px",
-    height: "28px",
+    width: "10vw",
+    height: "1.65vw",
     background: "#FFFFFF",
     fontFamily: "Montserrat",
     fontStyle: "normal",
     fontWeight: "500",
-    fontSize: "20.7902px",
+    fontSize: "1.35vw",
     lineHeight: "28px",
     border: "none",
     borderRadius: "3.68431px",
