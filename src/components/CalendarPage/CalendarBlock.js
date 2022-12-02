@@ -6,12 +6,12 @@
 import React from "react";
 import "./CalendarBlock.css";
 import Container from "./Container";
+
 /**
  * @param {string} color Defines the color of the block
  * @param {string} calendarDate The name of the quarter (e.g., Fall 2022) 
  * @returns CalendarBlock HTML div object
  */
-
 function CalendarBlock({ color, calendarDate, blockId, courses, blockState, classInfo }) {
   return (
     <div className="BackgroundBlock" style={{backgroundColor: color}}>

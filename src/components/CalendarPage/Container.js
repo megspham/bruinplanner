@@ -1,3 +1,8 @@
+/**
+ * @file Defines the drag and drop areas
+ * @author Ian Galvez
+ */
+
 import React from "react";
 import { useDroppable } from "@dnd-kit/core";
 import {

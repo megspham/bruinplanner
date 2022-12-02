@@ -1,6 +1,8 @@
 # Bruin Planner
 Andy [Han] Goh, Belle Lerdworatawee, Ian Galvez, Megan Pham, Ravit Sharma, Taykhoom Dalal
 
+## Documentation
+View the documentation for the BruinPlanner at the [Bruin Planner Docs Page](https://andygoh5.github.io/bruin-planner-docs/).
 ## Setup
 - Download/clone repo.
 ### Backend setup

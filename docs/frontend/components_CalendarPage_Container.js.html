@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/Logout.js</title>
+    <title>JSDoc: Source: components/CalendarPage/Container.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/Logout.js</h1>
+    <h1 class="page-title">Source: components/CalendarPage/Container.js</h1>
 
     
 
@@ -27,48 +27,49 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @file Contains the code needed to access the Google Identity Services API, and 
- * implements a button to logout from a Google account.
- * button.
- * @author Sivanesh Shanmugam, Andy Goh
+ * @file Defines the drag and drop areas
+ * @author Ian Galvez
  */
 
-import React from 'react';
-import { GoogleLogout } from 'react-google-login';
-import { useNavigate } from 'react-router-dom';
-import { CustomizedButton } from './CustomizedButton.js'
+import React from "react";
+import { useDroppable } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy
+} from "@dnd-kit/sortable";
 
-const clientId =
-  '707788443358-u05p46nssla3l8tmn58tpo9r5sommgks.apps.googleusercontent.com';
+import {SortableItem} from "../SortableItem";
+import {SidebarButton} from "../SidebarButton";
+import {DropdownButton} from "../DropdownButton"
 
-/**
- * 
- * @returns Google logout button
- */
-function Logout() {
-  const navigate = useNavigate();
-
-  const onSuccess = () => {
-    console.log('Logout made successfully');
-    alert('Logout made successfully ✌');
-    navigate('/');
-  };
+export default function Container({ id, items, kind, classInfo, onUpdate }) {
+  const { setNodeRef } = useDroppable({
+    id
+  });
 
   return (
-    &lt;div>
-      &lt;GoogleLogout
-        clientId={clientId}
-        render={renderProps => (
-          &lt;CustomizedButton onClick={renderProps.onClick} text="Sign in with Google" />
-        )}
-        buttonText="Logout"
-        onLogoutSuccess={onSuccess}
-      >&lt;/GoogleLogout>
-    &lt;/div>
+    &lt;SortableContext
+      id={id}
+      items={items}
+      strategy={verticalListSortingStrategy}
+    >
+      &lt;div ref={setNodeRef}>
+        {items.map((obj) => (obj ?
+        &lt;div style={{margin: (kind !== "calendar" ? "10px" : "0px")}}>
+          &lt;SortableItem key={obj.trueId} id={obj.trueId} >
+            {&lt;SidebarButton text={(kind !== "calendar" ? obj.trueId : obj.selected)} kind={kind} classInfo={classInfo[obj.trueId]} obj={obj}/>  }
+          &lt;/SortableItem>
+          {kind === "dropdown" &amp;&amp; &lt;DropdownButton
+            text={obj.trueId}
+            options={obj.options}
+            setSelectedOption={onUpdate}
+          />}
+        &lt;/div> : null))}
+      &lt;/div>
+    &lt;/SortableContext>
   );
 }
-
-export default Logout;</code></pre>
+</code></pre>
         </article>
     </section>
 

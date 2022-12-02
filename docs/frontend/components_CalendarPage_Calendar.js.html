@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/CalendarPage/Calendar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/CalendarPage/Calendar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file Defines the main calendar page, encapsulating the actual calendar
  * as well as the sidebar interactions.
  * @author Andy Goh, Belle Lerdworatawee, Ian Galvez, Megan Pham, Ravit Sharma
@@ -33,11 +61,11 @@ async function sendRequest(apiName, requestBody) {
 
 /**
  * 
- * @param {Array.<string>} type_list Types of classes to be queried for
- * @param {Array.<string>} department_list Filter by department
+ * @param {Array.&lt;string>} type_list Types of classes to be queried for
+ * @param {Array.&lt;string>} department_list Filter by department
  * @param {int} min_units Minimum number of units for the classes returned
  * @param {int} max_units Maximum number of units for the classes returned
- * @param {Array.<string>} classes_taken List of classes already taken, so it doesn't return duplicates
+ * @param {Array.&lt;string>} classes_taken List of classes already taken, so it doesn't return duplicates
  * @returns response json from api/getClasses
  */
 async function getClasses(type_list = null, department_list = null, min_units = null, max_units = null, classes_taken = null) {
@@ -208,28 +236,28 @@ function Calendar() {
         status: "available"
       },
       {
-        trueId: "A&H: Literary and Cultural Analysis",
+        trueId: "A&amp;H: Literary and Cultural Analysis",
         options: loaded_classes['GE-AH-LC'],
         selected: "",
         type: "elective",
         status: "available"
       },
       {
-        trueId: "A&H: Philosophic & Linguistic Analysis",
+        trueId: "A&amp;H: Philosophic &amp; Linguistic Analysis",
         options: loaded_classes['GE-AH-PL'],
         selected: "",
         type: "elective",
         status: "available"
       },
       {
-        trueId: "S&C: Historical Analysis",
+        trueId: "S&amp;C: Historical Analysis",
         options: loaded_classes['GE-SC-HA'],
         selected: "",
         type: "elective",
         status: "available"
       },
       {
-        trueId: "S&C: Social Analysis",
+        trueId: "S&amp;C: Social Analysis",
         options: loaded_classes['GE-SC-SA'],
         selected: "",
         type: "elective",
@@ -260,10 +288,10 @@ function Calendar() {
     const returned_calendar = await saveAndCheck(start_year, classes, id);
     console.log(returned_calendar)
     let display_string = 'Saved successfully.\n The following courses have unmet pre-requisities: \n'
-    for (let i = 0; i < returned_calendar.calendar.quarters.length; i++) {
+    for (let i = 0; i &lt; returned_calendar.calendar.quarters.length; i++) {
       let quarter = returned_calendar.calendar.quarters[i]
       let courses = quarter.quarter.courses
-      for (let j = 0; j < courses.length; j++) {
+      for (let j = 0; j &lt; courses.length; j++) {
         if ("unsatisfied_pre_requisites" in courses[j].course) {
           display_string = display_string + courses[j].course.name + ' needs: '
           for (const unmet_req of courses[j].course.unsatisfied_pre_requisites) {
@@ -340,13 +368,13 @@ function Calendar() {
         }
 
         let json_quarters = parsedInput.calendar.quarters;
-        for (let i = 0; i < json_quarters.length; i++) {
+        for (let i = 0; i &lt; json_quarters.length; i++) {
           const q = json_quarters[i];
           const year = q.quarter.year;
           const quarter_name = quarter_name_dict[q.quarter.quarter];
           const quarter_id = quarter_id_dict[q.quarter.quarter];
           let courses = [];
-          for (let j = 0; j < q.quarter.courses.length; j++) {
+          for (let j = 0; j &lt; q.quarter.courses.length; j++) {
             courses[j] = {
               trueId: q.quarter.courses[j].course.name,
               options: [q.quarter.courses[j].course.name],
@@ -397,7 +425,7 @@ function Calendar() {
           2, 3, 3, 3,
           3, 4, 4, 4
         ]
-        for (let i = 0; i < dc_json.calendar.quarters.length; i++) {
+        for (let i = 0; i &lt; dc_json.calendar.quarters.length; i++) {
           dc_json.calendar.quarters[i].quarter.year = start_year + year_offset[i]
         }
         const requestBody = {
@@ -436,31 +464,31 @@ function Calendar() {
 
   const [activeId, setActiveId] = useState(null);
   return (
-    <div className="BruinPlanner">
-      <DndContext
+    &lt;div className="BruinPlanner">
+      &lt;DndContext
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragOver={handleDragOver}
         collisionDetection={closestCorners}
       >
-        <CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo} />
-        <div className="Sidebar">
-          <div className='display-linebreak'>
-            <button id='save-button' className="save-button" onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calendar</button>
-            <p id='status'>{unsatisfiedPreReqs}</p>
-          </div>
-          <div className="ClassList">
-            <Container id="sidebar" items={classes.sidebar} classInfo={classInfo} />
-            <Container id="variable" items={classes.variableClasses} kind="dropdown" classInfo={classInfo} onUpdate={updateClasses}/>
-          </div>
-        </div>
-        <DragOverlay>
+        &lt;CalendarList classMappings={classes} startYear={startYear} classInfo={classInfo} />
+        &lt;div className="Sidebar">
+          &lt;div className='display-linebreak'>
+            &lt;button id='save-button' className="save-button" onClick={() => display_unsatisfied_prereqs(startYear, classes, id)}>Click to Save and Check Calendar&lt;/button>
+            &lt;p id='status'>{unsatisfiedPreReqs}&lt;/p>
+          &lt;/div>
+          &lt;div className="ClassList">
+            &lt;Container id="sidebar" items={classes.sidebar} classInfo={classInfo} />
+            &lt;Container id="variable" items={classes.variableClasses} kind="dropdown" classInfo={classInfo} onUpdate={updateClasses}/>
+          &lt;/div>
+        &lt;/div>
+        &lt;DragOverlay>
           {activeId ? (
-            <SidebarButton className="sidebar-button" text={activeId} classInfo={classInfo[activeId]} />
+            &lt;SidebarButton className="sidebar-button" text={activeId} classInfo={classInfo[activeId]} />
           ) : null}
-        </DragOverlay>
-      </DndContext>
-    </div>
+        &lt;/DragOverlay>
+      &lt;/DndContext>
+    &lt;/div>
   );
 
   function updateClasses(oldVal, newVal) {
@@ -584,7 +612,7 @@ function Calendar() {
         // We're at the root droppable of a container
         newIndex = overItems.length + 1;
       } else {
-        const isBelowLastItem = over && overIndex === overItems.length - 1;
+        const isBelowLastItem = over &amp;&amp; overIndex === overItems.length - 1;
         const modifier = isBelowLastItem ? 1 : 0;
         newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
       }
@@ -607,3 +635,26 @@ function Calendar() {
 }
 
 export default Calendar;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CalendarBlock">CalendarBlock</a></li><li><a href="global.html#CustomizedButton">CustomizedButton</a></li><li><a href="global.html#DropdownButton">DropdownButton</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#Logout">Logout</a></li><li><a href="global.html#SidebarButton">SidebarButton</a></li><li><a href="global.html#clientId">clientId</a></li><li><a href="global.html#getClasses">getClasses</a></li><li><a href="global.html#json_to_options">json_to_options</a></li><li><a href="global.html#saveAndCheck">saveAndCheck</a></li><li><a href="global.html#sendRequest">sendRequest</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Thu Dec 01 2022 16:23:10 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

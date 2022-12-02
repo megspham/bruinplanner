@@ -28,77 +28,66 @@
         <article>
             <pre class="prettyprint source linenums"><code>/**
  * @file Aggregates multiple CalendarBlocks to form the full calendar.
- * @author Megan Pham
+ * @author Megan Pham, Andy Goh
  */
-import React, { Component } from "react";
+import React from "react";
 import CalendarBlock from "./CalendarBlock";
+import { useLocation } from "react-router-dom";
+import Login from "../Login";
 
-class CalendarList extends Component {
-  currYear = new Date().getFullYear();
-  render() {
-    return (
-      &lt;div>
-        &lt;div className="CalendarRow">
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Fall " + new Date(new Date().setFullYear(this.currYear)).getFullYear()
-            }>
-          &lt;/CalendarBlock>
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Winter " + new Date(new Date().setFullYear(this.currYear + 1)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Spring " + new Date(new Date().setFullYear(this.currYear + 1)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Summer " + new Date(new Date().setFullYear(this.currYear + 1)).getFullYear()}
-          >&lt;/CalendarBlock>
-        &lt;/div>
+function CalendarList({ classMappings, startYear, classInfo }) {
+  const location = useLocation();
+  const id = location.state ? location.state.id : null;
+  const calendarState = classMappings;
 
-        &lt;div className="CalendarRow">
-          &lt;CalendarBlock color="#8BB8E8"
-            calendarDate={"Fall " + new Date(new Date().setFullYear(this.currYear + 1)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#8BB8E8"
-            calendarDate={"Winter " + new Date(new Date().setFullYear(this.currYear + 2)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#8BB8E8"
-            calendarDate={"Spring " + new Date(new Date().setFullYear(this.currYear + 2)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#8BB8E8"
-            calendarDate={"Summer " + new Date(new Date().setFullYear(this.currYear + 2)).getFullYear()}
-          >&lt;/CalendarBlock>
-        &lt;/div>
-
-        &lt;div className="CalendarRow">
-          &lt;CalendarBlock color="#FFE9AD"
-            calendarDate={"Fall " + new Date(new Date().setFullYear(this.currYear + 2)).getFullYear()}>&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#FFE9AD"
-            calendarDate={"Winter " + new Date(new Date().setFullYear(this.currYear + 3)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#FFE9AD"
-            calendarDate={"Spring " + new Date(new Date().setFullYear(this.currYear + 3)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#FFE9AD"
-            calendarDate={"Summer " + new Date(new Date().setFullYear(this.currYear + 3)).getFullYear()}
-          >&lt;/CalendarBlock>
-        &lt;/div>
-
-        &lt;div className="CalendarRow">
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Fall " + new Date(new Date().setFullYear(this.currYear + 3)).getFullYear()}>&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Winter " + new Date(new Date().setFullYear(this.currYear + 4)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Spring " + new Date(new Date().setFullYear(this.currYear + 4)).getFullYear()}
-          >&lt;/CalendarBlock>
-          &lt;CalendarBlock color="#005587"
-            calendarDate={"Summer " + new Date(new Date().setFullYear(this.currYear + 4)).getFullYear()}
-          >&lt;/CalendarBlock>
-        &lt;/div>
-      &lt;/div>
-    );
+  const get_row = (row_idx) => {
+    const color_dict = {
+      0: "#005587",
+      1: "#8BB8E8",
+      2: "#FFE9AD",
+      3: "#005587"
+    };
+    let year_offset = [
+      0, 1, 1, 1,
+      1, 2, 2, 2,
+      2, 3, 3, 3,
+      3, 4, 4, 4
+    ];
+    let quarters = ["Fall", "Winter", "Spring", "Summer"];
+    let block_ids = Object.keys(calendarState).slice(1 + 4 * row_idx, 5 + 4 * row_idx);
+    let rows = []
+    for (let i = 0; i &lt; 4; i++) {
+      rows.push(&lt;CalendarBlock color={color_dict[row_idx]}
+        blockId={block_ids[i]}
+        blockState={calendarState[block_ids[i]]}
+        calendarDate={quarters[i] + " " + (startYear + year_offset[4 * row_idx + i])}
+        classInfo={classInfo}>
+      &lt;/CalendarBlock>);
+    }
+    return &lt;div className="CalendarRow">{rows}&lt;/div>;
   }
+
+  return (
+    &lt;div>
+      {id ?
+        &lt;div>
+          {get_row(0)}
+          {get_row(1)}
+          {get_row(2)}
+          {get_row(3)}
+        &lt;/div>
+        :
+        &lt;div>
+          &lt;h1 class="welcome-message">
+            Please sign in again
+          &lt;/h1>
+          &lt;div class="dars-button-container">
+            &lt;Login destination="/dars/upload">&lt;/Login>
+          &lt;/div>
+        &lt;/div>
+      }
+    &lt;/div>
+  );
 }
 
 export default CalendarList; 
@@ -112,13 +101,13 @@ export default CalendarList;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CalendarBlock">CalendarBlock</a></li><li><a href="global.html#CustomizedButton">CustomizedButton</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#Logout">Logout</a></li><li><a href="global.html#clientId">clientId</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CalendarBlock">CalendarBlock</a></li><li><a href="global.html#CustomizedButton">CustomizedButton</a></li><li><a href="global.html#DropdownButton">DropdownButton</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#Logout">Logout</a></li><li><a href="global.html#SidebarButton">SidebarButton</a></li><li><a href="global.html#clientId">clientId</a></li><li><a href="global.html#getClasses">getClasses</a></li><li><a href="global.html#json_to_options">json_to_options</a></li><li><a href="global.html#saveAndCheck">saveAndCheck</a></li><li><a href="global.html#sendRequest">sendRequest</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Fri Nov 04 2022 18:14:08 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Thu Dec 01 2022 16:23:10 GMT-0800 (Pacific Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
