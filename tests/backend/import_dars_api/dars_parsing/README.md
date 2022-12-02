@@ -1,6 +1,6 @@
 # DARS Parsing Unit Tests
 
-    The following tests are dedicated to ensuring that the DARS parsing functionality is working as intended.
+The following tests are dedicated to ensuring that the DARS parsing functionality is working as intended.
 
 ## Test 1: Positive Test
 
@@ -18,8 +18,8 @@ For this test, our input is the following:
 
 ```python
 dars_file = "test_data/test1.html"
-start_year = 19
-start_quarter = "FA"
+start_year = 2019
+start_quarter = "Fall"
 ```
 
 
@@ -68,8 +68,8 @@ The input for this test is an HTML file that is not in the correct DARS format, 
 
 ```python
 dars_file = "test_data/test2.html"
-start_year = 19
-start_quarter = "FA"
+start_year = 2019
+start_quarter = "Fall"
 ```
 
 ```HTML
@@ -83,7 +83,7 @@ start_quarter = "FA"
 ```
 ### Expected Output
 
-Here we expect an exception to be raised from the code at line 58 in the function parse_dars.py, printing that the passed file is an "Invalid DARS report"
+Here we expect an exception to be raised from the code at line 74 in the function parse_dars.py, printing that the passed file is an "Invalid DARS report"
 
 ### Actual Output
 ![](./imgs/test2_out.png)
@@ -102,8 +102,8 @@ For this test, our input is the following:
 
 ```python
 dars_file = "test_data/test3.html"
-start_year = 19
-start_quarter = "FA"
+start_year = 2019
+start_quarter = "Fall"
 ```
 
 The relevant portion of the DARS file is shown below (note that the section underneath the electives tab is empty, and the html file
