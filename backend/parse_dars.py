@@ -23,26 +23,13 @@ def parse_dars(dars_file, start_quarter, start_year):
 	"""
 	Parses a DARS report, returning the corresponding courses.
 
-	Parameters
-	----------
-	dars_file : str
-		The DARS report file as a string
-	start_quarter : str
-		The start quarter of the DARS report
-	start_year : int
-		The start year of the DARS report
+	Args:
+		dars_file (str) : The DARS report file as a string
+		start_quarter (str) : The start quarter of the DARS report
+		start_year (int) : The start year of the DARS report
 
-	Returns
-	-------
-	courses : pandas.DataFrame
-		pandas.DataFrame, where each row contains information about the quarters of that year and the corresponding courses:		
-			- Requirement
-			- Course Name
-			- Course Department
-			- Course Description
-			- Quarter
-			- Year
-			- Units
+	Returns:
+		Pandas DataFrame containing the courses in the DARS report
 	"""
 
 	# check if the start quarter is valid

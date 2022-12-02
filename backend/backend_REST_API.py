@@ -11,15 +11,11 @@ def addUser(id):
     """
     Try to make a new user with the given id.
 
-    Parameters
-    ----------
-    id: str
-        User id
+    Args:
+        id (str) : The id of the user to be added
     
-    Returns
-    -------
-    success: bool
-        Whether the user was successfully added
+    Returns:
+        Boolean indicating whether the user was successfully added
     """
     try:
         db.execute("INSERT IGNORE INTO users (id, calendar) VALUES (%s, %s);", (id, ''))
@@ -32,21 +28,14 @@ def importDARS(id, start_quarter, start_year, dars_file):
     """
     Import a DARS file to the user's calendar
 
-    Parameters
-    ----------
-    id: str
-        User id
-    start_year: int
-        Year that the user started at UCLA
-    start_quarter: str
-        Quarter that the user started at UCLA
-    dars_file: str
-        Path to the DARS file to be imported
+    Args:
+        id (str) : The id of the user who's calendar to update
+        start_quarter (str) : The quarter the user started at UCLA  
+        start_year (int) : The year the user started at UCLA
+        dars_file (str) : The DARS file to import
     
-    Returns
-    -------
-    success: bool
-        Whether the DARS file was successfully imported
+    Returns:
+        Boolean indicating whether the DARS file was successfully imported
     """
 
     try:
@@ -64,15 +53,11 @@ def getCalendar(id):
     """
     Get the calendar of the user with the given id
 
-    Parameters
-    ----------
-    id: str
-        User id
+    Args:
+        id (str) : The id of the user who's calendar to get
     
-    Returns
-    -------
-    calendar: json
-        Calendar of the user or None if the user does not exist
+    Returns:
+        The calendar of the user with the given id
     """
     try:
         return db.execute("SELECT calendar FROM users WHERE id=%s;", (id,))[0][0]
@@ -85,18 +70,14 @@ def updateCalendar(id, calendar):
     """
     Update calendar of user
 
-    Parameters
-    ----------
-    id: str
-        User id
-    calendar: json
-        Calendar to be updated
+    Args:
+        id (str) : The id of the user who's calendar to update
+        calendar (str) : The calendar to update the user's calendar with
+
     
-    Returns
-    -------
-    calendar: json
-        Calendar with error messages if these exist and the specific courses that caused them or None if the calendar is invalid or an error occurred
-    """
+    Returns:
+        Boolean indicating whether the calendar was successfully updated
+     """
     try:
         
         calendar = str(calendar).replace("'", '"')
@@ -125,14 +106,10 @@ def checkCalendar(calendar):
     """
     Check whether the given calendar is valid.
 
-    Parameters
-    ----------
-    calendar: json
-        Calendar to be checked
+    Args:
+        calendar (str) : The calendar to check
     
-    Returns
-    -------
-    calendar: dict
+    Returns:
         Calendar with error messages if these exist and the specific courses that caused them
     """
 
@@ -213,22 +190,14 @@ def getClasses(type_list=None, department_list=None, min_units=None, max_units=N
     """
     Get all list of classes that satisfy the constraints on their: type, department, minimum units, maximum units, and requisites.
 
-    Parameters
-    ----------
-    type_list: List[str]
-        List of types of class. All classes returned have the specified type. (e.g. "req-cs")
-    department_list: List[str]
-        List of department names. All classes returned have the specified department. (e.g. "COM SCI")
-    min_units: int
-        Lower bound on units for classes returned. All classes returned have no fewer than min_units. (e.g. 2)
-    max_units: int
-        Upper bound on units for classes returned. All classes returned have no more than max_units. (e.g. 4)
-    classes_taken: List[Tuple[str, str]]
-        List of classes user has taken. Used to filter out classes who have one or more prerequisites not already taken. (e.g. [("MATH", "0031A"), ("MATH", "0031B")])
-    
-    Returns
-    -------
-    classes: List[Tuple]
+    Args:
+        type_list (list) : List of types of class. All classes returned have the specified type. (e.g. "req-cs")
+        department_list (list) : List of departments names. All classes returned have the specified department. (e.g. "CS")
+        min_units (int) : Lower bound on units for classes returned. All classes returned have no fewer than min_units. (e.g. 2)
+        max_units (int) : Upper bound on units for classes returned. All classes returned have no more than max_units. (e.g. 4)
+        classes_taken (list) : List of classes user has taken. Used to filter out classes who have one or more prerequisites not already taken. (e.g. [("MATH", "0031A"), ("MATH", "0031B")])
+
+    Returns:
         List of tuples, each containing course information for a certain class.
     """
     def requisites_fulfilled(course):

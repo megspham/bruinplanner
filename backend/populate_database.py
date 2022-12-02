@@ -5,23 +5,11 @@ def generateCalendar(courses):
     """
     Converts a list of tuples of courses to a calendar format
 
-    Parameters
-    ----------
-    courses: pandas.DataFrame
-        Dataframe with the following columns and types:
-            - Year: int
-            - Quarter: list
-            - Course: list
-            - Requirement: list
-            - Department: list
-            - Description: list
-            - Units: list
+    Args:
+        courses (pandas.DataFrame): Dataframe with information about courses
     
-    Returns
-    -------
-    json: JSON
+    Returns:
         JSON object containing the calendar
-        
     """
 
     # TODO: add optional parameters such as historical courses, etc.
@@ -90,22 +78,12 @@ def updateUserCalendar(courses, id):
     """
     Attempts to add info about previously taken courses into the given user's table.
 
-    Parameters
-    ----------
-    course_info: pandas.DataFrame
-        Dataframe with the following columns and types:
-            - Year: int
-            - Quarter: list
-            - Course: list
-            - Requirement: list
-            - Department: list
-            - Description: list
-            - Units: list
+    Args:
+        courses (pandas.DataFrame): Dataframe with information about courses
+        id (int): ID of the user whose table is being updated
 
-    Returns
-    -------
-    success: bool
-        Whether the users table could be successfully updated with the given courses
+    Returns:
+        True if the update was successful, False otherwise
     """   
  
     try:
