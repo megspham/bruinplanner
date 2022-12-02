@@ -1,4 +1,4 @@
-# Course Database Population
+# Course Database Population Tests
 
 ## Test 1
 
