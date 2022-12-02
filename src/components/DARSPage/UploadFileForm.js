@@ -38,9 +38,17 @@ function UploadFileForm({ googleId }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody)
       }).then(res => res.json())
-        .then(json => navigate('/calendar', { state: { data: json, id: state.id } }))
+        .then(json => {
+          if (Object.keys(json).length === 0) {
+            console.error("Invalid DARS or unsuccesful parse");
+            navigate('/dars/upload', { state: { user: googleId, error: true } });
+          } else {
+            navigate('/calendar', { state: { data: json, id: state.id } });
+          }
+        })
         .catch(err => {
-          navigate('/dars/upload', { state : { user: googleId , error : true }})
+          console.error(err);
+          navigate('/dars/upload', { state: { user: googleId, error: true } });
         }
       );
     }

@@ -45,10 +45,8 @@ The user is given an alert of the failure, and is suggested to populate the blan
 ### Actual Output
 #### Server error detection (backend)
 ```
-[02/Dec/2022 00:48:47] "OPTIONS /api/importDars HTTP/1.1" 200 0
-Internal Server Error: /api/importDars
-...
-TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+[02/Dec/2022 19:56:57] "POST /api/importDars HTTP/1.1" 200 2
+Import DARS unsuccessful. Sending error to client...
 ```
 #### Server response (frontend console)
 ![GIF of invalid parsing](invalid_server_response.png)

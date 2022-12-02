@@ -46,11 +46,15 @@ def importDars_view(request):
 
     success = backend_REST_API.importDARS(id, start, year, file)
 
-    # also return the calendar
-    calendar = backend_REST_API.getCalendar(id)
+    if (success):
+        # also return the calendar
+        calendar = backend_REST_API.getCalendar(id)
 
-    response = JsonResponse(json.loads(calendar))
-    response["Access-Control-Allow-Origin"] = "*"
+        response = JsonResponse(json.loads(calendar))
+        response["Access-Control-Allow-Origin"] = "*"
+    else:
+        print("Import DARS unsuccessful. Sending error to client...")
+        response = JsonResponse(json.loads("{}"))
     return response
 
 @csrf_exempt
