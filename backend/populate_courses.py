@@ -223,6 +223,21 @@ def getCourseLatestStartTerm(department, number):
         start_term = None
     return start_term
 
+def validateCourseInfo(course_info):
+    (type_, name, department, number, start_term, units, class_requisites, historical_offerings) = course_info
+
+    assert type_ is None or type(type_) == str
+    assert name is None or type(name) == str
+    assert department is None or type(department) == str
+    assert number is None or type(number) == str
+    assert start_term is None or type(start_term) == str
+    assert units is None or ((type(units) == int or type(units) == float) and 1 <= units and units < 10)
+
+def validateEntriesInDatabase():
+    myresult = db_utils.execute("SELECT type, name, department, number, start_term, units, class_requisites, historical_offerings from courses;")
+    for course_info in myresult:
+        validateCourseInfo(course_info)
+
 def parseCourse(department, number, start_term=None, type_=None):
     """
     Parses department name and number (and optionally start_term) of a certain course to obtain course info.
@@ -290,9 +305,11 @@ def parseCourse(department, number, start_term=None, type_=None):
     
     # create name
     name = department + " " + decodeNumber(number)
-    
+
     # construct and return courseInfo
     courseInfo = (type_, name, department, number, start_term, units, class_requisites, historical_offerings)
+    
+    validateCourseInfo(courseInfo)
     
     if macros.VERBOSE:
         print(courseInfo)
@@ -474,6 +491,7 @@ def addClasses(course_infos):
     """
     success = True
     for course_info in course_infos:
+        validateCourseInfo(course_info)
         result = addClass(course_info)
         success = success and result
     return success
@@ -560,20 +578,24 @@ def addTitles():
         r = makeAPIRequest(getCourseDetailURL(class_[2], class_[3], class_[4]))
         title = r['courseDetail']['courseLongTitle']
 
+        assert type(title) == str
+
         db_utils.execute("UPDATE courses SET title=%s WHERE department=%s AND number=%s", (title, class_[2], class_[3]))
 
 def populateCourses():
+    validateEntriesInDatabase()
+    
     #req_cs_course_infos = parseCoursesByName(macros.REQUIRED_CS_COURSES)
     #addClasses(req_cs_course_infos)
 
     #ge_infos = parseGEs(macros.GE_CATEGORIES)
     #addClasses(ge_infos)
 
-    #elective_course_infos = parseElectives()
-    #addClasses(elective_course_infos)
+    elective_course_infos = parseElectives()
+    addClasses(elective_course_infos)
 
-    #recursivelyAddPrereqs()
-    #addHistoricalOfferings()
+    recursivelyAddPrereqs()
+    addHistoricalOfferings()
 
     addTitles()
 
