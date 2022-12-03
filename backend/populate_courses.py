@@ -1,6 +1,7 @@
 import mysql.connector
 import json
 import requests
+import re
 
 import macros
 import db_utils
@@ -216,7 +217,10 @@ def getCourseLatestStartTerm(department, number):
         start term for course
     """
     start_term_info = makeAPIRequest(getCourseURL(department, number))
-    start_term = start_term_info['courses'][0]['courseCatalogNumberCollection'][-1]['courseStartTermCode']
+    try:
+        start_term = start_term_info['courses'][0]['courseCatalogNumberCollection'][-1]['courseStartTermCode']
+    except:
+        start_term = None
     return start_term
 
 def parseCourse(department, number, start_term=None, type_=None):
@@ -240,6 +244,10 @@ def parseCourse(department, number, start_term=None, type_=None):
     courseInfo: tuple
         tuple containing course type, course name, department, course number, course start term, course units, course requisites, historical offerings
     """
+    if department=="C&EE":
+        courseInfo = (None, None, None, None, None, None, None, None)
+        return courseInfo
+    
     if macros.VERBOSE:
         print("Getting course info for", department, number)
 
@@ -482,6 +490,13 @@ def getEntries(): #TODO: Add filters
     myresult = db_utils.execute("SELECT * FROM courses;")
     return myresult
 
+def countDigits(s):
+    count = 0
+    for c in s:
+        if c.isdigit():
+            count+=1
+    return count
+
 def recursivelyAddPrereqs():
     """
     Recursively adds all prereqs for all classes in the database. Repeats until no more prereqs have been added.
@@ -501,12 +516,16 @@ def recursivelyAddPrereqs():
             if prereqs_text:
                 prereqs = prereqs_text.split(",")
                 for prereq in prereqs:
-                    zeroindex = prereq.find('0')
-                    if not zeroindex == -1:
-                        department = prereq[:zeroindex].strip()
-                        number = prereq[zeroindex:].strip()
+                    #digitindex = prereq.find('0')
+                    try:
+                        digitindex = re.search(r"\d", prereq).start()
+                    except:
+                        digitindex = -1
+                    if not digitindex == -1:
+                        department = prereq[:digitindex].strip()
+                        number = prereq[digitindex:].strip()
                         #print("(", department, ",", number, ") is a prereq for", course[1])
-                        prereq_info = parseCourse(department, number)
+                        prereq_info = parseCourse(department, '0'*(4-countDigits(number)) + number)
                         result = addClass(prereq_info)
                         if result:
                             newClassesAdded.append(prereq_info)
@@ -519,25 +538,44 @@ def recursivelyAddPrereqs():
 def addHistoricalOfferings():
     classes = getEntries()
     for class_ in classes:
+        if class_[-1]!=None or (class_[0] is not None and 'GE' in class_[0]):
+            continue
+        print(class_)
         historical_offerings = []
         for term in macros.PAST_TERMS:
-            r = makeAPIRequest(getHistoricalOfferingsURL(term, class_[2], class_[3]))
-            if r is not None:
-                historical_offerings.append(term)
+            try:
+                r = makeAPIRequest(getHistoricalOfferingsURL(term, class_[2], class_[3]))
+                if r is not None:
+                    historical_offerings.append(term)
+            except:
+                pass
         db_utils.execute("UPDATE courses SET historical_offerings=%s WHERE department=%s AND number=%s", (",".join(historical_offerings), class_[2], class_[3]))
 
+def addTitles():
+    classes = getEntries()
+    for class_ in classes:
+        if class_[0] is None or 'GE' in class_[0]:
+            continue
+        print("Adding title for", class_)
+        r = makeAPIRequest(getCourseDetailURL(class_[2], class_[3], class_[4]))
+        title = r['courseDetail']['courseLongTitle']
+
+        db_utils.execute("UPDATE courses SET title=%s WHERE department=%s AND number=%s", (title, class_[2], class_[3]))
+
 def populateCourses():
-    req_cs_course_infos = parseCoursesByName(macros.REQUIRED_CS_COURSES)
-    addClasses(req_cs_course_infos)
+    #req_cs_course_infos = parseCoursesByName(macros.REQUIRED_CS_COURSES)
+    #addClasses(req_cs_course_infos)
 
-    ge_infos = parseGEs(macros.GE_CATEGORIES)
-    addClasses(ge_infos)
+    #ge_infos = parseGEs(macros.GE_CATEGORIES)
+    #addClasses(ge_infos)
 
-    elective_course_infos = parseElectives()
-    addClasses(elective_course_infos)
+    #elective_course_infos = parseElectives()
+    #addClasses(elective_course_infos)
 
-    recursivelyAddPrereqs()
-    addHistoricalOfferings()
+    #recursivelyAddPrereqs()
+    #addHistoricalOfferings()
+
+    addTitles()
 
 if __name__ == "__main__":
     populateCourses()

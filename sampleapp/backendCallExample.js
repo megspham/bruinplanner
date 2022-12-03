@@ -29,4 +29,4 @@ async function addUser(id=null){
 }
 
 console.log(await getClasses(type_list=["req-cs"], department_list=["COM SCI"], min_units=2, max_units=4, classes_taken=null));
-console.log(await addUser(id="testid"))
+console.log(await addUser(id="testid"));
