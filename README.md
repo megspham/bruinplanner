@@ -21,9 +21,6 @@ ALTER TABLE users ADD UNIQUE (id);"`
 
 - To demote your npm, use https://stackoverflow.com/questions/47008159/how-to-downgrade-node-version
 
-## Deploy
-https://alphacoder.xyz/deploy-react-django-app-on-heroku.
-
 ## Main Directory Structure
 ```
 .
