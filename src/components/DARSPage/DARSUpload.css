@@ -1,0 +1,33 @@
+.dars-upload-container {
+  flex-direction: column;
+  position: relative;
+  font-family: "Montserrat";
+  font-style: "normal";
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.54);
+  margin-top: 1vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.instructions {
+  list-style-position: inside;
+  position: relative;
+}
+
+.dars-bg {
+  display: block;
+  width: 75%;
+  position: absolute;
+}
+
+.dars-button-container2 {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}

@@ -4,7 +4,7 @@
  * button.
  * @author Sivanesh Shanmugam, Andy Goh
  */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 import { refreshTokenSetup } from './utils/refreshToken';
@@ -22,8 +22,9 @@ const clientId =
  * 
  * @returns Google login button
  */
-function Login() {
+function Login({destination}) {
     const navigate = useNavigate();
+    const dest_url = destination ? destination : null;
 
     /**
      * Behavior upon successful Google sign-in. The token is refreshed, and the user is
@@ -33,8 +34,35 @@ function Login() {
      */
     const onSuccess = (res) => {
         console.log('Login Success: currentUser:', res.profileObj);
-        refreshTokenSetup(res);
-        navigate("/dars", { state: res.profileObj });
+
+        if (dest_url) {
+            if (dest_url === "/dars/upload") {
+                navigate(dest_url, { state: { id: res.profileObj.googleId } })
+            }
+            if (dest_url === "/dars") {
+                navigate(dest_url, { state: res.profileObj })
+            }
+        } else {
+            const requestBody = {
+                "id": res.profileObj.googleId
+            }
+            refreshTokenSetup(res);
+            fetch("http://127.0.0.1:8000/api/getCalendar", {
+                crossDomain: true,
+                mode: 'cors',
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            }).then(res => res.json())
+                .then(data => {
+                    if (Object.keys(data).length === 0) {
+                        navigate("/dars", { state: res.profileObj });
+                    } else {
+                        navigate("/calendar", { state: { data: data, id: res.profileObj.googleId } });
+                    }
+                })
+                .catch(err => console.log(err));
+        }
     };
 
     const onFailure = (res) => {
